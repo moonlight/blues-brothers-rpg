@@ -18,6 +18,8 @@ BBRpgHud = Hud:subclass
 				canvas:setCursor(320 - 50 - 16, 16)
 				local a = canvas:setAlpha(128)
 				canvas:drawBitmap(self.sewersImg, 50, 50, player.x - 25 - 0.5, player.y - 25 - 0.5, 50, 50)
+				canvas:setCursor(320 - 50 - 18 + 27, 14 + 27)
+				canvas:drawIcon(self.pixelBlack)
 				canvas:setAlpha(a)
 			end
 		end
@@ -36,5 +38,6 @@ BBRpgHud = Hud:subclass
 	defaultproperties = {
 		playerSwitcher = nil,
 		sewersImg = m_get_bitmap("sewers_map.bmp"),
+		pixelBlack = m_get_bitmap("pixel_black.bmp"),
 	};
 }
