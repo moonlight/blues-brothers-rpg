@@ -166,7 +166,7 @@ echo -n "Checking for alogg-config... "
     else
 	echo "no"
 	echo "*** If you want sound install alogg. http://lyrian.free.fr/alogg/"
-	$SOUND=false
+	SOUND=false
     fi
 fi
 
