@@ -119,3 +119,19 @@ ElevatorButtons = Decoration:subclass
 		bitmap = m_get_bitmap("elevator_buttons.bmp"),
 	}
 }
+
+Flatscreen = Decoration:subclass
+{
+	name = "Flatscreen";
+	bPlaceable = true;
+	
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		offset_y = 0,
+		offset_x = 0,
+		obstacle = 1,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("flatscreen.bmp"),
+	}
+}

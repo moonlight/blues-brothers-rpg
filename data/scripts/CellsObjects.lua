@@ -7,7 +7,7 @@ import("Decoration.lua")
 Count1 = Decoration:subclass
 {
 	name = "Count1";
-
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -21,6 +21,7 @@ Count1 = Decoration:subclass
 Count2 = Decoration:subclass
 {
 	name = "Count2";
+	bPlaceable = true;	
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -35,7 +36,7 @@ Count2 = Decoration:subclass
 Count3 = Decoration:subclass
 {
 	name = "Count3";
-
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -49,7 +50,8 @@ Count3 = Decoration:subclass
 Count4 = Decoration:subclass
 {
 	name = "Count4";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -64,7 +66,8 @@ Count4 = Decoration:subclass
 Count5 = Decoration:subclass
 {
 	name = "Count5";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -78,7 +81,8 @@ Count5 = Decoration:subclass
 Count6 = Decoration:subclass
 {
 	name = "Count6";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -92,7 +96,8 @@ Count6 = Decoration:subclass
 AlmostPi = Decoration:subclass
 {
 	name = "AlmostPi";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -106,6 +111,7 @@ AlmostPi = Decoration:subclass
 Convergence = Decoration:subclass
 {
 	name = "Convergence";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -120,6 +126,7 @@ Convergence = Decoration:subclass
 PrisonBed = Decoration:subclass
 {
 	name = "PrisonBed";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -130,5 +137,61 @@ PrisonBed = Decoration:subclass
 		offset_y = -12,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("bed2.bmp"),
+	}	
+}
+
+PrisonDoor1 = Decoration:subclass
+{
+	name = "PrisonDoor1";
+	bPlaceable = true;	
+
+	init = function(self)
+		Actor.init(self)
+		self.bitmap = self.bitmaps[1]
+	end;
+	
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		obstacle = 1,
+		w = 1,
+		offset_x = 0,
+		offset_y = 0,
+		draw_mode = DM_MASKED,
+		bitmaps = extr_array(m_get_bitmap("door3.bmp"), 24, 48),
+	}	
+}
+
+PrisonDoor2 = Decoration:subclass
+{
+	name = "PrisonDoor2";
+	bPlaceable = true;	
+	
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		obstacle = 1,
+		w = 1,
+		offset_x = 0,
+		offset_y = 0,
+		draw_mode = DM_MASKED,
+		bitmaps = extr_array(m_get_bitmap("door3.bmp"), 24, 48),
+	}	
+}
+
+SewageDrain = Decoration:subclass
+{
+	name = "SewageDrain";
+	bPlaceable = true;	
+	
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		obstacle = 0,
+		w = 1,
+		offset_x = 0,
+		offset_y = 0,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("sewagedrain.bmp"),		
 	}	
 }

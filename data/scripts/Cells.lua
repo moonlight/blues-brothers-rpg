@@ -74,7 +74,21 @@ Cells = Map:subclass
 
 		obj = self:spawn(Count2, 51,104); obj.offset_x =  6; obj.offset_y =  6; obj.alpha = 90
 
-		-- Prison Beds
+		-- Flatscreens
+		obj = self:spawn(Flatscreen, 33, 57); obj.offset_y = -10; obj.offset_z = 15
+
+		-- Prison doors
+		self:spawn(PrisonDoor1, 23, 19)
+		self:spawn(PrisonDoor1, 30, 19)
+		self:spawn(PrisonDoor1, 37, 19)
+		self:spawn(PrisonDoor1, 44, 19)
+		
+		self:spawn(PrisonDoor1, 23, 112)
+		self:spawn(PrisonDoor1, 30, 112)
+		self:spawn(PrisonDoor1, 37, 112)
+		self:spawn(PrisonDoor1, 44, 112)
+		
+		-- Prison beds
 		self:spawn(PrisonBed, 51,  20)
 		self:spawn(PrisonBed, 51,  27)
 		self:spawn(PrisonBed, 51,  34)
