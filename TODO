@@ -15,7 +15,6 @@ Niet ingedeeld:
 Bjorn:
 ! Fix bug with two policemen
 ! Experience/levelup afmaken
-- Add moveAwayPlease method to Characters
 - Implement following
 - Schaduw onder de auto scripten
 - Naam van area weergeven bij naartoe gaan
@@ -34,6 +33,8 @@ Georg:
 
 Frode:
 ! Electronica voor in de `control room'
+! Walkie talkie inventory picture
+! Jake, Brian en Elwood naar vooren kijkend met walkie talkie
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
 - Sneeuw op de autos
