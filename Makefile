@@ -7,22 +7,26 @@
 #
 CC := g++
 CPPFLAGS := -Wall -O2 # -mwindows
-EXE := rpg
+ENGINE_EXE := rpg
+EDITOR_EXE := rpgedit
 
-OBJS := $(patsubst %.cpp, %.o, $(wildcard src/*.cpp))
+EDITOR_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/editor/*.cpp))
+ENGINE_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/*.cpp))
 LIBS := `allegro-config --libs` -llua -llualib
 #LIBS := -lalleg -llua -llualib
 
 .PHONY: default remake clean
 
 
-default: $(EXE)
+default: $(ENGINE_EXE) $(EDITOR_EXE)
 remake: clean default
 
 clean:
-	rm $(OBJS)
+	rm $(COMMON_OBJS) $(EDITOR_OBJS) $(ENGINE_OBJS)
 
 
-$(EXE): $(OBJS)
-	$(CC)  $(CPPFLAGS)  -o $(EXE) $(OBJS) $(LIBS)
+$(ENGINE_EXE): $(COMMON_OBJS) $(ENGINE_OBJS)
+	$(CC) $(CPPFLAGS) -o $(ENGINE_EXE) $(COMMON_OBJS) $(ENGINE_OBJS) $(LIBS)
 
+$(EDITOR_EXE): $(COMMON_OBJS) $(EDITOR_OBJS)
+	$(CC) $(CPPFLAGS) -o $(EDITOR_EXE) $(COMMON_OBJS) $(EDITOR_OBJS) $(LIBS)
