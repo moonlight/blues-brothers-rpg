@@ -18,7 +18,7 @@
 #include "../shared/object.h"
 
 
-#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0 beta"
+#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0 WIP"
 
 
 // Global variables
@@ -27,7 +27,6 @@ extern DATAFILE *data;
 extern int debug_mode;
 extern FONT* engine_font;
 extern Console console;
-//extern TiledMap* theMap;
 extern list<Object*> selectedObjects;
 extern int selectedObjectType;
 extern bool selecting;
@@ -42,9 +41,6 @@ extern int selectedLayer;
 
 extern vector<char*> tileSets;
 extern vector<TileType*> activeTileset;
-
-extern Object* hoverEntity;
-extern BITMAP* hoverBitmap;
 
 extern int map_edit_mode;
 
@@ -141,6 +137,7 @@ int menu_item_edit_tiles_2();
 int menu_item_edit_obs();
 int menu_item_edit_objects();
 int menu_item_about();
+int menu_item_toggle_debug();
 
 
 void update_screen(int x, int y, int w, int h);

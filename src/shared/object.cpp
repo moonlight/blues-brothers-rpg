@@ -38,15 +38,6 @@ Object::Object(int luaTableRef, TiledMap* myMap):
 {
 	id = ++id_counter;
 
-	/*
-	if (map) {
-		// Create my entity and put it on the map
-		entity = new Entity();
-		entity->pos = map->map->tileToMap(Point(int(x),int(y)));
-		map->map->addEntity(entity);
-	}
-	*/
-
 	// Set the metatable and _pointer value of my table in Lua
 	if (tableRef) {
 		lua_getref(L, tableRef);
@@ -57,6 +48,8 @@ Object::Object(int luaTableRef, TiledMap* myMap):
 		lua_rawset(L, -3);
 		lua_pop(L, 1);
 	}
+
+	update_entity();
 }
 
 
@@ -76,11 +69,6 @@ Object::~Object()
 
 		// Allow Lua to garbage collect the object.
 		lua_unref(L, tableRef);
-	}
-
-	if (map != NULL) {
-		map->removeReference(this);
-		map = NULL;
 	}
 }
 
@@ -294,12 +282,20 @@ void Object::draw(BITMAP *dest, Point screenCoords)
 			break;
 		}
 
-		if (debug_mode || selected) {
+		if (selected) {
 			rect(
 				dest,
 				screenCoords.x-1, screenCoords.y - bitmap->h - pos.z-1,
 				screenCoords.x + bitmap->w+1, screenCoords.y - pos.z+1,
 				makecol(150,0,0)
+			);
+		}
+		else if (debug_mode) {
+			rect(
+				dest,
+				screenCoords.x-1, screenCoords.y - bitmap->h - pos.z-1,
+				screenCoords.x + bitmap->w+1, screenCoords.y - pos.z+1,
+				makecol(0,150,0)
 			);
 		}
 	}

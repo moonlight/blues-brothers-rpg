@@ -308,6 +308,10 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 			rect(buffer, start.x, start.y, end.x, end.y, makecol(100,200,200));
 		}
 
+		if (debug_mode) {
+			textprintf(buffer, font, d->x+10, d->y+30, makecol(255,255,255), "%d selected entities", selectedObjects.size());
+		}
+
 		update_screen(d->x, d->y, d->w, d->h);
 		break;
 
@@ -383,30 +387,21 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 
 	case MSG_IDLE:
 		if (d->flags & D_GOTMOUSE) {
-			if (hoverEntity) {
-				Point hoverTile = currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y() + TILES_H));
-				Point new_hover = currentMap->tileToMap(hoverTile);
-				new_hover.x -= 12;
-				//Tile* cursorTile = currentMap->getTile(hoverTile);
-
-				if (hoverEntity->x != hoverTile.x ||
-					hoverEntity->y != hoverTile.y) {
-					hoverEntity->x = hoverTile.x;
-					hoverEntity->y = hoverTile.y;
-					//hoverEntity->mapPos = hoverTile;
-					hoverEntity->update_entity();
-					d->flags |= D_DIRTY;
+			Point hoverTile = currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y() + TILES_H));
+			Point new_hover = currentMap->tileToMap(hoverTile);
+			//Tile* cursorTile = currentMap->getLayer(0)->getTile(hoverTile);
+			
+			// Do something with the following
+			//d->flags |= D_DIRTY;
+			
+			if (hoverTile.x >= 0 && hoverTile.y >= 0) {
+				/*
+				if (cursorTile && cursorTile->getType()) {
+					uszprintf(status_message, 1024, "Position: (%d, %d)  Tile: \"%s\"", hoverTile.x, hoverTile.y, cursorTile->getType()->getName());
+				} else {
 				}
-
-				if (hoverTile.x >= 0 && hoverTile.y >= 0)
-				{
-					/*
-					if (cursorTile && cursorTile->getType()) {
-						uszprintf(status_message, 1024, "Position: (%d, %d)  Tile: \"%s\"", hoverTile.x, hoverTile.y, cursorTile->getType()->getName());
-					} else {}
-					*/
-					uszprintf(status_message, 1024, "Position: (%d, %d)", hoverTile.x, hoverTile.y);
-				}
+				*/
+				uszprintf(status_message, 1024, "Position: (%d, %d)", hoverTile.x, hoverTile.y);
 			}
 		}
 		if (d->flags & D_GOTFOCUS) {
@@ -426,13 +421,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 		}
 		break;
 
-	case MSG_GOTMOUSE:
-		if (hoverEntity) currentMap->addReference(hoverEntity);
-		break;
-
 	case MSG_LOSTMOUSE:
-		if (hoverEntity) currentMap->removeReference(hoverEntity);
-		//uszprintf(status_message, 1024, "");
 		status_message[0] = '\0';
 		break;
 

@@ -498,6 +498,15 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
 {
 	ASSERT(file);
 
+	// Remove the objects from the map
+	list<Object*>::iterator i;
+	while (!objects.empty())
+	{
+		i = objects.begin();
+		delete (*i);
+		objects.erase(i);
+	}
+
 	// Load the map header
 	/*int version = */pack_igetw(file);
 	int layers = pack_igetw(file);
@@ -515,6 +524,15 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
 void TiledMap::loadFromOld(PACKFILE *file, TileRepository *tileRepository)
 {
 	ASSERT(file);
+
+	// Remove the objects from the map
+	list<Object*>::iterator i;
+	while (!objects.empty())
+	{
+		i = objects.begin();
+		delete (*i);
+		objects.erase(i);
+	}
 
 	// Load the map header
 	/*int version = 1;*/

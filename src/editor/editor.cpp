@@ -44,9 +44,6 @@ int selectedLayer = 0;
 vector<char*> tileSets;
 vector<TileType*> activeTileset;
 
-Object* hoverEntity = NULL;
-BITMAP* hoverBitmap = NULL;
-
 char map_filename[1024] = "";
 char status_message[1024] = "";
 char status_mapinfo[1024] = "";
@@ -249,7 +246,7 @@ DIALOG about_dlg[] =
 	{ d_agup_window_proc, 0,  0,   200, 77,  0,   0,   0,    0,      0,   0,   (void*)"About",                NULL, NULL },
 	{ d_agup_icon_proc,   8,  24,  44,  44,  0,   0,   0,    0,      0,   0,   NULL,                          NULL, NULL },
 	{ d_text_proc,        58, 28,  142, 16,  0,   0,   0,    0,      0,   0,   (void*)PROGRAM_VERSION_STRING, NULL, NULL },
-	{ d_text_proc,        58, 42,  142, 16,  0,   0,   0,    0,      0,   0,   (void*)"by T. Lindeijer [MP]", NULL, NULL },
+	{ d_text_proc,        58, 42,  142, 16,  0,   0,   0,    0,      0,   0,   (void*)"(c) Bjorn Lindeijer",  NULL, NULL },
 	{ d_bjorn_close_proc, 0,  0,   0,   0,   0,   0,   0,    0,      0,   0,   NULL,                          NULL, NULL },
 	{ d_yield_proc,       0,  0,   0,   0,   0,   0,   0,    0,      0,   0,   NULL,                          NULL, NULL },
 	{ NULL,               0,  0,   0,   0,   0,   0,   0,    0,      0,   0,   NULL,                          NULL, NULL }
@@ -291,6 +288,8 @@ MENU menu_edit[] =
    { "Switch to tile layer &2",   menu_item_edit_tiles_2,   NULL,      0,          NULL },
    { "Switch to &obstacle layer", menu_item_edit_obs,       NULL,      0,          NULL },
    { "Switch to &objects layer",  menu_item_edit_objects,   NULL,      0,          NULL },
+   { "",                          NULL,                     NULL,      0,          NULL },
+   { "Toggle debug mode",         menu_item_toggle_debug,   NULL,      0,          NULL },
    { 0 }
 };
 
@@ -367,7 +366,7 @@ int menu_item_load_map()
 		{
 			PACKFILE *file = pack_fopen(path_buf, F_READ_PACKED);
 			if (file) {
-				//theMap->setMap(currentMap);
+				selectedObjects.clear();
 				currentMap->loadFrom(file, tileRepository);
 				pack_fclose(file);
 				ustrcpy(map_filename, path_buf);
@@ -396,7 +395,7 @@ int menu_item_load_old_map()
 		{
 			PACKFILE *file = pack_fopen(path_buf, F_READ_PACKED);
 			if (file) {
-				//theMap->setMap(currentMap);
+				selectedObjects.clear();
 				currentMap->loadFromOld(file, tileRepository);
 				pack_fclose(file);
 				ustrcpy(map_filename, path_buf);
@@ -690,6 +689,13 @@ int menu_item_about()
 	return D_O_K;
 }
 
+int menu_item_toggle_debug()
+{
+	debug_mode = !debug_mode;
+	D_MAP.flags |= D_DIRTY;
+	return D_O_K;
+}
+
 
 
 // Double buffer, screen update function
@@ -872,6 +878,7 @@ void delete_objects(list<Object*> objs)
 		if (obj->selected) selectedObjects.remove(obj);
 		//callMemberFunction(obj->tableRef, "destroy", "");
 		objs.remove(obj);
+		currentMap->removeReference(obj);
 		delete obj;
 	}
 }

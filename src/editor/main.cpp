@@ -241,14 +241,6 @@ void initialize()
 	currentMap = new SquareMap(TILES_W, TILES_H);
 	ustrcpy(map_filename, "untitled.map");
 
-	hoverEntity = new Object(0, NULL);
-	hoverBitmap = create_bitmap(24, 24);
-	if (hoverBitmap) {
-		clear_to_color(hoverBitmap, makecol(255,0,255));
-		rect(hoverBitmap, 0, 0, hoverBitmap->w - 1, hoverBitmap->h - 1, makecol(25, 25, 200));
-		hoverEntity->bitmap = hoverBitmap;
-	}
-
 	// Load map specified in rpgedit.cfg
 	const char* filename = get_config_string("startup", "load_map", NULL);
 	if (filename) {
@@ -277,10 +269,8 @@ void clean_up()
 {
 	delete currentMap;
 	delete tileRepository;
-	delete hoverEntity;
 
 	destroy_bitmap(buffer);
-	destroy_bitmap(hoverBitmap);
 
 	agup_shutdown();
 }
