@@ -5,10 +5,15 @@ Niet ingedeeld:
 - Wachters in de gevangenis
 - Hier en daar een plas op de weg, of smurrie
 - Sneeuw in de kozijnen en op de daken
+- Schaduw onder de auto
 
 Bjorn:
-! Editor naar Linux porten
-- Objecten plaatsen in map afmaken
+! Gedeelde modules tussen editor en engine samenvoegen
+  * tiled_map
+  * console
+  * engine
+  * map
+- Objecten plaatsen in editor afmaken (en module "map" weghalen)
 - Sneeuwval
 - Sneeuw op prullenbak, dat eraf valt als je ertegenaan slaat
 - Voetsporen achterlaten in de sneeuw op de snoep
@@ -17,10 +22,6 @@ Georg:
 - De sewers werkend krijgen (Dus al die scripts netjes op elkaar afstemmen etc. zodat je er uit moet proberen te komen)
 - Daarna naar Brian in de gevangenis en er over nadenken hoe hem eruit
 te krijgen
-- Misschien nog wat
-- En misschien nog wat
-- En dan nog een test
-- Ach ja, nog maar een test
 
 Frode:
 - Kerstboompje voor in het optrekje
