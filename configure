@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# thanks to Smunt for some tips :)
+
 CC=g++
 LIBS=
 LIBS_ENGINE=
@@ -16,7 +18,7 @@ LOGERR=/dev/null
 # eg. CLEAN a a b c c d  
 # echo $MYRETVAL
 # a b c d
-function CLEAN () {
+CLEAN () {
     MYRETVAL=""
     for arg do
 	MYRETVAL=`echo "$MYRETVAL" | sed -e "s'$arg ''g"`"$arg "
