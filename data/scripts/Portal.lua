@@ -13,6 +13,7 @@ Portal = Actor:subclass
 
 		if (actor:instanceOf(Player)) then
 			actor:walk(actor.dir, true)
+
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionParallel{
@@ -23,7 +24,10 @@ Portal = Actor:subclass
 				ActionSetPosition(actor, self.linkedPortal.x, self.linkedPortal.y),
 				ActionParallel{
 					ActionFadeInMap(100 / actor.speed),
-					ActionWalk(actor, self.linkedPortal.outDir, 1),
+					ActionSequence{
+						ActionCallFunction(actor.walk, actor, self.linkedPortal.outDir),
+						ActionCallFunction(actor.walk, actor, self.linkedPortal.outDir, true),
+					}
 				},
 				ActionExModeOff(),
 			}

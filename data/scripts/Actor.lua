@@ -128,6 +128,13 @@ Actor = Object:subclass
 		for i,v in ipairs(self.xDir) do
 			local x, y = self.x + self.xDir[i], self.y + self.yDir[i]
 			local objectsAtTile = m_get_objects_at(x, y, self.map)
+
+			for k,v in pairs(objectsAtTile) do
+				if (v.obstacle == 0) then
+					table.remove(objectsAtTile, k)
+				end
+			end
+
 			local tileName, obstacle = m_get_tile_at(self.map, x - 0.5, y - 0.5)
 			if (table.getn(objectsAtTile) == 0 and obstacle == 0) then
 				table.insert(dirs, i - 1)

@@ -73,6 +73,12 @@ Character = Pawn:subclass
 		Pawn.died(self, killer, damageType, location)
 		self.charAnim = nil
 		self:setBitmap(self.deathBitmap)
+
+		-- There is no shadow after death
+		if (self.shadow) then
+			self.shadow:destroy()
+			self.shadow = nil
+		end
 	end;
 
 	destroyed = function(self)
@@ -80,8 +86,10 @@ Character = Pawn:subclass
 		self.bDead = true
 
 		Pawn.destroyed(self)
+
 		if (self.shadow) then
 			self.shadow:destroy()
+			self.shadow = nil
 		end
 	end;
 

@@ -17,11 +17,8 @@ MainMenu = GuiMenu:subclass
 		local startSequence = {
 			ActionFadeOutMap(50),
 			ActionSetVariable(_G, "show_main_menu", nil),
---			ActionCallFunction(jake.addToInventory, walkieTalkie, self),
-			ActionCallFunction(elwood.setMap, elwood, sewersMap),
-			ActionCallFunction(jake.setMap, jake, sewersMap),
 			ActionSetPosition(elwood, 145, 11, DIR_RIGHT),
---			ActionSetPosition(jake, 143, 11, DIR_RIGHT),
+			ActionSetPosition(jake, 46, 43, DIR_RIGHT),
 --			ActionSetPosition(elwood, 102, 75, DIR_RIGHT),
 --			ActionSetPosition(jake, 104, 75, DIR_RIGHT),
 			ActionSetPosition(jake, 73, 38, DIR_RIGHT),

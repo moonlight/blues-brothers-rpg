@@ -68,18 +68,13 @@ AdvAIRandom = Controller:subclass
 	end;
 	
 
-	-- == -- == test if we can go in direction, if not go in other direction, but not 'notdir' == -- == --
-	willGoInDirection = function(self, direction, notdir)
-		local dirs = self.pawn:freeTilesAround()
-		return direction
-	end;
-	
-	
 	-- timebom
 	tick = function(self)
+		if (self.pawn.bDead) then return end
+
 		if (self.pawn.charging > 0) then self.pawn.charging = self.pawn.charging - 1 end
 		
-                if (self.waitTime > 0) then self.waitTime = self.waitTime - 1; end;
+		if (self.waitTime > 0) then self.waitTime = self.waitTime - 1; end;
 
 		if (self.nature == MOODY) then
 			-- this one is shifting moods... do new mood, and state how long it has that mood
@@ -121,7 +116,7 @@ AdvAIRandom = Controller:subclass
 				-- walk around
 				self.scaring = nil;
 				self.target = nil;
-				self.pawn.dir = math.random(4) - 1;
+				self.pawn.dir = self.pawn:randomFreeTileAround()
 			end;
 
 			self.pawn:walk(self.pawn.dir)
