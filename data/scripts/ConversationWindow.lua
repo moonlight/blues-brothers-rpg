@@ -199,7 +199,7 @@ ConversationWindow = Interaction:subclass
 		return false
 	end;
 
-	postRender = function(self)
+	postRender = function(self, canvas)
 		if (self.state == CB_CLOSED) then return end
 
 		local screen_w, screen_h = m_screen_size()
@@ -233,7 +233,7 @@ ConversationWindow = Interaction:subclass
 			if (self.state == CB_WAITING and self.blink_bitmap) then
 				local w, h = m_bitmap_size(self.blink_bitmap)
 				m_set_cursor(self.x + self.w - w, self.y + self.h - h)
-				draw_icon(self.blink_bitmap, 1)
+				canvas:drawIcon(self.blink_bitmap, 1)
 			end
 
 			-- Draw the lines of text
