@@ -119,9 +119,8 @@ rm -f conftest*
 # kijken of we ook kunnen lua scripten
 ######################################################################
 echo -n "Checking for lua... "
-if lua -v >/dev/null 2>/dev/null ; then
-    # lua gevonden, eens zien of we ook kunnen compilen
-    cat >conftest.cpp <<EOF
+
+cat >conftest.cpp <<EOF
 #include <allegro.h>
 extern "C" {
 #include <lua.h>
@@ -138,23 +137,18 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
-    if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null > /dev/null 2>/dev/null ; then
-	# gelukt
-	LIBS="$LIBS -llua -llualib"
-	echo "yes"
-    else
-	#niet gelukt
-	echo "no"
-	echo "*** Compiling of lua program failed"
-    fi
+if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null > /dev/null 2>/dev/null ; then
+    # gelukt
+    LIBS="$LIBS -llua -llualib"
+    echo "yes"
+else
+    #niet gelukt
+    echo "no"
+    echo "*** Compiling of lua program failed"
+    echo "*** Please install lua. http://www.lua.org"
+fi
 rm -f conftest*
     
-else
-    echo "no"
-    echo "*** Please install lua. http://www.lua.org"
-    exit 1
-fi
-
 ######################################################################
 # sound check
 ######################################################################
