@@ -84,7 +84,8 @@ if allegro-config --version >/dev/null 2>/dev/null ; then
 else
     echo "no"
     echo "*** No allegro-config found. Please add the right directory to PATH or install allegro"
-    exit 1
+    echo "using -lalleg instead"
+    LIBS="$LIBS -lalleg"
 fi
 
 ######################################################################
@@ -164,8 +165,8 @@ echo -n "Checking for alogg-config... "
 	echo "yes"
     else
 	echo "no"
-	echo "Please install alogg. http://lyrian.free.fr/alogg/"
-	exit 1
+	echo "*** If you want sound install alogg. http://lyrian.free.fr/alogg/"
+	$SOUND=false
     fi
 fi
 
