@@ -134,7 +134,7 @@ PrisonBed = Decoration:subclass
 		obstacle = 1,
 		w = 3,
 		offset_x = 0,
-		offset_y = -12,
+		offset_y = 0,
 		draw_mode = DM_ALPHA,
 		bitmap = m_get_bitmap("bed2.tga"),
 	}	

@@ -73,10 +73,6 @@ City = Map:subclass
 		self.sewersInPortal:setOutDir(DIR_UP);
 
 		copcar = self:spawn(CopCar, 106, 123);
---		Wheel1 = self:spawn(Wheel, 107, 123);
---		Wheel1.offset_x = 5;
---		Wheel2 = self:spawn(Wheel, 110, 123);
---		Wheel2.offset_x = -7;
 	end;
 
 	defaultproperties = {

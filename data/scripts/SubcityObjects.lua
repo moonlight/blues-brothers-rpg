@@ -252,7 +252,7 @@ CopCar = Decoration:subclass
 	init = function(self)
 		Decoration.init(self)
 	
-		self.tick_time = 5
+		self.tick_time = 0
 		self.bitmap = self.animSeq[1]
 		self:loopAnim(LinearAnimation(self.animSeq))
 	end;
@@ -365,7 +365,7 @@ KeyFob = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("keyfob.bmp"),
-		inventoryBitmap = m_get_bitmap("keyfob.bmp"),
+		inventoryBitmap = m_get_bitmap("keyfob_inv.bmp"),
 	}
 }
 

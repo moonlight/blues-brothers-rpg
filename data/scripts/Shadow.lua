@@ -16,6 +16,10 @@ Shadow = Actor:subclass
 			--self.offset_x = self.owner.offset_x
 			--self.offset_y = self.owner.offset_y
 			self.alpha = self.owner.alpha
+
+			if (self.myMap ~= self.owner.myMap) then
+				self:setMap(self.owner.myMap)
+			end
 		end
 	end;
 

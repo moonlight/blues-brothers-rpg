@@ -596,7 +596,7 @@ ActionShowMapName = Action:subclass
 		show_map_seq = ActionController:addSequence{
 			ActionCallFunction(interactionMaster.addInteraction, interactionMaster, mapInt),
 			ActionTweenVariable(mapInt, "perc", 50, 1, 0),
-			ActionWait(100),
+			ActionWait(150),
 			ActionTweenVariable(mapInt, "perc", 50, 0, 1),
 			ActionCallFunction(interactionMaster.removeInteraction, interactionMaster, mapInt),
 		}
