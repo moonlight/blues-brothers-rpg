@@ -491,7 +491,8 @@ int l_add_object(lua_State *L)
 int l_register_class(lua_State *L)
 {
 	char* typeName;
-	getLuaArguments(L, "s", &typeName);
+	int placeable;
+	getLuaArguments(L, "si", &typeName, &placeable);
 	console.log(CON_LOG, CON_DEBUG, "- %s class defined", typeName);
 	objectTypes.push_back(typeName);
 	return 0;
