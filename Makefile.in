@@ -5,17 +5,17 @@
 #   run "make remake" to recompile everything
 #   run "make clean" to clean up the object files
 #
-CC := g++
-CPPFLAGS :=  -Wall -O2   -I/usr/local/include -DENABLE_SOUND
-ENGINE_EXE := rpg
-EDITOR_EXE := rpgedit
+CC := @cc@
+CPPFLAGS := @cppflags@
+ENGINE_EXE := @engine_exe@
+EDITOR_EXE := @editor_exe@
 
 COMMON_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/shared/*.cpp))
 EDITOR_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/editor/*.cpp))
 ENGINE_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/*.cpp))
-COMMON_LIBS :=  -Wall -O2   -I/usr/local/include -DENABLE_SOUND -L/usr/local/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.0.3 -lalleg_unsharable -llua -llualib
+COMMON_LIBS := @libs@
 #COMMON_LIBS := -lalleg -llua -llualib
-ENGINE_LIBS :=  -L/usr/local/lib -lalogg -L/usr/local/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.0.3 -lalleg_unsharable -lvorbisfile -lvorbisenc -lvorbis -logg -lm
+ENGINE_LIBS := @libs_engine@
 #ENGINE_LIBS := =lalogg -logg -lvorbis -lvorbisfile -lvorbisenc
 
 .PHONY: default remake clean

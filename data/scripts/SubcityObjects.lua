@@ -440,8 +440,36 @@ LamppostRight = Actor:subclass
 	defaultproperties = {
 		bitmap = m_get_bitmap("lamppost_e.bmp"),
 		offset_y = -15,
-		offset_x = 12,
+		offset_x = 9,
 		obstacle = 1,
+	};
+
+	bPlaceable = true;
+}
+
+Waterplas = Actor:subclass
+{
+	name = "Waterplas";
+	
+	defaultproperties = {
+		bitmap = m_get_bitmap("waterplas.bmp"),
+		offset_y = -8,
+		offset_x = 0,
+		obstacle = 0,
+	};
+
+	bPlaceable = true;
+}
+
+Sewerput = Actor:subclass
+{
+	name = "Sewerput";
+	
+	defaultproperties = {
+		bitmap = m_get_bitmap("sewerput.bmp"),
+		offset_y = -8,
+		offset_x = 0,
+		obstacle = 0,
 	};
 
 	bPlaceable = true;
