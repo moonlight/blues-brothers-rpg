@@ -196,7 +196,7 @@ else
     echo "no"
     echo "*** If you want sound install alogg. http://lyrian.free.fr/alogg/"
 fi
-#rm -f conftest*
+rm -f conftest*
 
 
 
