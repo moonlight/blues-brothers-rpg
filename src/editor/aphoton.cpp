@@ -945,61 +945,61 @@ void aphoton_init(void)
 {
 	float brightness = 0.7;
 
-    MAKE_GRAY_RANGE(button_gray_range, 235 * brightness, 195 * brightness);
-    button_border_gray = makecol(176 * brightness, 176 * brightness, 176 * brightness);
+    MAKE_GRAY_RANGE(button_gray_range, int(235 * brightness), int(195 * brightness));
+    button_border_gray = makecol(int(176 * brightness), int(176 * brightness), int(176 * brightness));
 	
-    container_black = makecol(75 * brightness, 75 * brightness, 75 * brightness);
-    container_gray1 = makecol(177 * brightness, 177 * brightness, 177 * brightness);
-    container_gray2 = makecol(201 * brightness, 201 * brightness, 201 * brightness);
+    container_black = makecol(int(75 * brightness), int(75 * brightness), int(75 * brightness));
+    container_gray1 = makecol(int(177 * brightness), int(177 * brightness), int(177 * brightness));
+    container_gray2 = makecol(int(201 * brightness), int(201 * brightness), int(201 * brightness));
     
-    check_black = makecol(24 * brightness, 24 * brightness, 24 * brightness);
-    check_gray1 = makecol(153 * brightness, 153 * brightness, 153 * brightness);
-    check_gray2 = makecol(204 * brightness, 204 * brightness, 204 * brightness);
+    check_black = makecol(int(24 * brightness), int(24 * brightness), int(24 * brightness));
+    check_gray1 = makecol(int(153 * brightness), int(153 * brightness), int(153 * brightness));
+    check_gray2 = makecol(int(204 * brightness), int(204 * brightness), int(204 * brightness));
     
-    MAKE_GRAY_RANGE(scrollbar_gray_range, 195 * brightness, 235 * brightness);
-    scrollbar_gray1 = makecol(181 * brightness, 181 * brightness, 181 * brightness);
-    scrollbar_gray2 = makecol(161 * brightness, 161 * brightness, 161 * brightness);
+    MAKE_GRAY_RANGE(scrollbar_gray_range, int(195 * brightness), int(235 * brightness));
+    scrollbar_gray1 = makecol(int(181 * brightness), int(181 * brightness), int(181 * brightness));
+    scrollbar_gray2 = makecol(int(161 * brightness), int(161 * brightness), int(161 * brightness));
     
-    edit_gray = makecol(192 * brightness, 192 * brightness, 192 * brightness);
-    edit_white = makecol(244 * brightness, 244 * brightness, 244 * brightness);
+    edit_gray = makecol(int(192 * brightness), int(192 * brightness), int(192 * brightness));
+    edit_white = makecol(int(244 * brightness), int(244 * brightness), int(244 * brightness));
     
-    list_white = makecol(248 * brightness, 248 * brightness, 248 * brightness);
-    list_green = makecol(142 * brightness, 162 * brightness, 155 * brightness);
+    list_white = makecol(int(248 * brightness), int(248 * brightness), int(248 * brightness));
+    list_green = makecol(int(142 * brightness), int(162 * brightness), int(155 * brightness));
     
-    MAKE_GRAY_RANGE(menu_gray_range, 197 * brightness, 217 * brightness);
+    MAKE_GRAY_RANGE(menu_gray_range, int(197 * brightness), int(217 * brightness));
     menu_gray_from = MAKECOL_RANGE_FROM(menu_gray_range);
     menu_gray_to = MAKECOL_RANGE_TO(menu_gray_range);
     
-    checked_gray = makecol(92 * brightness, 92 * brightness, 92 * brightness);
+    checked_gray = makecol(int(92 * brightness), int(92 * brightness), int(92 * brightness));
 	
-    slider_white1 = makecol(235 * brightness, 235 * brightness, 235 * brightness);
-    slider_white2 = makecol(237 * brightness, 237 * brightness, 237 * brightness);
-    slider_gray1 = makecol(140 * brightness, 140 * brightness, 140 * brightness);
-    slider_gray2 = makecol(172 * brightness, 172 * brightness, 172 * brightness);
-    slider_gray3 = makecol(108 * brightness, 108 * brightness, 108 * brightness);
-    slider_gray4 = makecol(197 * brightness, 197 * brightness, 197 * brightness);
-    slider_gray5 = makecol(162 * brightness, 162 * brightness, 162 * brightness);
-    MAKE_GRAY_RANGE(slider_gray_range, 237 * brightness, 197 * brightness);
+    slider_white1 = makecol(int(235 * brightness), int(235 * brightness), int(235 * brightness));
+    slider_white2 = makecol(int(237 * brightness), int(237 * brightness), int(237 * brightness));
+    slider_gray1 = makecol(int(140 * brightness), int(140 * brightness), int(140 * brightness));
+    slider_gray2 = makecol(int(172 * brightness), int(172 * brightness), int(172 * brightness));
+    slider_gray3 = makecol(int(108 * brightness), int(108 * brightness), int(108 * brightness));
+    slider_gray4 = makecol(int(197 * brightness), int(197 * brightness), int(197 * brightness));
+    slider_gray5 = makecol(int(162 * brightness), int(162 * brightness), int(162 * brightness));
+    MAKE_GRAY_RANGE(slider_gray_range, int(237 * brightness), int(197 * brightness));
 	
-    window_black = makecol(63 * brightness, 63 * brightness, 63 * brightness);
-    window_gray = makecol(157 * brightness, 157 * brightness, 157 * brightness);
+    window_black = makecol(int(63 * brightness), int(63 * brightness), int(63 * brightness));
+    window_gray = makecol(int(157 * brightness), int(157 * brightness), int(157 * brightness));
 	
-    window_blue1 = makecol(142 * brightness, 189 * brightness, 255 * brightness);
-    window_blue2 = makecol(92 * brightness, 141 * brightness, 223 * brightness);
-    window_blue3 = makecol(42 * brightness, 89 * brightness, 173 * brightness);
+    window_blue1 = makecol(int(142 * brightness), int(189 * brightness), int(255 * brightness));
+    window_blue2 = makecol(int(92 * brightness), int(141 * brightness), int(223 * brightness));
+    window_blue3 = makecol(int(42 * brightness), int(89 * brightness), int(173 * brightness));
 	
-    window_blue_range.from.r = 102 * brightness;
-    window_blue_range.from.g = 149 * brightness;
-    window_blue_range.from.b = 233 * brightness;
-    window_blue_range.to.r = 71 * brightness;
-    window_blue_range.to.g = 118 * brightness;
-    window_blue_range.to.b = 202 * brightness;
+    window_blue_range.from.r = int(102 * brightness);
+    window_blue_range.from.g = int(149 * brightness);
+    window_blue_range.from.b = int(233 * brightness);
+    window_blue_range.to.r = int(71 * brightness);
+    window_blue_range.to.g = int(118 * brightness);
+    window_blue_range.to.b = int(202 * brightness);
     
     black = makecol(0, 0, 0);    
-    white = makecol(255 * brightness, 255 * brightness, 255 * brightness);
-    normal = makecol(216 * brightness, 216 * brightness, 216 * brightness);
-    highlight = makecol(144 * brightness, 152 * brightness, 248 * brightness);
-    shadow = makecol(127 * brightness, 127 * brightness, 127 * brightness);
+    white = makecol(int(255 * brightness), int(255 * brightness), int(255 * brightness));
+    normal = makecol(int(216 * brightness), int(216 * brightness), int(216 * brightness));
+    highlight = makecol(int(144 * brightness), int(152 * brightness), int(248 * brightness));
+    shadow = makecol(int(127 * brightness), int(127 * brightness), int(127 * brightness));
     
     aphoton_fg_color = black;
     aphoton_bg_color = normal;
