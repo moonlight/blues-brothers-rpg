@@ -116,6 +116,7 @@ Character = Pawn:subclass
 		obj.bCarried = true
 	end;
 
+-- The loop should probably stop when he finds such an object.
 	removeFromInventory = function(self, obj)
 		for i,v in ipairs(self.inventory) do
 			if (v == obj) then

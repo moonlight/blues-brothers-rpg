@@ -680,8 +680,17 @@ WalkieTalkie = Actor:subclass
 	name = "WalkieTalkie";
 
 	defaultproperties = {
-		bitmap = m_get_bitmap("crowbar.bmp"),
-		bCanActivate = true,	
+		inventoryBitmap = m_get_bitmap("talkie.bmp"),
 		obstacle = 0,
-	}	
+	}
+}
+
+Engines = Actor:subclass
+{
+	name = "Engines";
+
+	defaultproperties = {
+		inventoryBitmap = m_get_bitmap("engines.bmp"),
+		obstacle = 0,
+	}
 }

@@ -76,8 +76,8 @@ BBRpgLang = Lang:subclass
 			{"Jake", "I can't believe mom and dad never told YOU."},
 			{"Elwood", "You mean you knew it all the time?"},
 			{"Jake", "Yes, but will you please shut up and let me speak!?"},
-			{"Jake", "Now, our Brother Brian, alias The Brain, was arrested 2 weeks ago while trying to buy mini-rocket motors in a hobby shop for his 1/10th scale version of the Columbia Spaceshuttle made entirely from mini-rocket engines, ducktape, used walkmans, old wooden popstickles, bicycles and a front-left-car-tire with a stolen creditcard."},
-			{"Elwood", "1/10th? That's quite big."},
+			{"Jake", "Now, our Brother Brian, alias The Brain, was arrested 2 weeks ago while trying to buy mini-rocket motors in a hobby shop for his 1/100th scale version of the Columbia Spaceshuttle made entirely from mini-rocket engines, ducktape, used walkmans, old wooden popstickles, bicycles and a front-left-car-tire with a stolen creditcard."},
+			{"Elwood", "1/100th? That's quite big."},
 			{"Jake", "Yes I know, it took him three years just to make a solidrocketbooster suspension handle for the external fueltank."},
 			{"Elwood", "Right..."},
 			{"Jake", "Anyway, we must get him out of prison! World peace is at stake here!"},
@@ -88,10 +88,10 @@ BBRpgLang = Lang:subclass
 			{"Jake", "You see, Brian, alias The Brain, is a member of the International Chess Club (..)."},
 			{"Elwood", "Ah, I see."},
 			{"Jake", "No, ICC."},
-			{"Jake", "A friend of Brian, also member of ICC, and owner of a Wall Mart discount plus deluxe card, had asked Brian to get him a 1/10th scale version of the Columbia Spaceshuttle (..)."},
+			{"Jake", "A friend of Brian, also member of ICC, and owner of a Wall Mart discount plus deluxe card, had asked Brian to get him a 1/100th scale version of the Columbia Spaceshuttle (..)."},
 			{"Elwood", "Wait a minute, what does Wall Mart have to do with this?"},
 			{"Jake", "Nothing, I just remembered that we need to do some shopping later."},
-			{"Jake", "Let me continue. With this 1/10th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Big-Attack-Satelite-Aimed-At-Washington-DC thus preventing the Fourth World War!"},
+			{"Jake", "Let me continue. With this 1/100th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Big-Attack-Satelite-Aimed-At-Washington-DC thus preventing the Fourth World War!"},
 			{"Elwood", "Third. Third World War. There've been only two Jake."},
 			{"Jake", "What about all the barfights we used to be in? Nothing but foreigners there."},
 			{"Elwood", "True..."},
@@ -149,11 +149,11 @@ BBRpgLang = Lang:subclass
 			{"Brian", "You knew?"},
 			{"Brian", "Then again, I can't believe mom and dad never told him that he's adopted."},
 			{"Elwood", "You're the adopted one, I'm a genuine Blues Brother!"},
-			{"Jake", "Please shut up both of you. Let us get the hell out of here."},
+			{"Jake", "Please shut up both of you. Let's get the hell out of here."},
 		},
 		FindBrian1Elwood = {
 			{"Elwood", "Brian!"},
-			{"Brian", "Who are you?"},
+			{"Brian", "Who are you? You look like a small fat copy of Jake."},
 			{"Elwood", "I'm your other brother!"},
 			{"Brian", "I've another brother?"},
 			{"Elwood", "If you don't believe it, you can ask Jake for it with this walkie talkie."},
@@ -170,7 +170,7 @@ BBRpgLang = Lang:subclass
 			{"Brian", "You knew?"},
 			{"Brian", "Then again, I can't believe mom and dad never told him that he's adopted."},
 			{"Elwood", "You're the adopted one, I'm a genuine Blues Brother!"},
-			{"Jake", "Please shut up both of you. Let us get the hell out of here."},
+			{"Jake", "Please shut up both of you. Let's get the hell out of here."},
 		},
 		EscapedInAppartment = {
 			{"Brian", "Man, this place is a dumb!"},
@@ -201,7 +201,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "This is Lee?"},
 			{"Jake", "By assuming Brian knows the man, and the fact that Brian called him Lee, I'm pretty certain he is Lee."},
 			{"Lee", "Indeed, I'm the one who's called Lee."},
-			{"Brian", "We have the mini-rocket engines for the 1/10th scale version of the Columbia spaceshuttle which will carry your mini-attack satalite into space which will in his turn prevent the Fourth World War! Here you are."},
+			{"Brian", "We have the mini-rocket engines for the 1/100th scale version of the Columbia spaceshuttle which will carry your mini-attack satalite into space which will in his turn prevent the Fourth World War! Here you are."},
 		},
 		Ending2 = {
 			{"Lee", "Okay, that's great! By the way, it's the Fifth World War."},
@@ -227,7 +227,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "I'd better not come to near these guys..."},
 		},
 		RemovePutdeksel = {
-			{"{PLAYER}", "Ah yes, it's moving..."},
+			{"{PLAYER}", "Ah yes, it's moving... Good thing we memorized the sewer system."},
 		},
 		CantRemovePutdeksel = {
 			{"{PLAYER}", "It won't move. I need a tool to remove it."},
@@ -236,7 +236,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "There's my crowbar. We will be needing it to enter the sewers."},
 			{"Elwood", "What? The sewers?!"},
 			{"Jake", "Yeah, what else? Do you prefer to knock on the front door?"},
-			{"Elwood", "Why not, I'd do anything to free our big brother, who I've never seen in my entire life, and who I think is a big nutcase building a 1/10th scaled version of the Columbia spaceshuttle."},
+			{"Elwood", "Why not, I'd do anything to free our big brother, who I've never seen in my entire life, and who I think is a big nutcase building a 1/100th scaled version of the Columbia spaceshuttle."},
 			{"Jake", "Yeah, that's the spirit! Let's free Brian the Brain!"},
 		},
 		JakesDoorLocked = {
@@ -264,6 +264,9 @@ BBRpgLang = Lang:subclass
 		},
 		MessPileNoEngines = {
 			{"{PLAYER}", "It's a huge pile of mess."},
+		},
+		PushButton = {
+			{"{PLAYER}", "Let's push this button."},
 		},
 		
 		-- Conversation tables. Used for random events.

@@ -18,6 +18,10 @@ EnemyGuard = Enemy:subclass
 		attackMinDam = 0,
 		attackMaxDam = 5,
 
+-- hack ?? !!
+		maxHealth = 1,
+		health = 1,
+
 		bDead = false,
 		bAttacking = false,
 

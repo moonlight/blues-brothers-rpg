@@ -103,6 +103,11 @@ ElecDoorPrison = ElecDoor:subclass
 		end
 	end;
 
+	switch = function(self, obj)
+		self.isLocked2 = not self.isLocked2
+		
+	end;
+
 	event_bumped_into = function(self, obj)
 		if (not self.isLocked2) then
 			ElecDoor.event_bumped_into(self, obj)
@@ -112,13 +117,13 @@ ElecDoorPrison = ElecDoor:subclass
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionWait(30),
-				ActionWalkPath(obj, "U2"),
-				ActionSetPosition(self.dummy, obj.x, obj.y - 2),
-				ActionSetCameraTarget(self.dummy, false),
-				ActionTweenVariable(self.dummy, "y", 100, obj.y - 7),
+				ActionWalkPath(obj, "U3"),
+--				ActionSetPosition(self.dummy, obj.x, obj.y - 2),
+--				ActionSetCameraTarget(self.dummy, false),
+--				ActionTweenVariable(self.dummy, "y", 100, obj.y - 7),
 				ActionParallel{
 					ActionSequence{
-						ActionWait(20),
+						ActionWait(60),
 						ActionSetVariable(self.evil_guard1, "dir", DIR_DOWN),
 						ActionWait(10),
 						ActionSetVariable(self.evil_guard2, "dir", DIR_DOWN),						
@@ -127,7 +132,7 @@ ElecDoorPrison = ElecDoor:subclass
 						ActionConversation(lang:getConv("FightGuards")),
 					},
 				},
-				ActionWalkPath(obj, "U3"),
+				ActionWalkPath(obj, "U2"),
 				ActionSetVariable(self, "isLocked2", true),
 				ActionExModeOff(),
 			};

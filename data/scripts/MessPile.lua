@@ -28,8 +28,21 @@ MessPile2 = Decoration:subclass
 		if self.containsEngines then
 			ActionController:addSequence{
 				ActionConversation(lang:getConv("FindMiniRocketEngines")),
-				ActionCallFunction(obj.addToInventory, self.engines, self),
+				ActionCallFunction(obj.addToInventory, obj, cityMap.engines),
 				ActionSetVariable(self, "containsEngines", false),
+				ActionWait(100),
+				ActionFadeOutMap(100),
+				ActionCallFunction(elwood.setMap, elwood, leesMap),
+				ActionCallFunction(jake.setMap  ,   jake, leesMap),
+				ActionCallFunction(brian.setMap ,  brian, leesMap),
+				ActionSetPosition(brian, 30, 19, DIR_RIGHT),
+				ActionSetPosition(jake, 31, 20, DIR_UP),
+				ActionSetPosition(elwood, 32, 20, DIR_UP),
+				ActionFadeInMap(100),
+				ActionConversation(lang:getConv("Ending1")),
+				ActionCallFunction(obj.removeFromInventory, obj, cityMap.engines),
+				ActionConversation(lang:getConv("Ending2")),
+				ActionFadeOutMap(250),
 			}
 		else
 			ActionController:addSequence{

@@ -16,14 +16,6 @@ Cells = Map:subclass
 		-- Dummy used for the cameratarget in the arena.
 		local dummy = self:spawn(Dummy, 0, 0)
 		
-		-- Buttons to open the prison_door (1) and the door of Brians cell (2)
-		local button1 = self:spawn(Button, 31, 56)
-		local button2 = self:spawn(Button, 32, 56)
-
-		-- Evil guards
-		local evil_guard1 = self:spawn(EnemyGuard, 33, 55); evil_guard1.dir = DIR_RIGHT
-		local evil_guard2 = self:spawn(EnemyGuard, 35, 55); evil_guard2.dir = DIR_LEFT
-		
 		-- Evil prisoners
 		self:spawn(Prisoner1, 51, 21)
 		self:spawn(Prisoner1, 51, 28)
@@ -136,8 +128,8 @@ Cells = Map:subclass
 		obj = self:spawn(Count2, 51,104); obj.offset_x =  6; obj.offset_y =  6; obj.alpha = 90
 
 		-- Flatscreens
-		obj = self:spawn(Flatscreen, 33, 57); obj.offset_y = -10; obj.offset_z = 15
-		obj = self:spawn(Flatscreen, 38, 57); obj.offset_y = -10; obj.offset_z = 15
+		--obj = self:spawn(Flatscreen, 33, 57); obj.offset_y = -10; obj.offset_z = 15
+		--obj = self:spawn(Flatscreen, 38, 57); obj.offset_y = -10; obj.offset_z = 15
 
 		-- Prison beds
 		obj = self:spawn(PrisonBed, 14,  20); obj.offset_x = 7
@@ -166,16 +158,28 @@ Cells = Map:subclass
 		obj = self:spawn(AlmostPi, 49, 75); obj.offset_x = 6; obj.offset_y = 6; obj.alpha = 90
 		obj = self:spawn(Convergence, 14, 68); obj.offset_x = 6; obj.offset_y = 6; obj.alpha = 90
 
+		-- Buttons to open the prison_door (1) and the door of Brians cell (2)
+		local button1 = self:spawn(Button, 32, 57)
+		local button2 = self:spawn(Button, 33, 58)
+
+		-- Evil guards
+		local evil_guard1 = self:spawn(EnemyGuard, 33, 57); evil_guard1.dir = DIR_RIGHT
+		local evil_guard2 = self:spawn(EnemyGuard, 35, 57); evil_guard2.dir = DIR_LEFT
+
 		-- Spawn electric doors
 		obj = self:spawn(ElecDoor, 11, 61)
 		obj.isLocked = true
 
 		local prison_door = self:spawn(ElecDoorPrison, 34, 63)
+		local brians_door = self:spawn(PrisonDoor2, 37, 19)
 		prison_door.evil_guard1 = evil_guard1
 		prison_door.evil_guard2 = evil_guard2
 		prison_door.dummy = dummy
-		button1.prison_door = prison_door
-		button2.prison_door = prison_door -- Should later be used for Brians door		
+		button1.door = prison_door
+		button2.door = brians_door
+
+		self:spawn(PrisonDoor2, 37, 19)
+		self:spawn(TriggerFreeBrian, 37, 18)
 
 		-- Spawn portals
 		self.sewersOutPortal = self:spawn(Portal, 65, 77);

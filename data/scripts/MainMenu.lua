@@ -19,7 +19,7 @@ MainMenu = GuiMenu:subclass
 			ActionSetVariable(_G, "show_main_menu", nil),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionCallFunction(elwood.setMap, elwood, sewersMap),
-			ActionCallFunction(jake.setMap, jake, leesMap),
+			ActionCallFunction(jake.setMap, jake, cityMap),
 			ActionSetPosition(elwood, 145, 11, DIR_RIGHT),
 --			ActionSetPosition(jake, 143, 11, DIR_RIGHT),
 --			ActionSetPosition(elwood, 102, 75, DIR_RIGHT),

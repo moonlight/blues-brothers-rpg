@@ -134,9 +134,9 @@ PrisonBed = Decoration:subclass
 		obstacle = 1,
 		w = 3,
 		offset_x = 0,
-		offset_z = 12,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("bed2.bmp"),
+		offset_y = -12,
+		draw_mode = DM_ALPHA,
+		bitmap = m_get_bitmap("bed2.tga"),
 	}	
 }
 
@@ -165,17 +165,25 @@ PrisonDoor1 = Decoration:subclass
 PrisonDoor2 = Decoration:subclass
 {
 	name = "PrisonDoor2";
-	bPlaceable = true;	
+	bPlaceable = true;
 
 	init = function(self)
 		Actor.init(self)
-		self.bitmap = self.bitmaps[1]
+		self.bitmap = self.bitmaps[self.status + 1]
+		self.obstacle = 1 - self.status
 	end;
-	
+
+	switch = function(self, obj)
+		self.status = 1 - self.status
+		self.bitmap = self.bitmaps[self.status + 1]
+		self.obstacle = 1 - self.status
+	end;
+
 	defaultproperties = {
+		bCanActivate = true,
 		bCenterOnTile = false,
 		bCenterBitmap = false,
-		obstacle = 1,
+		status = 0,
 		w = 1,
 		offset_x = 0,
 		offset_y = 0,
@@ -234,11 +242,34 @@ Button = Decoration:subclass
 	name = "Button";
 
 	activatedBy = function(self, obj)
-		if (not self.isPushed) then
-			self.isPushed = true
-		else
-			self.isPushed = false
+		ActionController:addSequence{
+			ActionConversation(lang:getConv("PushButton")),
+		}
+
+		self.isPushed = not self.isPushed
+		
+		if (self.door) then
+			self.door:switch()
 		end
+	end;
+	
+	defaultproperties = {
+		bCanActivate = true,
+		obstacle = 0,
+		door = nil,
+		isPushed = false,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("crowbar.bmp"),
+		ticktime = 1,
+	}
+}
+
+Button2 = Decoration:subclass
+{
+	name = "Button2";
+
+	activatedBy = function(self, obj)
+		self.isPushed = not self.isPushed
 		
 		if (self.prison_door) then
 			if (not self.isPushed) then
@@ -254,7 +285,76 @@ Button = Decoration:subclass
 		obstacle = 0,
 		prison_door = nil,
 		isPushed = false,
-		bitmap = m_get_bitmap("elevator_buttons.bmp"),
+		bitmap = nil,
 		ticktime = 1,
+	}
+}
+
+
+ControlPanel = Decoration:subclass
+{
+	name = "ControlPanel";
+	bPlaceable = true;
+
+	defaultproperties = {
+		obstacle = 0,
+		h = 3,
+		w = 4,
+		bitmap = m_get_bitmap("controlpanel.bmp"),
+	}
+}
+
+TriggerFreeBrian = Actor:subclass
+{
+	name = "TriggerFreeBrian";
+
+	event_stand_on = function(self, obj)
+		if (firstTime == true) then
+			if (obj == elwood) then
+				ActionController:addSequence{
+					ActionExModeOn(),	
+					ActionWalkPath(obj,"U3"),
+					ActionConversation(lang:getConv("FindBrian1Elwood")),
+					ActionCallFunction(brian.addToInventory, brian, cityMap.walkieTalkie),
+					ActionConversation(lang:getConv("FindBrian2Elwood")),
+					ActionFadeOutMap(100),
+					ActionCallFunction(elwood.setMap, elwood, jakesMap),
+					ActionCallFunction(  jake.setMap,   jake, jakesMap),
+					ActionCallFunction( brian.setMap,  brian, jakesMap),
+					ActionSetPosition(jake, 14, 18, DIR_RIGHT),
+					ActionSetPosition(brian, 15, 19, DIR_UP),
+					ActionSetPosition(elwood, 16, 19, DIR_UP),
+					ActionFadeInMap(100),
+					ActionConversation(lang:getConv("EscapedInAppartment")),
+					ActionExModeOff(),
+				}
+				firstTime = false
+			else
+				ActionController:addSequence{
+					ActionExModeOn(),	
+					ActionWalkPath(obj,"U3"),
+					ActionConversation(lang:getConv("FindBrian1Jake")),
+					ActionCallFunction(brian.addToInventory, brian, cityMap.walkieTalkie),
+					ActionConversation(lang:getConv("FindBrian2Jake")),
+					ActionFadeOutMap(100),
+					ActionCallFunction(elwood.setMap, elwood, jakesMap),
+					ActionCallFunction(  jake.setMap,   jake, jakesMap),
+					ActionCallFunction( brian.setMap,  brian, jakesMap),
+					ActionSetPosition(jake, 14, 18, DIR_RIGHT),
+					ActionSetPosition(brian, 15, 19, DIR_UP),
+					ActionSetPosition(elwood, 16, 19, DIR_UP),
+					ActionFadeInMap(100),
+					ActionConversation(lang:getConv("EscapedInAppartment")),
+					ActionExModeOff(),
+				}
+				firstTime = false
+			end
+		end
+	end;
+
+	defaultproperties = {
+		firstTime = true,
+		obstacle = 0,
+		bitmap = nil,
 	}
 }

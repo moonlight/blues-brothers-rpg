@@ -39,11 +39,9 @@ City = Map:subclass
 		self:spawn(Dustbin, 124,  44);
 		self:spawn(Dustbin,  74,  38);
 
-		skiMasks = self:spawn(Skimasks , 107,  54);
-
 		self:spawn(MessPile , 119, 161);
-		local Messpile2 = self:spawn(MessPile2, 31, 8);
-		MessPile2.engines = skiMasks
+		self:spawn(MessPile2, 31, 8);
+		self.engines = self:spawn(Engines, 31, 7)
 		
 		-- Cars in the city
 		self:spawn(Car2, 108,  74);
@@ -54,9 +52,6 @@ City = Map:subclass
 		self:spawn(CarShadow,  17, 55);
 		self:spawn(Car,  47,  81);
 		obj = self:spawn(CarShadow,  47, 81);	obj.offset_x = 3; obj.offset_y = -22;
-
---		self:spawn(Rope     ,  22,  81);
---		self:spawn(Nitrofuel,  39,  19);
 
 		-- Spawn the removable `putdeksel'
 		self:spawn(Putdeksel, 119, 63);
