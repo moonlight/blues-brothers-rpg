@@ -18,24 +18,24 @@ MainMenu = GuiMenu:subclass
 			ActionFadeOutMap(50),
 			ActionSetVariable(_G, "show_main_menu", nil),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
---			ActionSetPosition(elwood,  23,  17, DIR_UP, jailMap),
+			ActionSetPosition(elwood,  23,  17, DIR_UP, cityMap),
 			ActionFadeInMap(50),
 			ActionExModeOff(),
 		}
 
-		local startSequence = {
+--[[		local startSequence = {
 			ActionFadeOutMap(50),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionSetVariable(_G, "show_main_menu", nil),
 			ActionFadeInMap(100),
 			ActionShowMapName(m_get_bitmap("prison.tga")),
 			ActionWait(300),
-			ActionConversation(lang:getConv("Intro1")),
+--			ActionConversation(lang:getConv("Intro1")),
 			ActionWalkPath(jailMap.guard, "DLD"),
 			ActionSetVariable(elwood, "dir", DIR_DOWN),
 			ActionWait(25),
 			ActionSetVariable(jailMap.guard, "dir", DIR_UP),
-			ActionConversation(lang:getConv("Intro2")),
+--			ActionConversation(lang:getConv("Intro2")),
 			ActionWalkPath(jailMap.guard, "D2"),
 			ActionCallFunction(door1.event_bumped_into, door1),
 			ActionWait(door1.period * 100),
@@ -48,7 +48,7 @@ MainMenu = GuiMenu:subclass
 			ActionWalkPath(jailMap.guard,"D3R9D13L19D14R11"),
 			ActionSetVariable(jailMap.guard, "dir", DIR_LEFT),
 			ActionWait(50),
-			ActionConversation(lang:getConv("Intro3")),
+--			ActionConversation(lang:getConv("Intro3")),
 			ActionWalkPath(elwood, "D5"),
 			ActionAddSequence{
 				ActionFadeOutMap(50),
@@ -60,7 +60,7 @@ MainMenu = GuiMenu:subclass
 				ActionFadeInMap(50),
 			},
 			ActionWalkPath(elwood, "D3"),
-			ActionConversation(lang:getConv("Intro4")),
+--			ActionConversation(lang:getConv("Intro4")),
 			ActionSetCameraTarget(dummy, false),
 			ActionTweenVariable(dummy, "y", 200, 114.5),
 			ActionWait(50),
@@ -70,7 +70,7 @@ MainMenu = GuiMenu:subclass
 			ActionSetVariable(jake, "dir", DIR_RIGHT),
 			ActionWalkPath(elwood, "D"),
 			ActionSetVariable(elwood, "dir", DIR_LEFT),
-			ActionConversation(lang:getConv("Intro5")),
+--			ActionConversation(lang:getConv("Intro5")),
 			ActionAddSequence{
 				ActionWalkPath(elwood, "D5L5"),
 				ActionSetVariable(elwood, "dir", DIR_RIGHT),
@@ -84,9 +84,9 @@ MainMenu = GuiMenu:subclass
 			ActionWait(15),
 			ActionSetPosition(jake, 114, 108, DIR_DOWN),
 			ActionWait(180),
-			ActionConversation(lang:getConv("Intro5a")),
+--			ActionConversation(lang:getConv("Intro5a")),
 			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
-			ActionConversation(lang:getConv("Intro6")),
+--			ActionConversation(lang:getConv("Intro6")),
 			ActionSetVariable(copcar, "tick_time", 5),
 			ActionTweenVariable(copcar, "x", 250, 118, function(from, to, perc)
 				perc = 1 - math.sin(perc * 0.5 * math.pi + 0.5 * math.pi)
@@ -111,7 +111,7 @@ MainMenu = GuiMenu:subclass
 			ActionSetPosition(jake, 90, 76, DIR_UP),
 			ActionWait(10),
 			ActionSetPosition(jake, 90, 76, DIR_RIGHT),
-			ActionConversation(lang:getConv("Intro7")),
+--			ActionConversation(lang:getConv("Intro7")),
 			ActionSetCameraTarget(jake, false),
 			ActionParallel{
 				ActionSequence{
@@ -124,14 +124,14 @@ MainMenu = GuiMenu:subclass
 			ActionSetVariable(jake, "dir", DIR_RIGHT),
 			ActionWait(30),
 			ActionSetVariable(elwood, "dir", DIR_LEFT),
-			ActionConversation(lang:getConv("WhereKeys")),
+--			ActionConversation(lang:getConv("WhereKeys")),
 			ActionSetPosition(dummy, 93.5, 72.5),
 			ActionSetCameraTarget(dummy, false),
 			ActionTweenVariable(dummy, "x", 50, 94.5),
 			ActionSetCameraTarget(elwood, false),
 			ActionExModeOff(),
 		}
-
+]]
 		self:addMenuItem(GuiMenuItem(lang:getVar("PLAY"),    function() self.master:removeInteraction(self); ActionController:addSequence(startSequence); end))
 		self:addMenuItem(GuiMenuItem(lang:getVar("CREDITS"), function() self.master:removeInteraction(self); m_quit_game() end))
 		self:addMenuItem(GuiMenuItem(lang:getVar("QUIT"),    function() self.master:removeInteraction(self); m_quit_game() end))

@@ -258,7 +258,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "I can always return here to take a nap."},
 		},
 		BedOccupied = {
-			{"{PLAYER}", "Hmm, it seems that somebody is sleeping in this bed."},
+			{"{PLAYER}", "I'm not going to sleep together with him in one bed!"},
 		},
 		PrisonDoorLocked = {
 			{"{PLAYER}", "This door is locked."},
@@ -273,10 +273,10 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "I cannot reach the buttons from this side of the control panel."},
 		},
 		PrisonDoorButtonOpen = {
-			{"{PLAYER}", "*PUSH* Now I have opened the door through which I entered."},
+			{"{PLAYER}", "*PUSH* Now I have unlocked the door through which I entered."},
 		},
 		PrisonDoorButtonClose = {
-			{"{PLAYER}", "*PUSH* Now I have closed the door through which I entered."},
+			{"{PLAYER}", "*PUSH* Now I have locked the door through which I entered."},
 		},
 		BrianDoorButtonOpen = {
 			{"{PLAYER}", "*PUSH* The lights seem to indicate I've just opened Brian's door."},

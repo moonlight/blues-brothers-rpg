@@ -62,8 +62,8 @@ Dustbin = Decoration:subclass
 		if (self.snowTop and (not self.snowfalling)) then
 			ActionController:addSequence{
 				ActionSetVariable(self, "snowfalling", true),
-				ActionTweenVariable(self.snowTop, "offset_z", 20, -6),
-				ActionSetVariable(self.snowTop, "offset_z", 14),
+				ActionTweenVariable(self.snowTop, "offset_z", 20, 4),
+				ActionSetVariable(self.snowTop, "offset_z", 24),
 				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
 				ActionTweenVariable(self.snowTop, "alpha", 300, 0),
 				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
@@ -90,8 +90,8 @@ SnowOnDustbin = Actor:subclass
 	bPlaceable = false;
 	
 	defaultproperties = {
-	    offset_z = 14,
-	    offset_y = 10,
+	    offset_z = 24,
+	    offset_y = 20,
 	    offset_x = -7,
 	    alpha = 255,
 	    draw_mode = DM_TRANS,
@@ -748,6 +748,7 @@ Lee = Actor:subclass
 	bPlaceable = true;
 
 	defaultproperties = {
+		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("lee.bmp"),
 		obstacle = 0,
 	}

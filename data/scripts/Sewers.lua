@@ -34,8 +34,8 @@ Sewers = Map:subclass
 		self.fence4 = self:spawn(FenceH3, 35, 72);
 		self.lever1 = self:spawn(Lever  , 21, 21);
 		self.lever2 = self:spawn(Lever  , 48, 70);
-		self.lever3 = self:spawn(Lever  , 49, 70);
-		self.lever4 = self:spawn(Lever2 , 50, 70);
+		self.lever3 = self:spawn(Lever2 , 49, 70);
+		self.lever4 = self:spawn(Lever  , 50, 70);
 
 		-- Make a reference in lever N to fence N, where N is in {1,2,3,4}.
 		self.lever1:opens(self.fence1);
