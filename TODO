@@ -22,14 +22,8 @@ Bjorn:
 - Add map to HUD in sewers when found
 
 Georg:
-! Crop texts in intro
-! Kerstboom ergens plaatsen
 ! Monsters in de sewers plaatsen
 - Scripts schrijven bij ontmoeten Brian
-- Auto's en prullenbakken in citymap plaatsen
-- Achter Ramon aan voor de muziek
-- Prullenbak sneeuw fixen
-- Fix rare misleidende buizen in riool
 ? Witte lijntjes in Jake's optrekje wegwerken
 
 Frode:
@@ -39,9 +33,6 @@ Frode:
 - Wachters in de gevangenis
 - Sneeuw op de autos
 - Draw map item + inventory graphic
-
-Ramon:
-! Blues
 
 Hedde:
 ! Krokodil scripten (eerst gewoon met AIController)
