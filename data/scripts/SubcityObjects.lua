@@ -19,6 +19,7 @@ WallJakesPlace = Decoration:subclass
 Dustbin = Decoration:subclass
 {
 	name = "Dustbin";
+	bPlaceable = true;
 
 	takeDamage = function(self, damage)
 		m_message("Dustbin hit!")
@@ -37,22 +38,14 @@ Dustbin = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_ALPHA,
 		bitmap = m_get_bitmap("dustbin.tga"),
-		convTable = {
-			{{"{PLAYER}", "A dustbin, it's where the dust goes."}},
-			{{"{PLAYER}", "What moron would put a dustbin in the middle of the sidewalk?"}},
-		},
+		convTableKeyword = "Dustbin",
 	}
 }
 
 Keyboard = Decoration:subclass
 {
 	name = "Keyboard";
-
-	init = function(self)
-		self.convTable = lang:getConv("Keyboard")
-		Decoration.init(self)
-	end;
-
+	
 	tick = function(self)
 		self.counter = math.mod(self.counter + 1, 8)
 		self:updateBitmap()
@@ -75,15 +68,14 @@ Keyboard = Decoration:subclass
 		counter = 1,
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("keyboard.bmp"), 56, 13),
-		convTable = {
-			{{"{PLAYER}","I still got the blues..."}},
-		},
+		convTableKeyword = "Keyboard",
 	}
 }
 
 Onderstel = Decoration:subclass
 {
 	name = "Onderstel";
+	bPlaceable = true;
 
 	defaultproperties = {
 		obstacle = 0,
@@ -95,9 +87,8 @@ Onderstel = Decoration:subclass
 Guitar = Decoration:subclass
 {
 	name = "Guitar";
-
+	
 	init = function(self)
-		self.convTable = lang:getConv("Guitar")
 		Decoration.init(self)
 	end;
 
@@ -105,12 +96,14 @@ Guitar = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("guitar.bmp"),
+		convTableKeyword = "Guitar",
 	}
 }
 
 TV = Decoration:subclass
 {
 	name = "TV";
+	bPlaceable = true;
 
 	defaultproperties = {
 		obstacle = 1,
@@ -122,6 +115,7 @@ TV = Decoration:subclass
 Bed = Decoration:subclass
 {
 	name = "Bed";
+	bPlaceable = true;
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -138,6 +132,7 @@ Bed = Decoration:subclass
 Couch = Decoration:subclass
 {
 	name = "Couch";
+	bPlaceable = true;
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -153,6 +148,7 @@ Couch = Decoration:subclass
 CopCar = Decoration:subclass
 {
 	name = "CopCar";
+	bPlaceable = true;
 
 	init = function(self)
 		Decoration.init(self)
@@ -179,6 +175,7 @@ CopCar = Decoration:subclass
 Wheel = Decoration:subclass
 {
 	name = "Wheel";
+	bPlaceable = true;
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -195,14 +192,9 @@ Rope = Decoration:subclass
 {
 	name = "Rope";
 
-	init = function(self)
-		Decoration.init(self)
-	end;
-
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("FindRope")),
-			ActionExModeOff(),
 		};
 	end;
 
@@ -218,14 +210,9 @@ Skimasks = Decoration:subclass
 {
 	name = "Skimasks";
 
-	init = function(self)
-		Decoration.init(self)
-	end;
-
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("FindSkimasks")),
-			ActionExModeOff(),
 		};
 	end;
 
@@ -241,14 +228,9 @@ Nitrofuel = Decoration:subclass
 {
 	name = "Nitrofuel";
 
-	init = function(self)
-		Decoration.init(self)
-	end;
-
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("FindNitrofuel")),
-			ActionExModeOff(),
 		};
 	end;
 
@@ -264,21 +246,16 @@ KeyFob = Decoration:subclass
 {
 	name = "KeyFob";
 
-	init = function(self)
-		Decoration.init(self)
-	end;
-
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("FindKeyFob")),
-			ActionExModeOff(),
 		};
 	end;
 
 	defaultproperties = {
+		bCanActivate = true,
 		bCenterOnTile = false,
 		bCenterBitmap = false,
-		bCanActivate = true,
 		offset_x = 8,
 		offset_y = -20,
 		offset_z = -20,
@@ -292,17 +269,13 @@ Washstand = Decoration:subclass
 {
 	name = "Washstand";
 
-	init = function(self)
-		self.convTable = lang:getConv("Washstand")
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		offset_z = 20,
 		
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("washstand.bmp"),
+		convTableKeyword = "Washstand",
 	}
 }
 
@@ -310,15 +283,11 @@ Toilet = Decoration:subclass
 {
 	name = "Toilet";
 
-	init = function(self)
-		self.convTable = lang:getConv("Toilet")
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("toilet.bmp"),
+		convTableKeyword = "Toilet",
 	}
 }
 
@@ -326,26 +295,17 @@ Clock = Decoration:subclass
 {
 	name = "Clock";
 
-	init = function(self)
-		self.convTable = lang:getConv("Clock")
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("clock.bmp"),
+		convTableKeyword = "Clock",
 	}
 }
 
 Car2 = Decoration:subclass
 {
 	name = "Car2";
-
-	init = function(self)
-		self.convTable = lang:getConv("Car2")
-		Decoration.init(self)
-	end;
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -354,6 +314,7 @@ Car2 = Decoration:subclass
 		w = 3,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("car2.bmp"),
+		convTableKeyword = "Car2",
 	}
 }
 
@@ -391,7 +352,7 @@ DoorJake = Decoration:subclass
 		bCenterOnTile = false,
 		bCenterBitmap = false,
 		offset_x = -2,
-		isClosed = true,		
+		isClosed = true,
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("door2.bmp"), 28, 50),
@@ -408,25 +369,21 @@ DoorLocked = Decoration:subclass
 		Decoration.init(self)
 	end;
 
-	activatedBy = function(self, instigator)
-		self.convTable = lang:getConv("DoorLocked")
-		Decoration.activatedBy(self, instigator)
-	end;
-
 	defaultproperties = {
-		bCanActivate = true,		
 		bCenterOnTile = false,
 		bCenterBitmap = false,
 		offset_x = -2,
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("door2.bmp"), 28, 50),
+		convTableKeyword = "DoorLocked",		
 	}
 }
 
 LamppostLeft = Actor:subclass
 {
 	name = "LamppostLeft";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("lamppost_w.bmp"),
@@ -434,13 +391,12 @@ LamppostLeft = Actor:subclass
 		offset_x = -12,
 		obstacle = 1,
 	};
-
-	bPlaceable = true;
 }
 
 LamppostRight = Actor:subclass
 {
 	name = "LamppostRight";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("lamppost_e.bmp"),
@@ -448,13 +404,12 @@ LamppostRight = Actor:subclass
 		offset_x = 9,
 		obstacle = 1,
 	};
-
-	bPlaceable = true;
 }
 
 Waterplas = Actor:subclass
 {
 	name = "Waterplas";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("waterplas.bmp"),
@@ -462,13 +417,12 @@ Waterplas = Actor:subclass
 		offset_x = 0,
 		obstacle = 0,
 	};
-
-	bPlaceable = true;
 }
 
 Sewerput = Actor:subclass
 {
 	name = "Sewerput";
+	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("sewerput.bmp"),
@@ -476,6 +430,23 @@ Sewerput = Actor:subclass
 		offset_x = 0,
 		obstacle = 0,
 	};
+}
 
+Putdeksel = Actor:subclass
+{
+	name = "Putdeksel";
 	bPlaceable = true;
+
+	activatedBy = function(self, obj)
+
+	end;
+
+	defaultproperties = {
+		bCanActivate = true,
+		offset_x = -1,
+		offset_y = -11,
+		offset_z = -6,
+		bitmap = m_get_bitmap("putdeksel.bmp"),
+		obstacle = 0,
+	}
 }

@@ -49,11 +49,6 @@ Ladder1 = Decoration:subclass
 {
 	name = "Ladder1";
 
-	init = function(self)
-		self.convTable = lang:getConv("LadderIn")
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		bCenterBitmap = false,
 		bCenterOnTile = false,
@@ -61,6 +56,7 @@ Ladder1 = Decoration:subclass
 		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("ladder.bmp"),
+		convTableKeyword = "LadderIn",
 	}
 }
 
@@ -68,11 +64,6 @@ Ladder2 = Decoration:subclass
 {
 	name = "Ladder2";
 
-	init = function(self)
-		self.convTable = lang:getConv("LadderOut")
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		bCenterBitmap = false,
 		bCenterOnTile = false,
@@ -80,6 +71,7 @@ Ladder2 = Decoration:subclass
 		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("ladder.bmp"),
+		convTableKeyword = "LadderOut",
 	}
 }
 

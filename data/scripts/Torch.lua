@@ -10,15 +10,6 @@ import("lang.lua")
 Torch = Decoration:subclass
 {
 	name = "Torch";
-	
-	init = function(self)
-		self.convTable = {
-			lang:getConv("FIRE_1"),
-			lang:getConv("FIRE_2"),
-			lang:getConv("FIRE_3"),
-		}
-		Decoration.init(self)
-	end;
 
 	defaultproperties = {
 		animType = LinearAnimation,
@@ -32,5 +23,6 @@ Torch = Decoration:subclass
 		},
 		animSpeed = 1 / 10,
 		draw_mode = DM_MASKED,
+		convTableKeyword = "Fire",
 	};
 }

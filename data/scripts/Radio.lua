@@ -18,11 +18,7 @@ Radio = Decoration:subclass
 		tick_time = 10,
 		animType = RandomAnimation,
 		animSeq = extr_array(m_get_bitmap("radio.bmp"), 17, 23),
-		convTable = {
-			{{"Frode", "Cool music."}},
-			{{"Frode", "I like the Beach Boys's music."}},
-			{{"Frode", "Yeah! Great soundsystem!"}},
-		},
+		convTableKeyword = "Radio",
 	}
 }
 
@@ -73,9 +69,7 @@ CDs = Decoration:subclass
 	defaultproperties = {
 		bitmap = m_get_bitmap("cds.tga"),
 		draw_mode = DM_ALPHA,
-		convTable = {
-			{{"Frode", "Let's see if there's another CD of the Village People..."}},
-		}
+		convTableKeyword = "CDs",
 	}
 }
 

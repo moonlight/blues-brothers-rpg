@@ -32,11 +32,7 @@ Painting = Decoration:subclass
 		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("painting.bmp"),
-		convTable = {
-			{{"Mr. Prosser", "It's the famous sunflower of Vincent van Gogh."}},
-			{{"Mr. Prosser", "Beautiful isn't it?"}},
-			{{"Mr. Prosser", "Don't touch it."}},
-		},
+		convTableKeyword = "Sunflower",
 	}
 }
 
@@ -51,11 +47,7 @@ Painting2 = Decoration:subclass
 		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("painting.bmp"),
-		convTable = {
-			{{"{Player}", "Another Sunflower of van Gogh?!"}},
-			{{"{Player}", "This is weird..."}},
-		},
-
+		convTableKeyword = "Sunflower2",
 	}
 }
 

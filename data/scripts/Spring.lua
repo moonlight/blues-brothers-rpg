@@ -11,15 +11,6 @@ Spring = Decoration:subclass
 {
 	name = "Spring";
 
-	init = function(self)
-		self.convTable = {
-			lang:getConv("REFRESHING"),
-			lang:getConv("COULD_USE_THAT"),
-			lang:getConv("MUCH_BETTER"),
-		}
-		Decoration.init(self)
-	end;
-
 	activatedBy = function(self, instigator)
 		Decoration.activatedBy(self, instigator)
 
@@ -39,5 +30,6 @@ Spring = Decoration:subclass
 		bCanActivate = true,
 		bCenterOnTile = false,
 		bCenterBitmap = false,
+		convTableKeyword = "Refreshing",
 	};
 }

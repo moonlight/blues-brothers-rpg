@@ -11,6 +11,8 @@ Character = Pawn:subclass
 	name = "Character";
 
 	init = function(self, char)
+		self.inventory = {}
+
 		self:updateBitmap()
 
 		if (self.shadowClass) then
@@ -69,8 +71,14 @@ Character = Pawn:subclass
 		end
 	end;
 
+	addToInventory = function(self, obj)
+		-- To be implemented: Check if there is place in the inventory?
+
+		table.insert(self.inventory, obj)
+	end;	-- To be implemented: deleteFromInventory = function(self, obj)
 
 	defaultproperties = {
+		inventory = nil,
 		leg_used = 0,
 		tick_time = 1,
 		walking = 0,

@@ -10,7 +10,6 @@ FenceH3 = Decoration:subclass
 	name = "FenceH3";
 
 	init = function(self)
-		self.convTable = lang:getConv("CantPassFence")
 		self:updateBitmap()
 		Decoration.init(self)
 	end;
@@ -43,7 +42,8 @@ FenceH3 = Decoration:subclass
 		h = 1,
 		w = 3,
 		draw_mode = DM_MASKED,
-		bitmaps = extr_array(m_get_bitmap("fence_h3.bmp"), 73, 60)
+		bitmaps = extr_array(m_get_bitmap("fence_h3.bmp"), 73, 60),
+		convTableKeyword = "CantPassFence",
 	}
 }
 
@@ -52,7 +52,6 @@ FenceH5 = Decoration:subclass
 	name = "FenceH5";
 
 	init = function(self)
-		self.convTable = lang:getConv("CantPassFence")
 		self:updateBitmap()
 		Decoration.init(self)
 	end;
@@ -87,6 +86,7 @@ FenceH5 = Decoration:subclass
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("fence_h5.bmp"), 121, 60),
 		bitmap = m_get_bitmap("Fence_h5.bmp"),
+		convTableKeyword = "CantPassFence",
 	}
 }
 
@@ -96,7 +96,6 @@ FenceH7 = Decoration:subclass
 
 	init = function(self)
 		self.bitmap = self.bitmaps[1]
-		self.convTable = lang:getConv("CantPassFence")
 		Decoration.init(self)
 	end;
 
@@ -129,17 +128,13 @@ FenceH7 = Decoration:subclass
 		w = 7,
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("fence_h7.bmp"), 169, 60),
+		convTableKeyword = "CantPassFence",
 	}
 }
 
 FenceV8 = Decoration:subclass
 {
 	name = "FenceV8";
-
-	init = function(self)
-		self.convTable = lang:getConv("CantPassFence")
-		Decoration.init(self)
-	end;
 
 	defaultproperties = {
 		bCenterBitmap = false,
@@ -151,17 +146,13 @@ FenceV8 = Decoration:subclass
 		h = 8,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("Fence_v8.bmp"),
+		convTableKeyword = "CantPassFence",
 	}
 }
 
 FenceV7 = Decoration:subclass
 {
 	name = "FenceV7";
-
-	init = function(self)
-		self.convTable = lang:getConv("CantPassFence")
-		Decoration.init(self)
-	end;
 
 	defaultproperties = {
 		bCenterBitmap = false,
@@ -172,5 +163,6 @@ FenceV7 = Decoration:subclass
 		h = 7,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("Fence_v7.bmp"),
+		convTableKeyword = "CantPassFence",
 	}
 }

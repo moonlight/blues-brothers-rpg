@@ -9,19 +9,12 @@ CaveWaterfallExit = Decoration:subclass
 {
 	name = "CaveWaterfallExit";
 
-	init = function(self)
-		self.convTable = {
-			lang:getConv("NO_WAY_OUT"),
-			lang:getConv("NO_ESCAPE"),
-		}
-		Decoration.init(self)
-	end;
-
 	defaultproperties = {
 		bCenterOnTile = false,
 		animType = LinearAnimation,
 		animSeq = extr_array(m_get_bitmap("cave_waterfall_exit.bmp"), 72, 48),
 		animSpeed = 1 / 10,
+		convTableKeyword = "Escape",
 	};
 }
 

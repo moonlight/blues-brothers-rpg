@@ -17,7 +17,7 @@ Decoration = Actor:subclass
 			self.tick_time = 1
 		end
 
-		if (self.convTable) then
+		if (self.convTable or self.convTableKeyword) then
 			self.bCanActivate = true
 		end
 
@@ -25,6 +25,10 @@ Decoration = Actor:subclass
 	end;
 
 	activatedBy = function(self, instigator)
+		if (self.convTableKeyword) then
+			self.convTable = lang:getConv(self.convTableKeyword)
+		end
+		
 		self:log("activatedBy(" .. instigator:toString() .. ")");
 		if (self.convTable) then
 			self:log("Showing conversation...");

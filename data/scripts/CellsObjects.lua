@@ -166,6 +166,11 @@ PrisonDoor2 = Decoration:subclass
 {
 	name = "PrisonDoor2";
 	bPlaceable = true;	
+
+	init = function(self)
+		Actor.init(self)
+		self.bitmap = self.bitmaps[1]
+	end;
 	
 	defaultproperties = {
 		bCenterOnTile = false,

@@ -223,7 +223,8 @@ BBRpgLang = Lang:subclass
 			{{"{PLAYER}", "Let's play some blues."}},
 			{{"{PLAYER}", "Let's make some music."}},
 			{{"{PLAYER}", "It's a keyboard."}},
-			{{"{PLAYER}", "It's to big and to heavy to take with us."}},
+			{{"{PLAYER}", "It's too big to carry along."}},
+			{{"{PLAYER}", "I still got the blues..."}},
 		},
 		Poster = {
 			{{"{PLAYER}", "It's a poster."}},
@@ -256,5 +257,22 @@ BBRpgLang = Lang:subclass
 			{{"{PLAYER}", "No way, we're not going back."}},
 			{{"{PLAYER}", "This is the wrong way to get out of here."}},
 		},
+		Dustbin = {
+			{{"{PLAYER}", "A dustbin, it's where the dust goes."}},
+			{{"{PLAYER}", "What moron would put a dustbin in the middle of the sidewalk?"}},
+		},
+		Sunflower = {
+			{{"Mr. Prosser", "It's the famous sunflower of Vincent van Gogh."}},
+			{{"Mr. Prosser", "Beautiful isn't it?"}},
+			{{"Mr. Prosser", "Don't touch it."}},
+		},
+		Sunflower2 = {
+			{{"{Player}", "Another Sunflower of van Gogh?!"}},
+			{{"{Player}", "This is weird..."}},
+		},
+		MessPile = {
+			{{"{PLAYER}", "Wow, here's a pile that's hard to clean up."}},
+		},
+		
 	};
 }

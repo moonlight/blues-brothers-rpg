@@ -38,22 +38,6 @@ CaveLang = Lang:subclass
 			{"{PLAYER}", "Alright, if you've read the README.TXT then by now you'll know how I got stranded in this cave. Further more, you'll be informed about which keys to use to control me. Well now, let's get some exploration done."},
 		},
 
-
-		-- Examining stuff
-
-		NO_WAY_OUT = {{"{PLAYER}", "No way I can get out of this cave alive through this!"}},
-		NO_ESCAPE  = {{"{PLAYER}", "Escaping through this would kill me for sure."}},
-
-		REFRESHING = {{"{PLAYER}", "Ah, refreshing."}},
-		COULD_USE_THAT = {{"{PLAYER}", "I could use some of that."}},
-		MUCH_BETTER = {{"{PLAYER}", "That's much better."}},
-
-		FIRE_1 = {{"{PLAYER}", "It's burning just fine."}},
-		FIRE_2 = {{"{PLAYER}", "It's too big to carry along. Besides, I'd only use it for evil."}},
-		FIRE_3 = {{"{PLAYER}", "Ouch! Fire hot."}},
-		FIRE_4 = {{"{PLAYER}", "Is this a logfire I see before me?"}},
-
-
 		-- Pickaxe and pile of rubble
 
 		PILE_WONT_BUDGE = {
@@ -162,5 +146,47 @@ CaveLang = Lang:subclass
 			{"{CAVEMEN}",  "Hurray! Hurray! Hurray!"},
 			{"{PLAYER}",   "Neat."},
 		},
+
+		-- Some tables with random texts.
+		
+		CDs = {
+			{{"Frode", "Let's see if there's another CD of the Village People..."}},
+		},
+		Radio = {
+			{{"Frode", "Cool music."}},
+			{{"Frode", "I like the Beach Boys's music."}},
+			{{"Frode", "Yeah! Great soundsystem!"}},
+		},
+		Refreshing = {
+			{{"{PLAYER}", "Ah, refreshing."}},
+			{{"{PLAYER}", "I could use some of that."}},
+			{{"{PLAYER}", "That's much better."}},
+		},
+		Fire = {
+			{{"{PLAYER}", "It's burning just fine."}},
+			{{"{PLAYER}", "It's too big to carry along. Besides, I'd only use it for evil."}},
+			{{"{PLAYER}", "Ouch! Fire hot."}},
+			{{"{PLAYER}", "Is this a logfire I see before me?"}},
+		},		
+		Escape = {
+			{{"{PLAYER}", "No way I can get out of this cave alive through this!"}},
+			{{"{PLAYER}", "Escaping through this would kill me for sure."}},
+		},
 	};
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -20,12 +20,15 @@ City = Map:subclass
 		self:spawn(Rope     ,  22,  81);
 		self:spawn(Nitrofuel,  39,  19);
 
+		-- Spawn the removable `putdeksel'
+		self:spawn(Putdeksel, 119, 63);
+		
 		-- Spawn two enemies
 		self:spawn(Junk, 83, 73);
 		self:spawn(Punk, 82, 73);
 
 		-- The doors in this area
-		self:spawn(DoorJake  ,  93,  72);
+		self:spawn(DoorJake, 93, 72);
 
 		-- Spawn portals
 		self.jakePortal = self:spawn(Portal, 93, 72);
