@@ -110,7 +110,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Didn't you?"},
 			{"Jake", "Did I?"},
 			{"Elwood", "No."},
-			{"Jake", "Well, we must find them. My crowbar is in my house. We'll need it."},
+			{"Jake", "Hmm, they must have fallen out of my pockets while I was taking a stroll before picking you up. We must find them, my crowbar is in my house. We'll need it."},
 		},
 		AtJakesPlace = {
 			{"Jake", "Welcome in Case-del-Jake!"},
