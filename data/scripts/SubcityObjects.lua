@@ -22,6 +22,7 @@ Dustbin = Decoration:subclass
 	bPlaceable = true;
 	
 	init = function(self)
+		Decoration.init(self)
 	    self.snowTop = self:spawn(SnowOnDustbin, self.x, self.y)
 		self.snowTop.x = self.x
 		self.snowTop.y = self.y
