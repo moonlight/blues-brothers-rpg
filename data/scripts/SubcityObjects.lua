@@ -36,6 +36,7 @@ Dustbin = Decoration:subclass
 	end;
 
 	takeDamage = function(self, damage)
+		m_play_sample("bbsfx_hit4.wav")
 		ActionController:addSequence{
 			ActionParallel{
 				ActionTweenVariable(
