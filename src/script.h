@@ -70,6 +70,8 @@ int l_set_color(lua_State *L);
 int l_set_drawmode(lua_State *L);
 int l_set_alpha(lua_State *L);
 int l_get_alpha(lua_State *L);
+int l_draw_viewport(lua_State *L);
+int l_map_to_screen(lua_State *L);
 
 int l_walk_obj(lua_State *L);
 int l_walk_obj_nocol(lua_State *L);
@@ -82,7 +84,6 @@ int l_get_shift(lua_State *L);
 int l_get_bitmap(lua_State *L);
 int l_create_sub_bitmap(lua_State *L);
 int l_load_map(lua_State *L);
-int l_draw_viewport(lua_State *L);
 
 int l_quit_game(lua_State *L);
 

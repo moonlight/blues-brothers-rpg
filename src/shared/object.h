@@ -49,6 +49,7 @@ public:
 	int drawMode;
 	int alpha;
 	bool selected;
+	int in_air;
 
 	// Methods
 	void walk(int dir, bool col);

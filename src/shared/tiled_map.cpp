@@ -669,7 +669,34 @@ void TiledMap::drawEntities(BITMAP *dest)
 
 	for (i = objects.begin(); i != objects.end(); i++)
 	{
-		if ((*i)->visible(dest, mapToScreen((*i)->pos)))
+		if (!(*i)->in_air && (*i)->visible(dest, mapToScreen((*i)->pos)))
+		{
+			visibleEnts.push_back(EntityP((*i)));
+		}
+	}
+
+	// Sort the visible entities on y value.
+	visibleEnts.sort();
+
+	for (j = visibleEnts.begin(); j != visibleEnts.end(); j++) {
+		(*j).ent->draw(dest, mapToScreen((*j).ent->pos));
+	}
+
+	if (debug_mode) {
+		textprintf(dest, font, cameraScreenRect.x + 10, cameraScreenRect.y + 10, makecol(200,200,200), "%i entities", objects.size());
+		textprintf(dest, font, cameraScreenRect.x + 10, cameraScreenRect.y + 20, makecol(200,200,200), "%i drawn entities", visibleEnts.size());
+	}
+}
+
+void TiledMap::drawAirborneEntities(BITMAP *dest)
+{
+	list<EntityP> visibleEnts;
+	list<Object*>::iterator i;
+	list<EntityP>::iterator j;
+
+	for (i = objects.begin(); i != objects.end(); i++)
+	{
+		if ((*i)->in_air && (*i)->visible(dest, mapToScreen((*i)->pos)))
 		{
 			visibleEnts.push_back(EntityP((*i)));
 		}
@@ -770,6 +797,7 @@ void SquareMap::draw(BITMAP *dest, bool drawObstacle)
 	if (mapLayers[0]) drawLayer(dest, drawObstacle, mapLayers[0]);
 	drawEntities(dest);
 	if (mapLayers[1]) drawLayer(dest, drawObstacle, mapLayers[1]);
+	drawAirborneEntities(dest);
 
 	oldClip.rectToClip(dest);
 }
@@ -840,28 +868,6 @@ void SquareMap::drawLayer(BITMAP *dest, bool drawObstacle, TiledMapLayer *layer,
 					line(dest, tx + 2,      ty + th - 3, tx + tw - 3, ty + th - 3, makecol(255,0,0));
 					line(dest, tx + 3,      ty + th - 2, tx + tw - 2, ty + th - 2, makecol(0,0,0));
 				}
-				
-				/*
-				set_trans_blender(0,0,0,64);
-				drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-				rectfill(
-					dest,
-					cameraScreenRect.x - cameraCoords.x + x * tileWidth,
-					cameraScreenRect.y - cameraCoords.y + y * tileHeight,
-					cameraScreenRect.x - cameraCoords.x + x * tileWidth  + tileWidth - 1,
-					cameraScreenRect.y - cameraCoords.y + y * tileHeight + tileHeight - 1,
-					makecol(0,0,0)
-				);
-				rect(
-					dest,
-					cameraScreenRect.x - cameraCoords.x + x * tileWidth,
-					cameraScreenRect.y - cameraCoords.y + y * tileHeight,
-					cameraScreenRect.x - cameraCoords.x + x * tileWidth  + tileWidth - 1,
-					cameraScreenRect.y - cameraCoords.y + y * tileHeight + tileHeight - 1,
-					makecol(255,0,0)
-				);
-				drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
-				*/
 			}
 		}
 	}

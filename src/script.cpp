@@ -158,6 +158,8 @@ void initScripting()
 	lua_register(L, "m_set_alpha",      l_set_alpha);
 	lua_register(L, "m_get_alpha",      l_get_alpha);
 	lua_register(L, "m_draw_viewport",  l_draw_viewport);
+	lua_register(L, "m_map_to_screen",  l_map_to_screen);
+	lua_register(L, "m_screen_to_map",  l_dummy);
 
 	lua_register(L, "m_walk_obj",       l_walk_obj);
 	lua_register(L, "m_walk_obj_nocol", l_walk_obj_nocol);
@@ -892,6 +894,31 @@ int l_draw_viewport(lua_State *L)
 	return 0;
 }
 
+int l_map_to_screen(lua_State *L)
+{
+	int px, py, pz;
+	int x, y, w, h;
+	double tx, ty;
+	TiledMap* map;
+	getLuaArguments(L, "iiiiiiiddm", &px, &py, &pz, &x, &y, &w, &h, &tx, &ty, &map);
+
+	if (map) {
+		map->setCamera(
+			Point(int(tx * TILES_W), int(ty * TILES_H)),
+			Rectangle(x, y, w, h),
+			true, true
+		);
+
+		Point screenCoords = map->mapToScreen(Point(px, py, px));
+		return putLuaArguments(L, "ii", screenCoords.x, screenCoords.y);
+	}
+	else {
+		console.log(CON_CONSOLE | CON_LOG, CON_DEBUG, "Warning: map_to_screen called without a map.");
+	}
+
+	return 0;
+}
+
 
 int l_quit_game(lua_State *L)
 {
@@ -939,6 +966,7 @@ int object_gettable(lua_State *L)
 		if (strcmp(index, "bitmap"   ) == 0) {return putLuaArguments(L, "b", obj->bitmap   );}
 		if (strcmp(index, "map"      ) == 0) {return putLuaArguments(L, "m", obj->getMap() );}
 		if (strcmp(index, "id"       ) == 0) {return putLuaArguments(L, "i", obj->id       );}
+		if (strcmp(index, "in_air"   ) == 0) {return putLuaArguments(L, "i", obj->in_air   );}
 
 		// None of the above, so deal with the value normally
 		/*
@@ -1007,6 +1035,7 @@ int object_settable(lua_State *L)
 		else if (strcmp(index, "dir"      ) == 0) {obj->dir      = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "tick_time") == 0) {obj->tick     = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "obstacle" ) == 0) {obj->obstacle = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "in_air"   ) == 0) {obj->in_air   = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "bitmap"   ) == 0) {obj->bitmap   = (BITMAP*)lua_touserdata(L, -1);}
 		else if (strcmp(index, "map"      ) == 0) {
 			TiledMap* newMap = (TiledMap*)lua_touserdata(L, -1);

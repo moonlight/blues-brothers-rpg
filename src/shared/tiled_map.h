@@ -195,6 +195,7 @@ public:
 	virtual void drawLayer(BITMAP *dest, bool drawObstacle, TiledMapLayer *layer, int opacity = 255) = 0;
 
 	void drawEntities(BITMAP *dest);
+	void drawAirborneEntities(BITMAP *dest);
 
 	Object* addObject(int x, int y, const char* type);
 	Object* registerObject(int tableRef);
