@@ -15,6 +15,7 @@
 #include <allegro.h>
 #include <map>
 #include <set>
+#include <string>
 #include "tiled_map.h"
 
 using std::map;
@@ -27,29 +28,30 @@ class Module
         Module(const char *name);
         ~Module();
 
-        void loadScript(const char *name);
+        void loadScript(std::string name);
         void loadScripts();
-        TiledMap* loadMap(const char *name);
+        TiledMap* loadMap(std::string name);
 
-        BITMAP* findBitmap(const char *name);
-        MIDI* findMidi(const char *name);
-        SAMPLE* findSample(const char *name);
-        FONT* findFont(const char *name);
-        char* findScript(const char *name);
+        BITMAP* findBitmap(std::string name);
+        MIDI* findMidi(std::string name);
+        SAMPLE* findSample(std::string name);
+        FONT* findFont(std::string name);
+        char* findScript(std::string name);
 
     private:
         char* makeFilename(const char *name, const char *subdir);
+        char* addMagic(const char *file);
         
-        DATAFILE *datafile;
+        DATAFILE *script_data;
         char *path;
+        char *datafile_name;
         int loadLevel;
         
-        map<const char*, BITMAP*, ltstr> bitmaps;
-        map<const char*, MIDI*, ltstr> midis;
-        map<const char*, SAMPLE*, ltstr> samples;
-        map<const char*, FONT*, ltstr> fonts;
-        map<const char*, char*, ltstr> scripts;
-        set<const char*> loadedScripts;
+        map<std::string, BITMAP*> bitmaps;
+        map<std::string, MIDI*> midis;
+        map<std::string, SAMPLE*> samples;
+        map<std::string, FONT*> fonts;
+        map<std::string, char*> scripts;
 };
 
 

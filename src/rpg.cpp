@@ -38,9 +38,9 @@ bool game_end = false;
 bool bVSync = false;
 bool bDoubleSize = false;
 char filename[256];
-DATAFILE *interface_graphics;
-Module *module;
-FONT* engine_font;
+DATAFILE *engine_data = NULL;
+Module *module = NULL;
+FONT* engine_font = NULL;
 int gameClassInstance = 0;
 
 int lps = 100;
@@ -166,13 +166,13 @@ void init_engine()
     tileRepository = new TileRepository();
 
     console.log(CON_LOG, CON_ALWAYS, "Loading gui.dat...");
-    interface_graphics = load_datafile("gui.dat");
-    if (!interface_graphics) {
+    engine_data = load_datafile("gui.dat");
+    if (!engine_data) {
         console.log(CON_QUIT, CON_ALWAYS, "Error while loading: gui.dat");
     }
 
     // Set font to use
-    DATAFILE *temp = find_datafile_object(interface_graphics, "SmallFont");
+    DATAFILE *temp = find_datafile_object(engine_data, "SmallFont");
     if (temp) {engine_font = ((FONT *)temp->dat);}
 
     console.log(CON_LOG, CON_ALWAYS, "Loading module \"data\"...");
@@ -322,7 +322,7 @@ void exit_program()
     remove_int(handle_game_time);
 
     console.log(CON_LOG, CON_ALWAYS, "Unloading datafiles...");
-    unload_datafile(interface_graphics);
+    unload_datafile(engine_data);
 
     delete module;
 

@@ -79,9 +79,9 @@ GuiTheme = Object:subclass
 		self.canvas:drawIcon(ur)
 
 		m_set_cursor(x, y + self.borderWidth)
-		self.canvas:drawRect(bl, self.borderWidth,           h - (self.borderWidth * 2))
+		self.canvas:drawRect(bl, self.borderWidth, h - (self.borderWidth * 2))
 		self.canvas:drawRect(bg, w - (self.borderWidth * 2), h - (self.borderWidth * 2))
-		self.canvas:drawRect(br, self.borderWidth,           h - (self.borderWidth * 2))
+		self.canvas:drawRect(br, self.borderWidth, h - (self.borderWidth * 2))
 
 		m_set_cursor(x, y + h - self.borderWidth)
 		self.canvas:drawIcon(ll)
@@ -93,7 +93,7 @@ GuiTheme = Object:subclass
 	defaultproperties =
 	{
 		bitmap = m_get_bitmap("gui_green.bmp"),
-		font = "font_sansserif8.pcx",
+		font = "font_sansserif_8",
 		borderWidth = 2,
 		canvas = nil,
 	};

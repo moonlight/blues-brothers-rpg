@@ -115,24 +115,22 @@ void initialize()
     gui_edit_proc = d_agup_edit_proc;
     gui_text_list_proc = d_agup_text_list_proc;
 
-    DATAFILE* font_data = load_datafile_object("gui.dat", "SmallFont");
+    engine_data = load_datafile("gui.dat");
+
+    DATAFILE* font_data = find_datafile_object(engine_data, "SmallFont");
     if (font_data) font = (FONT*)font_data->dat;
 
     engine_font = font;
 
-    DATAFILE* mouse_pointer = load_datafile_object("gui.dat", "_MS_STD_BMP");
+    DATAFILE* mouse_pointer = find_datafile_object(engine_data, "_MS_STD_BMP");
     if (mouse_pointer) set_mouse_sprite((BITMAP*)mouse_pointer->dat);
 
-    DATAFILE* logo = load_datafile_object("gui.dat", "MoonlightLogo");
+    DATAFILE* logo = find_datafile_object(engine_data, "MoonlightLogo");
     if (logo) about_dlg[1].dp = (BITMAP*)logo->dat;
     else console.log(CON_QUIT, CON_ALWAYS, "Error loading MoonlightLogo");
 
     console.log(CON_LOG, CON_ALWAYS, "Loading module \"data\"...");
     module = new Module("data");
-    //data = load_datafile("data.dat");
-    //if (!data) {
-    //    console.log(CON_QUIT, CON_ALWAYS, "Error while loading: data.dat");
-    //}
 
     // Lua initialisation
     console.log(CON_LOG, CON_ALWAYS, "Initialising scripting environment...");
@@ -287,6 +285,7 @@ void clean_up()
     delete tileRepository;
 
     destroy_bitmap(buffer);
+    unload_datafile(engine_data);
 
     agup_shutdown();
 }

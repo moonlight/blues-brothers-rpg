@@ -85,7 +85,7 @@ FenceH5 = Decoration:subclass
 		w = 5,
 		draw_mode = DM_MASKED,
 		bitmaps = extr_array(m_get_bitmap("fence_h5.bmp"), 121, 60),
-		bitmap = m_get_bitmap("Fence_h5.bmp"),
+		bitmap = m_get_bitmap("fence_h5.bmp"),
 		convTableKeyword = "CantPassFence",
 	}
 }
@@ -145,7 +145,7 @@ FenceV8 = Decoration:subclass
 		w = 1,
 		h = 8,
 		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("Fence_v8.bmp"),
+		bitmap = m_get_bitmap("fence_v8.bmp"),
 		convTableKeyword = "CantPassFence",
 	}
 }
@@ -162,7 +162,7 @@ FenceV7 = Decoration:subclass
 		w = 1,
 		h = 7,
 		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("Fence_v7.bmp"),
+		bitmap = m_get_bitmap("fence_v7.bmp"),
 		convTableKeyword = "CantPassFence",
 	}
 }

@@ -56,7 +56,7 @@ ConversationWindow = Interaction:subclass
 
 	init = function(self)
 		-- Get and set some sizes
-		self.font = "font_sansserif8.pcx"
+		self.font = "font_sansserif_8"
 		m_set_font(self.font)
 		self.space_width, self.line_height = m_text_size(" ")
 		local w, h = m_screen_size()

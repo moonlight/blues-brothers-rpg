@@ -17,6 +17,7 @@
 #include <allegro.h>
 #include <string.h>
 #include <dirent.h>
+#include <string>
 #include "../common.h"
 #include "module.h"
 #include "../script.h"
@@ -30,42 +31,46 @@ Module::Module(const char *name)
     strcpy(path, name);
     
     // Open the datafile
-    char *filename = new char[strlen(name) + 1 + 4];
-    strcpy(filename, name);
-    strcat(filename, ".dat");
-    datafile = load_datafile(filename);
-    delete[] filename;
+    datafile_name = new char[strlen(name) + 1 + 4];
+    sprintf(datafile_name, "%s.dat", name);
+
+    script_data = NULL;
 }
 
 Module::~Module()
 {
     delete[] path;
+    delete[] datafile_name;
 }
 
-void Module::loadScript(const char *name)
+void Module::loadScript(std::string name)
 {
     // Create the indent
     char *spaces = new char[loadLevel + 1];
     int i;
     for (i = 0; i < loadLevel; i++) spaces[i] = ' ';
     spaces[loadLevel] = '\0';
+    map<std::string, char*, ltstr>::iterator script_i = scripts.find(name);
+
+    if (script_i != scripts.end()) {
+        console.log(CON_LOG, CON_VDEBUG, "%s# Already loaded \"%s\"",
+                spaces, name.c_str());
+        return;
+    }
 
     char *script = findScript(name);
     if (script) {
-        if (loadedScripts.find(script) == loadedScripts.end()) {
-            loadedScripts.insert(script);
-            console.log(CON_LOG, CON_ALWAYS, "%s> \"%s\"", spaces, name);
-            if (luaL_loadbuffer(L, script, strlen(script), name))
-            {
-                lua_error(L);
-            }
-            loadLevel++;
-            lua_call(L, 0, 0); // call main
-            loadLevel--;
+        console.log(CON_LOG, CON_ALWAYS, "%s> \"%s\"", spaces, name.c_str());
+        if (luaL_loadbuffer(L, script, strlen(script), name.c_str()))
+        {
+            lua_error(L);
         }
+        loadLevel++;
+        lua_call(L, 0, 0); // call main
+        loadLevel--;
     }
     else {
-        console.log(CON_LOG, CON_ALWAYS, "%sX \"%s\" not found!", spaces, name);
+        console.log(CON_LOG, CON_ALWAYS, "%sX \"%s\" not found!", spaces, name.c_str());
     }
     
     delete[] spaces;
@@ -75,7 +80,6 @@ void Module::loadScripts()
 {
     console.log(CON_LOG, CON_ALWAYS, "Loading scripts from \"%s\"...", path);
 
-    int i;
     char *dirname = makeFilename("", "/scripts");
     DIR *dir;
 
@@ -93,36 +97,54 @@ void Module::loadScripts()
     }
     else {
         // Read the scripts from the datafile
-        const char *name;
-        for (i = 0; datafile[i].type != DAT_END; i++) {
-            name = get_datafile_property(datafile + i, DAT_NAME);
-            if (datafile[i].type == DAT_LUA) {
-                loadLevel = 0;
-                loadScript(name);
+        script_data = load_datafile_object(datafile_name, "data/scripts");
+        if (script_data) {
+            DATAFILE *temp = (DATAFILE*)script_data->dat;
+            const char *name;
+            while (temp->type != DAT_END) {
+                if (temp->type == DAT_DATA) {
+                    name = get_datafile_property(temp, DAT_NAME);
+                    loadLevel = 0;
+                    loadScript(name);
+                }
+                temp++;
             }
+            
+            // Unload the datafile
+            unload_datafile_object(script_data);
+            script_data = NULL;
         }
     }
+
+    // Clean up any loaded scripts
+    /*
+    set<const char*>::iterator i;
+    for (i = loadedScripts.begin(); i != loadedScripts.end(); i++) {
+        delete[] (*i);
+    }
+    loadedScripts.clear();
+    */
 
     delete[] dirname;
 }
 
-TiledMap* Module::loadMap(const char *name)
+TiledMap* Module::loadMap(std::string name)
 {
-    console.log(CON_LOG, CON_ALWAYS, "Loading map \"%s\"...", name);
     TiledMap *mmap = NULL;
-    char *filename = makeFilename(name, "/maps");
+    char *filename = makeFilename(name.c_str(), "/maps");
+    console.log(CON_LOG, CON_ALWAYS, "Loading map \"%s\"...", filename);
 
     if (exists(filename)) {
         mmap = new SquareMap(TILES_W, TILES_H);
-        mmap->loadMap(filename);
+        if (mmap) {
+            mmap->loadMap(filename);
+        } else {
+            console.log(CON_QUIT, CON_ALWAYS, "Insufficient memory for map!");
+        }
     }
-    else if (datafile) {
-        DATAFILE *df = find_datafile_object(datafile, name);
+    else {
+        DATAFILE *df = load_datafile_object(datafile_name, filename);
         if (df) {
-            //char *mapstring = new char[df->size + 1];
-            //memcpy(mapstring, df->dat, df->size);
-            //mapstring[df->size] = '\0';
-
             xmlDocPtr doc = xmlReadMemory((char*)df->dat, df->size,
                     NULL, NULL, 0);
             if (doc) {
@@ -131,37 +153,33 @@ TiledMap* Module::loadMap(const char *name)
                 mmap->loadFrom(cur, tileRepository);
                 xmlFreeDoc(doc);
             }
+            unload_datafile_object(df);
         }
     }
-
-    //if (mmap) {
-    //    maps.push_front(mmap);
-    //}
 
     delete[] filename;
     return mmap;
 }
 
-BITMAP* Module::findBitmap(const char *name)
+BITMAP* Module::findBitmap(std::string name)
 {
     BITMAP *bitmap = NULL;
-    map<const char*, BITMAP*, ltstr>::iterator i = bitmaps.find(name);
+    map<std::string, BITMAP*, ltstr>::iterator i = bitmaps.find(name);
 
     if (i != bitmaps.end()) {
         bitmap = (*i).second;
     }
     else {
-        char *filename = makeFilename(name, "/bitmaps");
+        char *filename = makeFilename(name.c_str(), "/bitmaps");
     
         // Attempt to load from disk, and otherwise from the datafile
         if (exists(filename)) {
             bitmap = load_bitmap(filename, NULL);
-            console.log(CON_LOG, CON_DEBUG, "From disk: \"%s\"", name);
         }
-        else if (datafile) {
-            DATAFILE *df = find_datafile_object(datafile, name);
-            if (df) bitmap = (BITMAP*)df->dat;
-            console.log(CON_LOG, CON_DEBUG, "From datafile: \"%s\"", name);
+        else {
+            char *magicFilename = addMagic(filename);
+            bitmap = load_bitmap(magicFilename, NULL);
+            delete[] magicFilename;
         }
     
         if (bitmap) bitmaps[name] = bitmap;
@@ -171,72 +189,74 @@ BITMAP* Module::findBitmap(const char *name)
     return bitmap;
 }
 
-MIDI* Module::findMidi(const char *name)
+MIDI* Module::findMidi(std::string name)
 {
     MIDI *midi = NULL;
-    map<const char*, MIDI*, ltstr>::iterator i = midis.find(name);
+    map<std::string, MIDI*, ltstr>::iterator i = midis.find(name);
+    char *filename = makeFilename(name.c_str(), "/music");
 
     if (i != midis.end()) {
         midi = (*i).second;
     }
     else {
-        char *filename = makeFilename(name, "/music");
     
         // Attempt to load from disk, and otherwise from the datafile
         if (exists(filename)) {
             midi = load_midi(filename);
         }
-        else if (datafile) {
-            DATAFILE *df = find_datafile_object(datafile, name);
-            if (df) midi = (MIDI*)df->dat;
+        else {
+            char *magicFilename = addMagic(filename);
+            midi = load_midi(magicFilename);
+            delete[] magicFilename;
         }
     
         if (midi) midis[name] = midi;
-        delete[] filename;
     }
     
+    delete[] filename;
     return midi;
 }
 
-SAMPLE* Module::findSample(const char *name)
+SAMPLE* Module::findSample(std::string name)
 {
     SAMPLE *sample = NULL;
-    map<const char*, SAMPLE*, ltstr>::iterator i = samples.find(name);
+    map<std::string, SAMPLE*, ltstr>::iterator i = samples.find(name);
+    char *filename = makeFilename(name.c_str(), "/samples");
 
     if (i != samples.end()) {
         sample = (*i).second;
     }
     else {
-        char *filename = makeFilename(name, "/samples");
     
         // Attempt to load from disk, and otherwise from the datafile
         if (exists(filename)) {
             sample = load_sample(filename);
         }
-        else if (datafile) {
-            DATAFILE *df = find_datafile_object(datafile, name);
-            if (df) sample = (SAMPLE*)df->dat;
+        else {
+            char *magicFilename = addMagic(filename);
+            sample = load_sample(magicFilename);
+            delete[] magicFilename;
         }
     
         if (sample) samples[name] = sample;
-        delete[] filename;
     }
     
+    delete[] filename;
     return sample;
 }
 
-FONT* Module::findFont(const char *name)
+FONT* Module::findFont(std::string name)
 {
     FONT *font = NULL;
-    map<const char*, FONT*, ltstr>::iterator i = fonts.find(name);
+    map<std::string, FONT*, ltstr>::iterator i = fonts.find(name);
 
     if (i != fonts.end()) {
         font = (*i).second;
     }
     else {
         // Allegro can only load fonts from a datafile
-        if (datafile) {
-            DATAFILE *df = find_datafile_object(datafile, name);
+        if (engine_data) {
+            DATAFILE *df = find_datafile_object(engine_data, name.c_str());
             if (df) font = (FONT*)df->dat;
         }
     
@@ -246,44 +266,51 @@ FONT* Module::findFont(const char *name)
     return font;
 }
 
-char* Module::findScript(const char *name)
+char* Module::findScript(std::string name)
 {
     char *script = NULL;
-    map<const char*, char*, ltstr>::iterator i = scripts.find(name);
+    map<std::string, char*, ltstr>::iterator i = scripts.find(name);
+    char *filename = makeFilename(name.c_str(), "/scripts");
 
     if (i != scripts.end()) {
         script = (*i).second;
     }
     else {
-        char *filename = makeFilename(name, "/scripts");
-
         if (exists(filename)) {
             FILE* f = fopen(filename, "rb");
+
+            if (!f) {
+                console.log(CON_QUIT, CON_ALWAYS,
+                        "Error: %s seems to exist but failed to open!",
+                        filename);
+            }
 
             // Get size of file
             fseek(f, 0, SEEK_END);
             long size = ftell(f);
             rewind(f);
-            
+
             // Read file into character array
             script = new char[size + 1];
             fread(script, 1, size, f);
             script[size] = '\0';
+
             fclose(f);
         }
-        else if (datafile) {
-            DATAFILE *df = find_datafile_object(datafile, name);
+        else {
+            DATAFILE *df = load_datafile_object(datafile_name, filename);
             if (df) {
                 script = new char[df->size + 1];
                 memcpy(script, df->dat, df->size);
                 script[df->size] = '\0';
+                unload_datafile_object(df);
             }
         }
 
         if (script) scripts[name] = script;
-        delete[] filename;
     }
-    
+
+    delete[] filename;
     return script;
 }
 
@@ -291,9 +318,14 @@ char* Module::makeFilename(const char *name, const char *subdir)
 {
     int length = strlen(path) + strlen(subdir) + strlen(name) + 2;
     char *filename = new char[length];
-    strcpy(filename, path);
-    strcat(filename, subdir);
-    strcat(filename, "/");
-    strcat(filename, name);
+    sprintf(filename, "%s%s/%s", path, subdir, name);
+    return filename;
+}
+
+char* Module::addMagic(const char *file)
+{
+    int length = strlen(path) + strlen(file) + 6;
+    char *filename = new char[length];
+    sprintf(filename, "%s.dat#%s", path, file);
     return filename;
 }

@@ -31,6 +31,7 @@ BITMAP* buffer;
 Module *module = NULL;
 int debug_mode = 0;
 FONT* engine_font = NULL;
+DATAFILE *engine_data = NULL;
 list<Object*> selectedObjects;
 int selectedObjectType = 0;
 

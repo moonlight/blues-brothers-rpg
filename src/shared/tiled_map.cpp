@@ -652,8 +652,33 @@ void TiledMap::saveTo(xmlTextWriterPtr writer)
 
 int TiledMap::loadMap(const char* filename)
 {
-    xmlDocPtr doc = xmlParseFile(filename);
+    console.log(CON_LOG, CON_VDEBUG, "- Attempting to parse XML map data");
+
+    FILE* f = fopen(filename, "rb");
+    char *map_string;
+
+    if (!f) {
+        console.log(CON_QUIT, CON_ALWAYS, "Error: %s failed to open!",
+                filename);
+    }
+
+    // Get size of file
+    fseek(f, 0, SEEK_END);
+    long size = ftell(f);
+    rewind(f);
+
+    // Read file into character array
+    map_string = new char[size + 1];
+    fread(map_string, 1, size, f);
+    map_string[size] = '\0';
+
+    fclose(f);
+    
+    xmlDocPtr doc = xmlReadMemory(map_string, size, NULL, NULL, 0);
+    delete[] map_string;
+    
     if (doc) {
+        console.log(CON_LOG, CON_VDEBUG, "- Looking for root node");
         xmlNodePtr cur = xmlDocGetRootElement(doc);
 
         if (!cur || !xmlStrEqual(cur->name, BAD_CAST "map")) {
@@ -662,10 +687,12 @@ int TiledMap::loadMap(const char* filename)
             return 1;
         }
         
+        console.log(CON_LOG, CON_VDEBUG, "- Loading map from XML tree");
         loadFrom(cur, tileRepository);
         xmlFreeDoc(doc);
     }
     else {
+        console.log(CON_LOG, CON_VDEBUG, "- Attempting to load packfile map");
         PACKFILE *file = pack_fopen(filename, F_READ_PACKED);
 
         if (!file) {
@@ -674,6 +701,7 @@ int TiledMap::loadMap(const char* filename)
             return 1;
         }
         
+        console.log(CON_LOG, CON_VDEBUG, "- Loading map from packfile");
         this->loadFrom(file, tileRepository);
         pack_fclose(file);
     }
@@ -737,6 +765,8 @@ void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
     while (cur != NULL) {
         if (xmlStrEqual(cur->name, BAD_CAST "layer")) {
             if (layerNr < 2) {
+                console.log(CON_LOG, CON_VDEBUG, "- Loading layer %d",
+                        layerNr + 1);
                 mapLayers[layerNr]->loadFrom(cur, tileRepository);
                 layerNr++;
             }
@@ -751,6 +781,9 @@ void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
             
             // Spawn the object
             prop = xmlGetProp(cur, BAD_CAST "type");
+            
+            console.log(CON_LOG, CON_VDEBUG, "- Adding %s at (%d, %d)",
+                    (char*)prop, x, y);
             addObject(
                     double(x) / TILES_W,
                     double(y) / TILES_H,
@@ -868,12 +901,12 @@ void TiledMap::drawEntities(BITMAP *dest)
         textprintf_ex(
                 dest, font,
                 cameraScreenRect.x + 10, cameraScreenRect.y + 10,
-                makecol(200,200,200), -1, "%i entities",
+                makecol(200,200,200), -1, "%d entities",
                 objects.size());
         textprintf_ex(
                 dest, font,
                 cameraScreenRect.x + 10, cameraScreenRect.y + 20,
-                makecol(200,200,200), -1, "%i drawn entities",
+                makecol(200,200,200), -1, "%d drawn entities",
                 visibleEnts.size());
     }
 }
@@ -902,13 +935,8 @@ void TiledMap::drawAirborneEntities(BITMAP *dest)
     if (debug_mode) {
         textprintf_ex(
                 dest, font,
-                cameraScreenRect.x + 10, cameraScreenRect.y + 10,
-                makecol(200,200,200), -1, "%i entities",
-                objects.size());
-        textprintf_ex(
-                dest, font,
-                cameraScreenRect.x + 10, cameraScreenRect.y + 20,
-                makecol(200,200,200), -1, "%i drawn entities",
+                cameraScreenRect.x + 10, cameraScreenRect.y + 30,
+                makecol(200,200,200), -1, "%d drawn sky entities",
                 visibleEnts.size());
     }
 }

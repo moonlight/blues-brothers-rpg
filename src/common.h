@@ -16,8 +16,9 @@
 #include "shared/console.h"
 #include "shared/tiled_map.h"
 
-extern int debug_mode;						// Show debug info
+extern int debug_mode;                    // Show debug info
 
+extern DATAFILE *engine_data;
 extern FONT *engine_font;
 extern Console console;
 extern BITMAP *buffer;
