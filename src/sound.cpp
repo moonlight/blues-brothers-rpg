@@ -29,6 +29,7 @@ struct {
 	SAMPLE *sample;
 	int voice;
 	struct alogg_stream *stream;
+	AUDIOSTREAM *ass;
 } channels[CHANNELS];
 
 char *error;
@@ -57,6 +58,7 @@ void init_sound() {
 		channels[i].voice = 0;
 		channels[i].sample = NULL;
 		channels[i].stream = NULL;
+		channels[i].ass = NULL;
 	}
 }
 
@@ -88,6 +90,7 @@ int l_play_music(lua_State *L)
 			}
 			*/
 			channels[channel].stream = alogg_start_streaming(filename, BLOCK_SIZE);
+			channels[channel].ass = alogg_get_audio_stream(channels[channel].stream);
 			if (!channels[channel].stream) {
 				fprintf(stderr,"Error opening %s\n", filename);
 				alogg_exit();
@@ -123,7 +126,6 @@ int l_play_music(lua_State *L)
  */
 int l_adjust_channel(lua_State *L)
 {
-	/*
 	int channel, vol, pan, speed;
 	getLuaArguments(L, "iiii", &channel, &vol, &pan, &speed);
 
@@ -131,20 +133,20 @@ int l_adjust_channel(lua_State *L)
 
 	if (sound_enabled) {
 		if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
-		else if (channels[channel].sample) {error = "no music on this channel to adjust";}
+		else if (!channels[channel].ass) {error = "no music on this channel to adjust";}
 		else if (vol < 0 || vol > 255) {error = "illegal volume value";}
 		else if (pan < 0 || pan > 255) {error = "illegal panning value";}
 		else if (speed < 0) {error = "illegal speed value";}
 
 		if (error == NULL) {
-			voice_set_volume(channels[channel].voice, vol);
+			voice_set_volume(channels[channel].ass->voice, vol);
 			//alogg_adjust_oggstream(ogg[channel]->s, vol, pan, speed);
 			//console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Adjusted channel parameters (%d, %d, %d, %d)", channel, vol, pan, speed);
 		} else {
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error adjusting channel parameters (%s)", error);
 		}
 	}
-	*/
+
 	return 0;
 }
 
@@ -193,6 +195,7 @@ void stop_music(int channel)
 	if (channels[channel].stream) {
 		alogg_stop_streaming(channels[channel].stream);
 		channels[channel].stream = NULL;
+		channels[channel].ass = NULL;
 	}
 }
 
@@ -222,6 +225,7 @@ void poll_sound()
 			int ret = alogg_update_streaming(channels[i].stream);
 			if (ret == 0) {
 				channels[i].stream = NULL; // end of stream
+				channels[i].ass = NULL;
 				break;
 			}
 		}

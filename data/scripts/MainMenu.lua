@@ -15,9 +15,12 @@ MainMenu = GuiMenu:subclass
 		local dummy = cityMap:spawn(Dummy, 113.5, 109.5)
 		
 		local startSequence = {
+			ActionFadeOutMusic(50),
 			ActionFadeOutMap(50),
+			ActionWait(100),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionSetVariable(_G, "show_main_menu", nil),
+			ActionPlaySong("data/music/2.ogg", 100),
 			ActionFadeInMap(100),
 			ActionShowMapName(m_get_bitmap("prison.tga")),
 			ActionWait(300),

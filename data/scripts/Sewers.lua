@@ -56,5 +56,6 @@ Sewers = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("sewers.tga"),
+		musicFilename = "data/music/5.ogg",
 	}
 }
