@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include "rpg.h"
 #include "shared/engine.h"
-#include "console.h"
+#include "shared/console.h"
 #include "sound.h"
 #include "script.h"
 #include "canvas.h"

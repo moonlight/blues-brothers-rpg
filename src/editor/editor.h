@@ -14,7 +14,7 @@
 #include <allegro.h>
 #include <vector>
 #include "tiled_map.h"
-#include "console.h"
+#include "../shared/console.h"
 #include "../shared/map.h"
 
 

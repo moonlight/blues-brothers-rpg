@@ -12,7 +12,7 @@
 #include <allegro.h>
 #include <time.h>
 #include <list>
-#include "../console.h"
+#include "console.h"
 #include "../tiled_map.h"
 #include "engine.h"
 #include "../script.h"

@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include "../shared/engine.h"
 #include "editor.h"
-#include "console.h"
+#include "../shared/console.h"
 #include "script.h"
 #include <set>
 #include <vector>

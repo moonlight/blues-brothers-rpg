@@ -10,7 +10,7 @@
 */
 
 #include "map.h"
-#include "../console.h"
+#include "console.h"
 #include "engine.h"
 #include "../common.h"
 

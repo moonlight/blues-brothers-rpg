@@ -10,7 +10,7 @@
 */
 
 #include "tiled_map.h"
-#include "rpg.h"
+#include "common.h"
 #include <stdio.h>
 #include <allegro.h>
 #include <map>

@@ -10,7 +10,7 @@
 */
 
 #include "rpg.h"
-#include "console.h"
+#include "shared/console.h"
 #include "sound.h"
 #include "tiled_map.h"
 #include "shared/engine.h"

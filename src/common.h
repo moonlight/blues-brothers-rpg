@@ -13,10 +13,12 @@
 #define _INCLUDED_COMMON_H_
 
 #include <allegro.h>
-#include "console.h"
+#include "shared/console.h"
 #include "tiled_map.h"
 
+extern int debug_mode;						// Show debug info
 
+extern FONT *engine_font;
 extern Console console;
 extern BITMAP *buffer;
 extern TileRepository *tileRepository;

@@ -10,7 +10,6 @@ Niet ingedeeld:
 Bjorn:
 ! Gedeelde modules tussen editor en engine samenvoegen
   * tiled_map
-  * console
 - Objecten plaatsen in editor afmaken (en module "map" weghalen)
 - Sneeuwval
 - Sneeuw op prullenbak, dat eraf valt als je ertegenaan slaat
