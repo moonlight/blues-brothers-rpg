@@ -13,14 +13,29 @@ MainMenu = GuiMenu:subclass
 
 		local oldspeed = elwood.speed
 		local dummy = cityMap:spawn(Dummy, 113.5, 109.5)
-		
+
+		local quickStartSequence = {
+			ActionFadeOutMusic(50),
+			ActionFadeOutMap(50),
+			ActionWait(50),
+			ActionSetVariable(_G, "show_main_menu", nil),
+			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
+			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
+			ActionSetPosition(elwood, 94, 73, DIR_UP, cityMap),
+			ActionSetPosition(jake, 93, 73, DIR_UP, cityMap),
+			ActionSetCameraTarget(elwood, false),
+			ActionPlaySong(cityMap.musicFilename, 100),
+			ActionFadeInMap(100),
+			ActionExModeOff(),
+		}
+
 		local startSequence = {
 			ActionFadeOutMusic(50),
 			ActionFadeOutMap(50),
 			ActionWait(50),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionSetVariable(_G, "show_main_menu", nil),
---[[			ActionPlaySong("data/music/2.ogg", 100),
+			ActionPlaySong("data/music/2.ogg", 100),
 			ActionFadeInMap(100),
 			ActionShowMapName(m_get_bitmap("prison.tga")),
 			ActionWait(300),
@@ -122,18 +137,25 @@ MainMenu = GuiMenu:subclass
 			ActionConversation(lang:getConv("WhereKeys")),
 			ActionSetPosition(dummy, 93.5, 72.5),
 			ActionSetCameraTarget(dummy, false),
+			ActionFadeOutMusic(50),
 			ActionTweenVariable(dummy, "x", 50, 94.5),
+			ActionPlaySong(cityMap.musicFilename, 10),
 			ActionSetCameraTarget(elwood, false),
-	]]
-	
-	ActionFadeInMap(100),
-	ActionSetPosition(elwood, 93, 75, DIR_UP, cityMap),
 			ActionExModeOff(),
 		}
 
-		self:addMenuItem(GuiMenuItem(lang:getVar("PLAY"),    function() self.master:removeInteraction(self); ActionController:addSequence(startSequence); end))
---		self:addMenuItem(GuiMenuItem(lang:getVar("CREDITS"), function() self.master:removeInteraction(self); m_quit_game() end))
-		self:addMenuItem(GuiMenuItem(lang:getVar("QUIT"),    function() self.master:removeInteraction(self); m_quit_game() end))
+		self:addMenuItem(GuiMenuItem(lang:getVar("PLAY"), function()
+			self.master:removeInteraction(self);
+			ActionController:addSequence(startSequence);
+		end))
+		self:addMenuItem(GuiMenuItem(lang:getVar("QUICKSTART"), function()
+			self.master:removeInteraction(self);
+			ActionController:addSequence(quickStartSequence);
+		end))
+		self:addMenuItem(GuiMenuItem(lang:getVar("QUIT"), function()
+			self.master:removeInteraction(self);
+			m_quit_game()
+		end))
 	end;
 
 	keyType = function(self, key)

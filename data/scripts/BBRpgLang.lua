@@ -9,11 +9,12 @@ BBRpgLang = Lang:subclass
 	name = "BBRpgLang";
 
 	vars = {
-		PLAYER   = "Elwood",
-		PLAY     = "Play",
-		CREDITS  = "Credits",
-		QUIT     = "Quit",
-		CONTINUE = "Continue",
+		PLAYER     = "Elwood",
+		PLAY       = "Start",
+		QUICKSTART = "Quickstart",
+		CREDITS    = "Credits",
+		QUIT       = "Quit",
+		CONTINUE   = "Continue",
 	};
 
 	convs = {

@@ -86,9 +86,8 @@ BBRpg = Game:subclass
 
 		ActionController:addSequence{
 			ActionExModeOn(),
-			ActionPlaySong("data/music/3.ogg", 200),
-			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
-			ActionPlaySample("bbsfx_hit1.wav"),
+			ActionPlaySong("data/music/3.ogg", 100),
+			ActionTweenVariable(main_menu_bg, "alpha", 100, 255),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, SnowyWeather(cityMap)),
 		}
