@@ -21,18 +21,21 @@ BBRpg = Game:subclass
 		m_import_tile_bmp("tiles_sewers.bmp", 24, 24, 0)
 
 		-- Load the maps
-		cityMap = City()
-		jailMap = Jail()
+		cityMap   = City()
+		jailMap   = Jail()
 		sewersMap = Sewers()
-		jakesMap = JakesPlace()
+		jakesMap  = JakesPlace()
+		cellsMap  = Cells()
 
 		-- Links between portals
 		cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)
 		jakesMap.doorPortal:linkToPortal(cityMap.jakePortal)
+
 		sewersMap.stairsInPortal:linkToPortal(cityMap.sewersInPortal)
-		cityMap.sewersInPortal:linkToPortal(sewersMap.stairsInPortal)		
-		sewersMap.stairsOutPortal:linkToPortal(cityMap.sewersOutPortal)
-		cityMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
+		cityMap.sewersInPortal:linkToPortal(sewersMap.stairsInPortal)
+
+		sewersMap.stairsOutPortal:linkToPortal(cellsMap.sewersOutPortal)
+		cellsMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
 		
 		-- Spawn the player
 		playerController = PlayerController()

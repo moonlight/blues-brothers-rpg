@@ -38,16 +38,15 @@ Sewers = Map:subclass
 		self.lever4 = self:spawn(Lever, 50, 70);
 
 		-- Make a reference in lever N to fence N, where N is in {1,2,3,4}.
-		self.lever1:opens(self.fence1)
-		self.lever2:opens(self.fence2)
-		self.lever3:opens(self.fence3)
-		self.lever4:opens(self.fence4)
+		self.lever1:opens(self.fence1);
+		self.lever2:opens(self.fence2);
+		self.lever3:opens(self.fence3);
+		self.lever4:opens(self.fence4);
 
 		-- Spawn portals
-		self.stairsInPortal = self:spawn(Portal,  73,  37)
+		self.stairsInPortal = self:spawn(Portal,  73,  37);
 		self.stairsInPortal:setOutDir(DIR_DOWN);
-		self.stairsOutPortal = self:spawn(Portal, 152,  10)
-		self.stairsOutPortal:setOutDir(DIR_DOWN);		
+		self.stairsOutPortal = self:spawn(Portal, 152,  10);
+		self.stairsOutPortal:setOutDir(DIR_DOWN);
 	end;
 }
-

@@ -9,6 +9,8 @@ Jail = Map:subclass
 	name = "Jail";
 
 	init = function(self)
+		local obj
+
 		Map.init(self, "data/maps/jail.map")
 
 		self:spawn(Table,    22, 16);
