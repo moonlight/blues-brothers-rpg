@@ -22,6 +22,8 @@
 
 extern int sound_enabled;
 extern int sfx_enabled;
+extern int sfx_vol;
+extern int music_vol;
 
 //#define DATASZ   (1 << 15) /* (32768) amount of data to read from disk each time */
 //#define BUFSZ    (1 << 16) /* (65536) size of audiostream buffer */

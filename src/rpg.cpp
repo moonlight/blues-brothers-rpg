@@ -107,10 +107,10 @@ void init_engine()
 
 	bVSync = get_config_int("Video", "VSync", 0);
 	
-#ifdef ENABLE_MUSIC
 	sound_enabled = (get_config_int("Sound", "EnableMusic", 1)) ? 1 : 0;
-#endif
 	sfx_enabled = (get_config_int("Sound", "EnableSfx", 1)) ? 1 : 0;
+	music_vol = get_config_int("Sound", "MusicVolume", 255);
+	sfx_vol = get_config_int("Sound", "SfxVolume", 255);
 
 	// Screen initialisation
 	int width, height, colordepth = 0;

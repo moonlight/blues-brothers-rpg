@@ -25,6 +25,9 @@
 
 int sound_enabled = 1;
 int sfx_enabled = 1;
+int sfx_vol = 255;
+int music_vol = 255;
+
 
 #ifdef ENABLE_MUSIC
 // Currently playing OGG file
@@ -108,6 +111,7 @@ int l_play_music(lua_State *L)
 				exit(1);
 			}
 			channels[channel].ass = alogg_get_audio_stream(channels[channel].stream);
+			voice_set_volume(channels[channel].ass->voice, music_vol);
 		}
 
 		/*
@@ -151,7 +155,7 @@ int l_adjust_channel(lua_State *L)
 		else if (speed < 0) {error = "illegal speed value";}
 
 		if (error == NULL) {
-			voice_set_volume(channels[channel].ass->voice, vol);
+			voice_set_volume(channels[channel].ass->voice, int(vol * (float(music_vol) / 255.0f)));
 			//alogg_adjust_oggstream(ogg[channel]->s, vol, pan, speed);
 			//console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Adjusted channel parameters (%d, %d, %d, %d)", channel, vol, pan, speed);
 		} else {
@@ -244,7 +248,7 @@ int l_play_sample(lua_State *L)
 
 		if (found_object) {
 			//int play_sample(const SAMPLE *spl, int vol, int pan, int freq, int loop);
-			play_sample((SAMPLE*)found_object->dat, 255, 128, 1000, 0);
+			play_sample((SAMPLE*)found_object->dat, sfx_vol, 128, 1000, 0);
 		} else {
 			return luaL_error(L, "Error: Cannot find requested sample (%s)!", name);
 		}
