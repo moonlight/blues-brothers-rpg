@@ -352,6 +352,7 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetPosition(brian, 15, 19, DIR_UP),
 					ActionSetPosition(elwood, 16, 19, DIR_UP),
 					ActionFadeInMap(100),
+					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}
@@ -376,6 +377,7 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetPosition(brian, 15, 19, DIR_UP),
 					ActionSetPosition(elwood, 16, 19, DIR_UP),
 					ActionFadeInMap(100),
+					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}

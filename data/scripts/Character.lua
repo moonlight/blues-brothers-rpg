@@ -72,7 +72,7 @@ Character = Pawn:subclass
 	tick = function(self)
 		Pawn.tick(self)
 		if (self.bSleeping and self.health < self.maxHealth) then
-			self.health = math.min(self.health + 0.00002 * self.maxHealth, self.maxHealth)
+			self.health = math.min(self.health + 0.0001 * self.maxHealth, self.maxHealth)
 		end
 		self:updateBitmap()
 	end;
