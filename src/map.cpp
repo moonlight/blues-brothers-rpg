@@ -8,7 +8,7 @@
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-	BJORN: This class has got to go!
+	Bjorn: this class has got to go!
 */
 
 #include "rpg.h"
