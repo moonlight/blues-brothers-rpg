@@ -27,7 +27,9 @@ MessPile2 = Decoration:subclass
 	activatedBy = function(self, obj)
 		if self.containsEngines then
 			ActionController:addSequence{
+				ActionSetVariable(obj, "bWalkieTalkie", true),
 				ActionConversation(lang:getConv("FindMiniRocketEngines")),
+				ActionSetVariable(obj, "bWalkieTalkie", false),
 				ActionCallFunction(obj.addToInventory, obj, cityMap.engines),
 				ActionSetVariable(self, "containsEngines", false),
 				ActionWait(100),

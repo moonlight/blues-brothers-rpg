@@ -190,7 +190,7 @@ BBRpgLang = Lang:subclass
 			{"Brian", "I guess we'd better start looking."}
 		},
 		FindMiniRocketEngines = {
-			{"{PLAYER}", "I think I see it. Yes, I see it, the mini-rocket engines are here."},
+			{"{PLAYER}", "I found them. The mini-rocket engines are here."},
 			{"Brian", "Okay, that's great. Let's go to Lee and give it to him. He lives in the southwestern part of the suburbs at the 'Planetenlaan 192'."},
 			{"Jake", "Okay."},
 			{"Elwood", "See you there."},

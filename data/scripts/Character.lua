@@ -31,6 +31,10 @@ Character = Pawn:subclass
 		if (ani) then
 			if (self.bAttacking) then
 				self.bitmap = ani[self.dir + 1 + 3 * 4]
+			-- Begin hack for the BBRpg
+			elseif (self.bWalkieTalkie) then
+				self.bitmap = self.talkieBitmap
+			-- End hack for the BBRpg
 			else
 				if (self.walking == 0 or self.walking < 50) then
 					self:setBitmap(ani[self.dir + 1])
@@ -178,5 +182,6 @@ Character = Pawn:subclass
 		deathBitmap = nil,
 
 		bAttacking = false,
+		bWalkieTalkie = false,
 	};
 }

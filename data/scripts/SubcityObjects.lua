@@ -348,7 +348,9 @@ KeyFob = Decoration:subclass
 
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
-			--ActionConversation(lang:getConv("FindKeyFob")),
+			ActionSetVariable(obj, "bWalkieTalkie", true),
+			ActionConversation(lang:getConv("FindKeyFob")),
+			ActionSetVariable(obj, "bWalkieTalkie", false),
 			ActionCallFunction(obj.addToInventory, obj, self),
 		};
 	end;
@@ -615,7 +617,9 @@ Crowbar = Decoration:subclass
 	
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
+			ActionSetVariable(obj, "bWalkieTalkie", true),
 			ActionConversation(lang:getConv("Crowbar")),
+			ActionSetVariable(obj, "bWalkieTalkie", false),
 			ActionCallFunction(obj.addToInventory, obj, self),
 		}
 	end;

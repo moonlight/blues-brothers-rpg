@@ -24,7 +24,10 @@ Rat = Enemy:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
-		speed = 3,
+		attackMinDam = 0,
+		attackMaxDam = 3,
+		maxHealth = 25,
+		speed = 4,
 		experience = 8,
 
 		draw_mode = DM_MASKED,

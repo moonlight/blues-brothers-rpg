@@ -12,6 +12,9 @@ Crocodile = Enemy:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
+		attackMinDam = 3,
+		attackMaxDam = 6,
+		maxHealth = 50,
 		speed = 3,
 		experience = 16,
 
