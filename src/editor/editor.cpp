@@ -844,7 +844,6 @@ char* get_tileset_name(const char* name)
 void deselect_objects()
 {
 	// Deselect all others (should check for CTRL modifyer)
-	list<Object*>::iterator i;
 	while (selectedObjects.size() > 0) {
 		Object* obj = selectedObjects.front();
 		obj->selected = false;

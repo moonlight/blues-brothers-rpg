@@ -388,7 +388,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 	case MSG_IDLE:
 		if (d->flags & D_GOTMOUSE) {
 			Point hoverTile = currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y() + TILES_H));
-			Point new_hover = currentMap->tileToMap(hoverTile);
+			//Point new_hover = currentMap->tileToMap(hoverTile);
 			//Tile* cursorTile = currentMap->getLayer(0)->getTile(hoverTile);
 			
 			// Do something with the following
