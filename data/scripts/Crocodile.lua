@@ -9,10 +9,7 @@ import("AdvAIRandom")
 Crocodile = Enemy:subclass
 {
 	name = "Crocodile";
-	
-	init = function(self)
-		Enemy.init(self)
-	end;
+	bPlaceable = true;
 	
 	defaultproperties = {
 		draw_mode = DM_MASKED,

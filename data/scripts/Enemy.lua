@@ -5,7 +5,6 @@ import("Character.lua")
 Enemy = Character:subclass
 {
 	name = "Enemy";
-	bPlaceable = true;
 
 	--== Commands ==--
 

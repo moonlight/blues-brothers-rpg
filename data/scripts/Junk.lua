@@ -4,6 +4,7 @@ import("Player.lua")
 Junk = Enemy:subclass
 {
 	name = "Junk";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 2,

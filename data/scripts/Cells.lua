@@ -73,10 +73,6 @@ Cells = Map:subclass
 		self:spawn(Prisoner2, 30, 115)
 		self:spawn(Prisoner3, 37, 115)
 
-		self:spawn(Prisoner1, 23, 15)
-		self:spawn(Prisoner2, 30, 15)
-		self:spawn(Prisoner1, 37, 15)
-		self:spawn(Prisoner2, 44, 15)
 
 		-- White stripes at the wall
 		obj = self:spawn(Count5, 50, 46); obj.offset_x =  5; obj.offset_y = -5; obj.alpha = 90

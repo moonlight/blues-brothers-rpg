@@ -246,7 +246,8 @@ Button = Decoration:subclass
 			else
 				self.prison_door.isLocked2 = false
 			end
-		end	end;
+		end
+	end;
 	
 	defaultproperties = {
 		bCanActivate = true,
@@ -257,6 +258,3 @@ Button = Decoration:subclass
 		ticktime = 1,
 	}
 }
-
-
-

@@ -9,10 +9,7 @@ import("AdvAIRandom")
 Rat = Enemy:subclass
 {
 	name = "Rat";
-	
-	init = function(self)
-		Enemy.init(self)
-	end;
+	bPlaceable = true;
 	
 	defaultproperties = {
 		draw_mode = DM_MASKED,

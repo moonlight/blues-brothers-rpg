@@ -6,6 +6,7 @@ import("Player.lua")
 Prisoner1 = Character:subclass
 {
 	name = "Prisoner1";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 2,
@@ -18,6 +19,7 @@ Prisoner1 = Character:subclass
 Prisoner2 = Character:subclass
 {
 	name = "Prisoner2";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 2,
@@ -30,6 +32,7 @@ Prisoner2 = Character:subclass
 Prisoner3 = Character:subclass
 {
 	name = "Prisoner3";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 2,

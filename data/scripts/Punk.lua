@@ -4,6 +4,7 @@ import("Player.lua")
 Punk = Enemy:subclass
 {
 	name = "Punk";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 2.5,
