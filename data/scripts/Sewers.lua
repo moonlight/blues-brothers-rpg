@@ -43,40 +43,6 @@ Sewers = Map:subclass
 		self.lever3:opens(self.fence3);
 		self.lever4:opens(self.fence4);
 
-		-- Rats in the game
-		self:spawn(Rat,  77,  38);
-		self:spawn(Rat, 108,  12);
-		self:spawn(Crocodile, 136,  11);
-		self:spawn(Rat,  96,  25);
-		self:spawn(Rat, 101,  61);
-		self:spawn(Rat,  96,  44);
-		self:spawn(Rat,  96,  61);
-		self:spawn(Rat,  73,  77);
-		self:spawn(Crocodile, 120,  77);
-		self:spawn(Rat, 149,  77);
-		self:spawn(Rat, 116,  15);
-		self:spawn(Rat, 149,  15);
-		self:spawn(Rat, 133,  50);
-		self:spawn(Crocodile, 133, 117);
-		self:spawn(Rat, 106, 117);
-		self:spawn(Rat, 144, 113);
-		self:spawn(Rat, 126, 113);
-		self:spawn(Rat, 100, 113);
-		self:spawn(Crocodile,  86, 113);
-		self:spawn(Rat, 123,  82);
-		self:spawn(Crocodile,  77,  82);
-		self:spawn(Rat,  26,  82);
-		self:spawn(Rat,  48,  48);
-		self:spawn(Rat,  19,  23);
-		self:spawn(Rat,  27,  52);
-		self:spawn(Rat,  13,  77);
-		self:spawn(Crocodile,  26,  77);
-		self:spawn(Rat,  44,  77);
-
-		self:spawn(Crocodile,  46,  72);
-		self:spawn(Crocodile,  48,  72);
-		self:spawn(Crocodile,  50,  72);
-
 		-- Spawn portals
 		self.stairsInPortal = self:spawn(Portal,  73,  37);
 		self.stairsInPortal:setOutDir(DIR_DOWN);
