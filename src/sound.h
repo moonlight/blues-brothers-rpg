@@ -12,13 +12,16 @@
 #ifndef _INCLUDED_SOUND_H_
 #define _INCLUDED_SOUND_H_
 
-#ifdef ENABLE_SOUND
-
 #include <allegro.h>
-#include <alogg/alogg.h>
 #include "script.h"
 
+#ifdef ENABLE_MUSIC
+#include <alogg/alogg.h>
+#endif
+
+
 extern int sound_enabled;
+extern int sfx_enabled;
 
 //#define DATASZ   (1 << 15) /* (32768) amount of data to read from disk each time */
 //#define BUFSZ    (1 << 16) /* (65536) size of audiostream buffer */
@@ -26,19 +29,19 @@ extern int sound_enabled;
 #define BLOCK_SIZE 40960
 
 void init_sound();
-void poll_sound();
-void play_music(const char *filename);
-void stop_music(int channel);
+int l_play_sample(lua_State *L);
 void exit_sound();
 
-
-int l_play_sample(lua_State *L);
+#ifdef ENABLE_MUSIC
+void play_music(const char *filename);
+void stop_music(int channel);
+void poll_sound();
+int l_get_number_of_channels(lua_State *L);
 int l_play_music(lua_State *L);
 int l_stop_music(lua_State *L);
 int l_adjust_channel(lua_State *L);
-int l_get_number_of_channels(lua_State *L);
+#endif
 
-#endif // #ifdef ENABLE_SOUND
 
 #endif // #ifndef _INCLUDED_SOUND_H_
 

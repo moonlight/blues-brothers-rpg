@@ -9,21 +9,24 @@
     (at your option) any later version.
 */
 
-#ifdef ENABLE_SOUND
 
-#define ALOGG_DLL
 
 #include <allegro.h>
-#include <alogg/alogg.h>
 #include "shared/console.h"
 #include "sound.h"
 #include "rpg.h"
 #include "script.h"
 #include "common.h"
 
+#ifdef ENABLE_MUSIC
+#include <alogg/alogg.h>
+#endif
+
+
 int sound_enabled = 1;
+int sfx_enabled = 1;
 
-
+#ifdef ENABLE_MUSIC
 // Currently playing OGG file
 struct {
 	SAMPLE *sample;
@@ -32,6 +35,7 @@ struct {
 	AUDIOSTREAM *ass;
 	char filename[128];
 } channels[CHANNELS];
+#endif
 
 char *error;
 
@@ -46,7 +50,9 @@ void init_sound() {
 	set_volume_per_voice(0);
 
 	// Initialize alogg
+#ifdef ENABLE_MUSIC
 	alogg_init();
+#endif
 
 	// Install sound driver
 	if (install_sound(DIGI_AUTODETECT, MIDI_NONE, NULL) != 0) {
@@ -54,6 +60,7 @@ void init_sound() {
 		return;
 	}
 
+#ifdef ENABLE_MUSIC
 	// Initialize channels to NULL
 	for (int i = 0; i < CHANNELS; i++) {
 		channels[i].voice = 0;
@@ -61,8 +68,11 @@ void init_sound() {
 		channels[i].stream = NULL;
 		channels[i].ass = NULL;
 	}
+#endif
 }
 
+
+#ifdef ENABLE_MUSIC
 
 /* play_music(filename, channel)
  */
@@ -160,29 +170,26 @@ int l_get_number_of_channels(lua_State *L)
 }
 
 
-/* play_sample(filename)
- */
-int l_play_sample(lua_State *L)
+void poll_sound()
 {
-	char* name;
-	getLuaArguments(L, "s", &name);
-
-	if (sound_enabled) {
-		console.log(CON_LOG, CON_ALWAYS, "Trying to play sample: %s", name);
-
-		DATAFILE *found_object = find_datafile_object(bitmap_data, name);
-
-		if (found_object) {
-			//int play_sample(const SAMPLE *spl, int vol, int pan, int freq, int loop);
-			play_sample((SAMPLE*)found_object->dat, 255, 128, 1000, 0);
-		} else {
-			return luaL_error(L, "Error: Cannot find requested sample (%s)!", name);
+	for (int i = 0; i < CHANNELS; i++) {
+		if (channels[i].stream) {
+			int ret = alogg_update_streaming(channels[i].stream);
+			if (ret == 0) {
+				// Loop song
+				stop_music(i);
+				channels[i].stream = alogg_start_streaming(channels[i].filename, BLOCK_SIZE);
+				if (!channels[i].stream) {
+					fprintf(stderr,"Error opening %s\n", channels[i].filename);
+					alogg_exit();
+					exit(1);
+				}
+				channels[i].ass = alogg_get_audio_stream(channels[i].stream);
+				break;
+			}
 		}
 	}
-
-	return 0;
 }
-
 
 void stop_music(int channel)
 {
@@ -220,34 +227,39 @@ int l_stop_music(lua_State *L)
 	return 0;
 }
 
-void poll_sound()
+#endif
+
+
+/* play_sample(filename)
+ */
+int l_play_sample(lua_State *L)
 {
-	for (int i = 0; i < CHANNELS; i++) {
-		if (channels[i].stream) {
-			int ret = alogg_update_streaming(channels[i].stream);
-			if (ret == 0) {
-				// Loop song
-				stop_music(i);
-				channels[i].stream = alogg_start_streaming(channels[i].filename, BLOCK_SIZE);
-				if (!channels[i].stream) {
-					fprintf(stderr,"Error opening %s\n", channels[i].filename);
-					alogg_exit();
-					exit(1);
-				}
-				channels[i].ass = alogg_get_audio_stream(channels[i].stream);
-				break;
-			}
+	char* name;
+	getLuaArguments(L, "s", &name);
+
+	if (sfx_enabled) {
+		console.log(CON_LOG, CON_ALWAYS, "Trying to play sample: %s", name);
+
+		DATAFILE *found_object = find_datafile_object(bitmap_data, name);
+
+		if (found_object) {
+			//int play_sample(const SAMPLE *spl, int vol, int pan, int freq, int loop);
+			play_sample((SAMPLE*)found_object->dat, 255, 128, 1000, 0);
+		} else {
+			return luaL_error(L, "Error: Cannot find requested sample (%s)!", name);
 		}
 	}
+
+	return 0;
 }
 
 void exit_sound()
 {
+#ifdef ENABLE_MUSIC
 	for (int i = 0; i < CHANNELS; i++) {
 		stop_music(i);
 	}
 
 	alogg_exit();
+#endif
 }
-
-#endif // #ifdef ENABLE_SOUND

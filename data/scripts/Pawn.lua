@@ -56,7 +56,7 @@ Pawn = Actor:subclass
 				obj.offset_z = obj.offset_z + self.hitEffectHeight
 			end
 
-			-- A sample perhapt?
+			-- A scream perhaps?
 			if (table.getn(self.hitSounds) > 0) then
 				local sampleFile = self.hitSounds[math.random(table.getn(self.hitSounds))]
 				m_play_sample(sampleFile)

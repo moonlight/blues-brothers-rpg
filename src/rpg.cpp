@@ -26,7 +26,7 @@ END_OF_FUNCTION(handle_game_time);
 void handle_fps_counter() {fps = fps_counter; fps_counter = 0;}
 END_OF_FUNCTION(handle_fps_counter);
 
-#ifdef ENABLE_SOUND
+#ifdef ENABLE_MUSIC
 int sound_counter = 0;
 #endif
 
@@ -107,9 +107,10 @@ void init_engine()
 
 	bVSync = get_config_int("Video", "VSync", 0);
 	
-	#ifdef ENABLE_SOUND
+#ifdef ENABLE_MUSIC
 	sound_enabled = (get_config_int("Sound", "EnableMusic", 1)) ? 1 : 0;
-	#endif
+#endif
+	sfx_enabled = (get_config_int("Sound", "EnableSfx", 1)) ? 1 : 0;
 
 	// Screen initialisation
 	int width, height, colordepth = 0;
@@ -172,12 +173,10 @@ void init_engine()
 	console.log(CON_LOG, CON_ALWAYS, "Initialising Lua scripting environment...");
 	initScripting();
 
-#ifdef ENABLE_SOUND
-	if (sound_enabled) {
+	if (sound_enabled || sfx_enabled) {
 		console.log(CON_LOG, CON_ALWAYS, "Initialising sound...");
 		init_sound();
 	}
-#endif
 
 	console.log(CON_LOG, CON_ALWAYS, "Installing timers...");
 	LOCK_VARIABLE(frames_to_do);			// Game speed handler
@@ -245,13 +244,13 @@ void handle_input()
 
 	console.update();
 
-	#ifdef ENABLE_SOUND
+#ifdef ENABLE_MUSIC
 	if (sound_enabled && sound_counter == 0) {
 		poll_sound();
 		sound_counter = 10;
 	}
 	sound_counter--;
-	#endif
+#endif
 }
 
 
@@ -309,12 +308,10 @@ void exit_program()
 	unload_datafile(interface_graphics);
 	unload_datafile(bitmap_data);
 
-#ifdef ENABLE_SOUND
-	if (sound_enabled) {
+	if (sound_enabled || sfx_enabled) {
 		console.log(CON_LOG, CON_ALWAYS, "Deinitializing sound...");
 		exit_sound();
 	}
-#endif
 
 	console.log(CON_LOG, CON_ALWAYS, "Destroying screen buffer...");
 	destroy_bitmap(buffer);

@@ -181,7 +181,7 @@ echo -n "Checking for alogg-config... "
     echo "alogg-config --version" >>$LOGERR
     if alogg-config --version >>$LOG 2>>$LOGERR ; then
 	LIBS_ENGINE="`alogg-config --libs` $LIBS_ENGINE"
-	CPPFLAGS="$CPPFLAGS `alogg-config --cflags` -DENABLE_SOUND"
+	CPPFLAGS="$CPPFLAGS `alogg-config --cflags` -DENABLE_MUSIC"
 	echo "yes"
     else
 	echo "no"
@@ -213,7 +213,7 @@ echo "$CC $CPPFLAGS conftest.cpp -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc
 if $CC $CPPFLAGS conftest.cpp -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS $LIBS_ENGINE -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
     LIBS_ENGINE="-lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS_ENGINE"
-    CPPFLAGS="$CPPFLAGS -DENABLE_SOUND"
+    CPPFLAGS="$CPPFLAGS -DENABLE_MUSIC"
     SOUND=true
     echo "yes"
 else
