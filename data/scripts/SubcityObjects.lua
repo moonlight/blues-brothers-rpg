@@ -31,41 +31,35 @@ Dustbin = Decoration:subclass
 	end;
 
 	takeDamage = function(self, damage)
-		m_message("Dustbin hit!")
-
+		ActionController:addSequence{
+			ActionParallel{
+				ActionTweenVariable(
+					self, "offset_x", 20, 1, self.offset_x,
+					function(from, to, perc)
+						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+					end
+				),
+				ActionTweenVariable(
+					self.snowTop, "offset_x", 20, 1, self.snowTop.offset_x,
+					function(from, to, perc)
+						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+					end
+				),
+			},
+			ActionSetVariable(self, "offset_x", self.offset_x),
+			ActionSetVariable(self.snowTop, "offset_x", -7),
+		}
 		if (self.snowTop and (not self.snowfalling)) then
 			ActionController:addSequence{
-				ActionParallel {
-					ActionSequence {
-						ActionTweenVariable(
-							self, "offset_x", 20, 1 , self.offset_x,
-							function(from, to, perc)
-								return from+math.ceil(math.mod(perc * 6, 2) -0.5)
-							end
-						),
-						ActionSetVariable(self, "offset_x", self.offset_x),
-					},
-					ActionSequence {
-						ActionSetVariable(self, "snowfalling", true),
-						ActionSetVariable(self.snowTop, "offset_y", 16),
-						ActionSetVariable(self.snowTop, "offset_x", -6),
-						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.bmp")),
-						ActionTweenVariable(self.snowTop, "alpha", 8, 55),
-						ActionSetVariable(self.snowTop, "offset_y", 20),
-						ActionSetVariable(self.snowTop, "alpha", 255),
-						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2b.bmp")),
-						ActionTweenVariable(self.snowTop, "alpha", 5, 55),
-						ActionSetVariable(self.snowTop, "offset_y", 20),
-						ActionSetVariable(self.snowTop, "offset_x", -7),
-						ActionSetVariable(self.snowTop, "alpha", 255),
-						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
-						ActionTweenVariable(self.snowTop, "alpha", 300, 0),
-						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
-						ActionTweenVariable(self.snowTop, "alpha", 500, 122),
-						ActionSetVariable(self, "snowfalling", false),
-						ActionTweenVariable(self.snowTop, "alpha", 500, 255),
-					},
-				}
+				ActionSetVariable(self, "snowfalling", true),
+				ActionTweenVariable(self.snowTop, "offset_z", 20, 4),
+				ActionSetVariable(self.snowTop, "offset_z", 24),
+				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
+				ActionTweenVariable(self.snowTop, "alpha", 300, 0),
+				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
+				ActionTweenVariable(self.snowTop, "alpha", 500, 122),
+				ActionSetVariable(self, "snowfalling", false),
+				ActionTweenVariable(self.snowTop, "alpha", 500, 255),
 			}
 		end
 	end;
