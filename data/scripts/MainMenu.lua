@@ -1,6 +1,6 @@
 --
 -- Het hoofdmenu
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("GuiMenu.lua")
 

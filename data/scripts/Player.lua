@@ -1,6 +1,6 @@
 --
 -- The player character is defined here.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Character.lua")
 import("AnimationFunctions.lua")
