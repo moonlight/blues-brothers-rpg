@@ -375,6 +375,12 @@ BBRpgLangDutch = Lang:subclass
 		FenceToLevers = {
 			{{"{PLAYER}", "Volgens de kaart zouden er aan de andere kant van dit hek hendels moeten zijn."}},
 		},
+		BedTiredAfterTable = {
+			{{"{PLAYER}", "Ik voel me nog steeds moe."}},
+			{{"{PLAYER}", "Ik voel me redelijk."}},
+			{{"{PLAYER}", "Ah, ik voel me geweldig!"}},
+		},
+
 	};
 
 	defaultproperties = {

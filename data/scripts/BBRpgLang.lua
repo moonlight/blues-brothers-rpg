@@ -380,13 +380,18 @@ BBRpgLang = Lang:subclass
 			{{"{PLAYER}", "This television doesn't work."}},
 		},
 		Lamppost = {
-			{{"{PLAYER}", "Het is een lantaarnpaal."}},
+			{{"{PLAYER}", "It's a lamppost."}},
 		},
       FenceToCells = {
 			{{"{PLAYER}", "Damn, this fence blocks the way to the prison. We need to find a way to open it."}},
 		},
 		FenceToLevers = {
 			{{"{PLAYER}", "According to the map there should be some levers on the other side of this fence."}},
+		},
+		BedTiredAfterTable = {
+			{{"{PLAYER}", "I'm feeling kind of tired."}},
+			{{"{PLAYER}", "I'm feeling not to bad."}},
+			{{"{PLAYER}", "Ah, I'm feeling great!"}},
 		},
 	};
 

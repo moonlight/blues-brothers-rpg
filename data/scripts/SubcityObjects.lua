@@ -195,11 +195,11 @@ Bed = Decoration:subclass
 							ActionCallFunction(obj.setSleeping, obj, false),
 							ActionSetVariable(obj, "dir", DIR_DOWN),
 							ActionChangeBitmap(self, bitmapje),
-							ActionConversation(lang:getConv("BedTiredAfter")),
+							ActionConversation(lang:getConv("BedTiredAfterTable")[math.floor(table.getn(lang:getConv("BedTiredAfterTable")) * obj.health / obj.maxHealth) + 1]),
 							ActionSetVariable(obj, "obstacle", 1),
 							ActionSetVariable(self, "bOccupied", false),
 						}
-					end),
+					end),get_new_n(self.prev_random, table.getn(self.convTable))
 			}
 		else
 			ActionController:addSequence{

@@ -15,7 +15,7 @@ JakesPlace = Map:subclass
 		self.doorPortal = self:spawn(Portal, 10, 25)
 		self.doorPortal:setOutDir(DIR_UP)
 
-		self:spawn(WallJakesPlace, 5, 21);
+		--self:spawn(WallJakesPlace, 5, 21);
 		self:spawn(Keyboard, 10, 17);
 		self:spawn(Onderstel, 10, 17);
 		self:spawn(Guitar, 17, 17);
