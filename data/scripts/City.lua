@@ -12,7 +12,7 @@ City = Map:subclass
 		Map.init(self, "data/maps/city1.map")
 
 		-- Spawn the walkie talkie. Needed by the addToInventory function.
-		walkieTalkie = self:spawn(WalkieTalkie, 1, 126)
+		self.walkieTalkie = self:spawn(WalkieTalkie, 1, 126)
 
 		-- Spawn the crowbar needed to remove the putdeksel.
 		self:spawn(KeyFob, 66, 42)		

@@ -86,7 +86,7 @@ Dustbin = Decoration:subclass
 SnowOnDustbin = Actor:subclass
 {
 	name = "SnowOnDustbin";
-	bPlaceable = true;
+	bPlaceable = false;
 	
 	defaultproperties = {
 	    offset_z = 24,
