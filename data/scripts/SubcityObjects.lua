@@ -45,12 +45,19 @@ Dustbin = Decoration:subclass
 				ActionSequence {
 					ActionSetVariable(self.snowTop, "offset_y", 16),
 					ActionSetVariable(self.snowTop, "offset_x", -6),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.tga")),
-					ActionTweenVariable(self.snowTop, "alpha", 15, 0),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.bmp")),
+					ActionTweenVariable(self.snowTop, "alpha", 8, 55),
+					ActionSetVariable(self.snowTop, "offset_y", 20),
+					ActionSetVariable(self.snowTop, "alpha", 255),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2b.bmp")),
+					ActionTweenVariable(self.snowTop, "alpha", 5, 55),
 					ActionSetVariable(self.snowTop, "offset_y", 20),
 					ActionSetVariable(self.snowTop, "offset_x", -7),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.tga")),
-					ActionTweenVariable(self.snowTop, "alpha", 100, 0),
+					ActionSetVariable(self.snowTop, "alpha", 255),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
+					ActionTweenVariable(self.snowTop, "alpha", 300, 0),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
+					ActionTweenVariable(self.snowTop, "alpha", 1000, 255),
 				},
 			}
 		}
@@ -75,8 +82,8 @@ SnowOnDustbin = Actor:subclass
 	    offset_y = 20,
 	    offset_x = -7,
 	    alpha = 255,
-	    draw_mode = DM_ALPHA,
-	    bitmap = m_get_bitmap("dustbin_snow1.tga"),
+	    draw_mode = DM_TRANS,
+	    bitmap = m_get_bitmap("dustbin_snow1.bmp"),
 	}
 }
 
