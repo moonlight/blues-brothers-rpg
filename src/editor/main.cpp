@@ -12,6 +12,7 @@
 #include "editor.h"
 #include "tiled_map.h"
 #include "script.h"
+#include "../common.h"
 
 
 void initialize();

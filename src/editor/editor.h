@@ -15,7 +15,7 @@
 #include <vector>
 #include "tiled_map.h"
 #include "console.h"
-#include "map.h"
+#include "../shared/map.h"
 
 
 #define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0 beta"
@@ -34,10 +34,7 @@ extern bool selecting;
 extern int selection_start_x, selection_end_x;
 extern int selection_start_y, selection_end_y;
 
-extern BITMAP* buffer;
-
 extern TiledMap* currentMap;
-extern TileRepository* tileRepository;
 extern TileType* selectedTile;
 extern int selectedTileset;
 extern int selectedObstacle;

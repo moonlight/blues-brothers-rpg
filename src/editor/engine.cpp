@@ -17,7 +17,6 @@
 #include "engine.h"
 #include "editor.h"
 #include "script.h"
-#include "map.h"
 
 using namespace std;
 

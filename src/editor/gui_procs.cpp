@@ -12,6 +12,7 @@
 #include "tiled_map.h"
 #include "script.h"
 #include "engine.h"
+#include "../common.h"
 
 
 float brightness = 0.7;
@@ -795,7 +796,7 @@ int d_bjorn_check_grid(int msg, DIALOG *d, int c)
 
 int d_bjorn_check_snap(int msg, DIALOG *d, int c)
 {
-	int selected = d->flags & D_SELECTED;
+	//int selected = d->flags & D_SELECTED;
 	int ret = d_agup_check_proc(msg, d, 0);
 
 	if (msg == MSG_START) {
@@ -885,7 +886,7 @@ int d_bjorn_color_proc(int msg, DIALOG *d, int c)
 	}
 	else if (msg == MSG_IDLE)
 	{
-		int color;
+		int color = 0;
 
 		switch (d->d1)
 		{
@@ -957,7 +958,7 @@ char *list_objects(int index, int *list_size)
 int d_bjorn_objects_list(int msg, DIALOG *d, int c)
 {
 	int ret;
-	int selected = d->d1;
+	//int selected = d->d1;
 	
 	ret = d_agup_list_proc(msg, d, c);
 
@@ -1043,11 +1044,11 @@ int d_bjorn_tileset_list(int msg, DIALOG *d, int c)
 
 int d_bjorn_tileset(int msg, DIALOG *d, int c)
 {
-	int tile_w = 0;
-	int tile_h = 0;
+	unsigned int tile_w = 0;
+	unsigned int tile_h = 0;
 	int nr_tiles = 0;
 	int total_height = 0;
-	int tiles_in_row = 0;
+	unsigned int tiles_in_row = 0;
 
 	if (activeTileset.size() > 0)
 	{
@@ -1071,15 +1072,15 @@ int d_bjorn_tileset(int msg, DIALOG *d, int c)
 
 	case MSG_DRAW:
 		{
-			rectfill(buffer, d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, makecol(128 * brightness,128 * brightness,128 * brightness));
+			rectfill(buffer, d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, makecol(int(128 * brightness),int(128 * brightness),int(128 * brightness)));
 
 			int start_y = (D_TILESET_SCROLL.d2 / (tile_h + 1));
-			int end_y = start_y + (d->h - 1) / (tile_h + 1) + 1;
+			unsigned int end_y = start_y + (d->h - 1) / (tile_h + 1) + 1;
 
 
 			// Draw the tiles
-			for (int y = start_y; y <= end_y; y++) {
-				for (int x = 0; x < tiles_in_row; x++) {
+			for (unsigned int y = start_y; y <= end_y; y++) {
+				for (unsigned int x = 0; x < tiles_in_row; x++) {
 					if (x + y * (tiles_in_row) < activeTileset.size()) {
 						BITMAP* tileBmp = activeTileset[x + y * tiles_in_row]->getBitmap();
 
@@ -1121,8 +1122,8 @@ int d_bjorn_tileset(int msg, DIALOG *d, int c)
 				int mouse_x = gui_mouse_x();
 				int mouse_y = gui_mouse_y();
 
-				int x = (mouse_x - d->x) / (tile_w + 1);
-				int y = (mouse_y - d->y + D_TILESET_SCROLL.d2) / (tile_h + 1);
+				unsigned int x = (mouse_x - d->x) / (tile_w + 1);
+				unsigned int y = (mouse_y - d->y + D_TILESET_SCROLL.d2) / (tile_h + 1);
 
 				x = MAX(0, MIN(tiles_in_row - 1, x));
 				y = MAX(0, MIN(nr_tiles / tiles_in_row, y));
@@ -1149,8 +1150,8 @@ int d_bjorn_tileset(int msg, DIALOG *d, int c)
 			int mouse_x = gui_mouse_x();
 			int mouse_y = gui_mouse_y();
 
-			int x = (mouse_x - d->x) / (tile_w + 1);
-			int y = (mouse_y - d->y + D_TILESET_SCROLL.d2) / (tile_h + 1);
+			unsigned int x = (mouse_x - d->x) / (tile_w + 1);
+			unsigned int y = (mouse_y - d->y + D_TILESET_SCROLL.d2) / (tile_h + 1);
 
 			x = MAX(0, MIN(tiles_in_row - 1, x));
 			y = MAX(0, MIN(nr_tiles / tiles_in_row, y));
@@ -1158,13 +1159,13 @@ int d_bjorn_tileset(int msg, DIALOG *d, int c)
 			if (x + y * tiles_in_row < activeTileset.size()) {
 				uszprintf(status_message, 1024, "Tile: %s", activeTileset[x + y * tiles_in_row]->getName());
 			} else {
-				uszprintf(status_message, 1024, "");
+				status_message[0] = '\0';
 			}
 		}
 		break;
 
 	case MSG_LOSTMOUSE:
-		uszprintf(status_message, 1024, "");
+		status_message[0] = '\0';
 		break;
 	}
 

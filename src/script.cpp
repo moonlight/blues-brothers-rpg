@@ -17,6 +17,7 @@
 #include "sound.h"
 #include "script.h"
 #include "canvas.h"
+#include "common.h"
 #include <set>
 #include <vector>
 

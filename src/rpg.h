@@ -34,12 +34,7 @@ extern DATAFILE *bitmap_data;
 extern FONT *engine_font;
 extern int gameClassInstance;
 
-extern Console console;
-
-extern TileRepository *tileRepository;
 extern TileType *selectedTile;
-
-extern BITMAP *buffer;
 
 extern bool game_end;
 

@@ -10,6 +10,7 @@ CPPFLAGS := -Wall -O2 # -mwindows
 ENGINE_EXE := rpg
 EDITOR_EXE := rpgedit
 
+COMMON_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/shared/*.cpp))
 EDITOR_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/editor/*.cpp))
 ENGINE_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/*.cpp))
 LIBS := `allegro-config --libs` -llua -llualib
@@ -22,7 +23,7 @@ default: $(ENGINE_EXE) $(EDITOR_EXE)
 remake: clean default
 
 clean:
-	rm $(COMMON_OBJS) $(EDITOR_OBJS) $(ENGINE_OBJS)
+	rm -f src/*.o src/editor/*.o src/shared/*.o
 
 
 $(ENGINE_EXE): $(COMMON_OBJS) $(ENGINE_OBJS)

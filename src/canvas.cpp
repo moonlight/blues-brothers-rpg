@@ -10,6 +10,7 @@
 */
 
 #include <allegro.h>
+#include "common.h"
 #include "rpg.h"
 #include "canvas.h"
 

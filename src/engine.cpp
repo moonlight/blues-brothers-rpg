@@ -18,7 +18,7 @@
 #include "rpg.h"
 #include "script.h"
 #include "canvas.h"
-#include "map.h"
+#include "common.h"
 
 using namespace std;
 

@@ -15,7 +15,7 @@
 #include "tiled_map.h"
 #include "script.h"
 #include <list>
-#include "map.h"
+#include "shared/map.h"
 
 using namespace std;
 

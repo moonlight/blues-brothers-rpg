@@ -9,10 +9,10 @@
     (at your option) any later version.
 */
 
-#include "editor.h"
 #include "map.h"
-#include "engine.h"
-#include "console.h"
+#include "../console.h"
+#include "../engine.h"
+#include "../common.h"
 
 
 Map::Map()

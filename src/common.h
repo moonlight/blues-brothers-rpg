@@ -9,37 +9,16 @@
     (at your option) any later version.
 */
 
+#ifndef _INCLUDED_COMMON_H_
+#define _INCLUDED_COMMON_H_
 
-#ifndef _INCLUDED_MAP_H_
-#define _INCLUDED_MAP_H_
-
+#include <allegro.h>
+#include "console.h"
 #include "tiled_map.h"
-#include <list>
-
-class Object;
 
 
-class Map
-{
-public:
-	Map();
-	~Map();
-
-	int loadMap(const char* mapName);
-	Object* addObject(int x, int y, const char* type);
-	Object* registerObject(int tableRef);
-
-	void setMap(TiledMap* map);
-
-	void removeReference(Object* obj);
-	void addReference(Object* obj);
-
-	void updateObjects();
-
-	TiledMap* map;
-	list<Object*> objects;
-};
-
-
+extern Console console;
+extern BITMAP *buffer;
+extern TileRepository *tileRepository;
 
 #endif
