@@ -2,14 +2,14 @@
 Moonlight Productions :: Cave Adventure
 ---------------------------------------
 
-Here is our second small RPG, a Cave Adventure. It's been made for the Spring 
-2003 MiniRPG compo. After washing down a river, Frode (the main character) fell 
-down a waterfall and just managed to reach out for a branch that was hanging 
-about halfway down. Incidently, swinging towards the rock side, there happens to 
-be an entrance to a cave behind the wall of water. Frode has the choice between 
-either falling drop dead on the rocks below the waterfall or entering the cave 
-to face the perils within. Naturally, in the spirit of bold exploration, he 
-enters the cave...
+Here is our second small RPG, a Cave Adventure. It's been made for the Spring
+2003 MiniRPG compo. After washing down a river, Frode (the main character)
+fell down a waterfall and just managed to reach out for a branch that was
+hanging about halfway down. Incidently, swinging towards the rock side, there
+happens to be an entrance to a cave behind the wall of water. Frode has the
+choice between either falling drop dead on the rocks below the waterfall or
+entering the cave to face the perils within. Naturally, in the spirit of bold
+exploration, he enters the cave...
 
 
   Moonlight Productions (the part that worked on this game):
@@ -71,7 +71,7 @@ If the game runs choppy, try reducing the colordepth to 16 or 15 bit.
 History
 -------
 
-September, 29th -:-- (First post-contest release)
+January, -th -:-- (First post-contest release)
 
 - Added 24 and 32 bit colordepth support (32 enabled by default)
 - Added second layer to maps, above the objects
@@ -85,7 +85,7 @@ September, 29th -:-- (First post-contest release)
 / Added French translation
 - Added timestamps to logs
 - Added character shadows
-/ Added placing objects in the editor
+- Added placing objects in the editor
 - Improved Game Over screen
 - Improved GUI
 - Improved engine coordinate system
