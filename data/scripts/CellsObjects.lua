@@ -7,7 +7,7 @@ import("Decoration.lua")
 Count1 = Decoration:subclass
 {
 	name = "Count1";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -36,7 +36,7 @@ Count2 = Decoration:subclass
 Count3 = Decoration:subclass
 {
 	name = "Count3";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,

@@ -172,6 +172,14 @@ Actor = Object:subclass
 	destroyed = function(self)
 	end;
 
+	-- This actor bumps into an obstacle
+	event_bump_into = function(self, obj)
+	end;
+
+	-- Another actor bumps into this actor
+	event_bumped_into = function(self, obj)
+	end;
+
 
 	destroy = function(self)
 		m_destroy_object(self)

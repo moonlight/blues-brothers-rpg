@@ -103,6 +103,27 @@ Pawn = Actor:subclass
 		end
 	end;
 
+	-- This actor bumps into an obstacle
+	event_bump_into = function(self, obj)
+		if (self.controller) then
+			self.controller:notifyBumpInto(obj)
+		end
+	end;
+
+	-- Another actor bumps into this actor
+	event_bumped_into = function(self, obj)
+		if (self.controller) then
+			self.controller:notifyBumpedInto(obj)
+		end
+	end;
+
+	-- This actor finishes its current walking step
+	event_walk_finished = function(self)
+		if (self.controller) then
+			self.controller:notifyWalkFinished(obj)
+		end
+	end;
+
 
 	defaultproperties = {
 		-- The Controller possessing this Pawn

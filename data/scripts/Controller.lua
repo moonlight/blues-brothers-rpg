@@ -48,6 +48,16 @@ Controller = Object:subclass
 	notifyHearNoise = function(self, loadness, noiseMaker)
 	end;
 
+	notifyBumpInto = function(self, obj)
+	end;
+
+	notifyBumpedInto = function(self, obj)
+	end;
+
+	notifyWalkFinished = function(self)
+	end;
+
+
 	tick = function(self)
 	end;
 

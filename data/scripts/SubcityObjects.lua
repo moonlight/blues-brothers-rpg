@@ -23,6 +23,8 @@ Dustbin = Decoration:subclass
 	
 	init = function(self)
 	    self.snowTop = self:spawn(SnowOnDustbin, self.x, self.y)
+		self.snowTop.x = self.x
+		self.snowTop.y = self.y
 	end;
 
 	takeDamage = function(self, damage)
@@ -58,15 +60,15 @@ Dustbin = Decoration:subclass
 		convTableKeyword = "Dustbin",
 	}
 }
-SnowOnDustbin = Decoration:subclass
+
+SnowOnDustbin = Actor:subclass
 {
 	name = "SnowOnDustbin";
 	bPlaceable = true;
 	
 	defaultproperties = {
-	    z = 100,
-	    offset_z = 100,
-	    offset_y = 20,
+	    offset_z = 24,
+	    offset_y = 0,
 	    offset_x = 3,
 	    alpha = 255,
 	    draw_mode = DM_ALPHA,

@@ -42,6 +42,7 @@ Character = Pawn:subclass
 	end;
 
 	event_walk_finished = function(self)
+		Pawn.event_walk_finished(self)
 		self:updateBitmap()
 	end;
 
@@ -75,6 +76,8 @@ Character = Pawn:subclass
 		-- To be implemented: Check if there is place in the inventory?
 
 		table.insert(self.inventory, obj)
+
+		-- Make the object irrelevant on the map (not perfect)
 		obj.bitmap = nil
 		obj.obstacle = 0
 		obj.bCanActivate = false
@@ -86,12 +89,14 @@ Character = Pawn:subclass
 			if (v == obj) then return true end
 		end
 	end;
+
 	hasObjectType = function(self, class)
 		for k,v in pairs(self.inventory) do
 			if (v:instanceOf(class)) then return true end
 		end
-	end;	
-	-- To be implemented: deleteFromInventory = function(self, obj)
+	end;
+
+	-- To be implemented: removeFromInventory = function(self, obj)
 
 	defaultproperties = {
 		inventory = nil,
