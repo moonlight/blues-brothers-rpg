@@ -72,6 +72,7 @@ int l_set_alpha(lua_State *L);
 int l_get_alpha(lua_State *L);
 int l_draw_viewport(lua_State *L);
 int l_map_to_screen(lua_State *L);
+int l_get_tile_at(lua_State *L);
 
 int l_walk_obj(lua_State *L);
 int l_walk_obj_nocol(lua_State *L);

@@ -160,6 +160,7 @@ void initScripting()
 	lua_register(L, "m_draw_viewport",  l_draw_viewport);
 	lua_register(L, "m_map_to_screen",  l_map_to_screen);
 	lua_register(L, "m_screen_to_map",  l_dummy);
+	lua_register(L, "m_get_tile_at",    l_get_tile_at);
 
 	lua_register(L, "m_walk_obj",       l_walk_obj);
 	lua_register(L, "m_walk_obj_nocol", l_walk_obj_nocol);
@@ -914,6 +915,28 @@ int l_map_to_screen(lua_State *L)
 	}
 	else {
 		console.log(CON_CONSOLE | CON_LOG, CON_DEBUG, "Warning: map_to_screen called without a map.");
+	}
+
+	return 0;
+}
+
+int l_get_tile_at(lua_State *L)
+{
+	TiledMap* map;
+	int x, y;
+	getLuaArguments(L, "mii", &map, &x, &y);
+
+	if (map) {
+		Tile* tile = map->mapLayers[0]->getTile(Point(x, y));
+		if (tile) {
+			char *tileTypeName = tile->getType()->getName();
+			return putLuaArguments(L, "s", tileTypeName);
+		} else {
+			return 0;
+		}
+	}
+	else {
+		console.log(CON_CONSOLE | CON_LOG, CON_DEBUG, "Warning: get_tile_at called without a map.");
 	}
 
 	return 0;
