@@ -9,113 +9,114 @@ import("BBRpgHud.lua")
 
 BBRpg = Game:subclass
 {
-	name = "BBRpg";
+    name = "BBRpg";
 
-	init = function(self)
-		-- Create language file
-		lang = BBRpgLang()            -- WARNING: Bad design, global variable introduced!
+    init = function(self)
+        -- Create language file (WARNING: global variable!)
+        lang = BBRpgLang()
 
-		-- Load tile bitmaps
-		m_import_tile_bmp("jail_tiles.bmp", 24, 24, 0)
-		m_import_tile_bmp("tiles_subcity.bmp", 24, 24, 0)
-		m_import_tile_bmp("tiles_sewers.bmp", 24, 24, 0)
+        -- Load tile bitmaps
+        m_import_tile_bmp("jail_tiles.bmp", 24, 24, 0)
+        m_import_tile_bmp("tiles_subcity.bmp", 24, 24, 0)
+        m_import_tile_bmp("tiles_sewers.bmp", 24, 24, 0)
 
-		-- Load the maps
-		cityMap   = City()
-		jailMap   = Jail()
-		sewersMap = Sewers()
-		leesMap   = LeesPlace()
-		jakesMap  = JakesPlace()
-		cellsMap  = Cells()
-		restMap   = RestPlace()
+        -- Load the maps
+        cityMap   = City()
+        jailMap   = Jail()
+        sewersMap = Sewers()
+        leesMap   = LeesPlace()
+        jakesMap  = JakesPlace()
+        cellsMap  = Cells()
+        restMap   = RestPlace()
 
-		-- Links between portals
-		cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)
-		jakesMap.doorPortal:linkToPortal(cityMap.jakePortal)
+        -- Links between portals
+        cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)
+        jakesMap.doorPortal:linkToPortal(cityMap.jakePortal)
 
-		sewersMap.stairsInPortal:linkToPortal(cityMap.sewersInPortal)
-		cityMap.sewersInPortal:linkToPortal(sewersMap.stairsInPortal)
+        sewersMap.stairsInPortal:linkToPortal(cityMap.sewersInPortal)
+        cityMap.sewersInPortal:linkToPortal(sewersMap.stairsInPortal)
 
-		sewersMap.stairsOutPortal:linkToPortal(cellsMap.sewersOutPortal)
-		cellsMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
+        sewersMap.stairsOutPortal:linkToPortal(cellsMap.sewersOutPortal)
+        cellsMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
 
-		sewersMap.stairsOutPortal2:linkToPortal(restMap.sewerPortal)
-		restMap.sewerPortal:linkToPortal(sewersMap.stairsOutPortal2)
+        sewersMap.stairsOutPortal2:linkToPortal(restMap.sewerPortal)
+        restMap.sewerPortal:linkToPortal(sewersMap.stairsOutPortal2)
 
-		restMap.doorPortal:linkToPortal(cityMap.restPlacePortal)
-		cityMap.restPlacePortal:linkToPortal(restMap.doorPortal)
+        restMap.doorPortal:linkToPortal(cityMap.restPlacePortal)
+        cityMap.restPlacePortal:linkToPortal(restMap.doorPortal)
 
-		
-		-- Spawn the player
-		playerController = PlayerController()
 
-		-- elwood = jailMap:spawn(Elwood, 36, 17)
-		jake = cityMap:spawn(Jake, 111, 119)
-		elwood = jailMap:spawn(Elwood, 36, 17)
-		brian = cellsMap:spawn(Brian,  37, 14)
+        -- Spawn the player
+        playerController = PlayerController()
 
---		jake = sewersMap:spawn(Jake, 95, 37)
---		brian = cityMap:spawn(Brian, 93, 73)
---		brian = jailMap:spawn(Brian,  25, 37)
-		elwood.dir = DIR_UP
-		jake.dir = DIR_UP
-		brian.dir = DIR_DOWN
+        -- elwood = jailMap:spawn(Elwood, 36, 17)
+        jake = cityMap:spawn(Jake, 111, 119)
+        elwood = jailMap:spawn(Elwood, 36, 17)
+        brian = cellsMap:spawn(Brian,  37, 14)
 
-		-- Call superfunction
-		gameCameraTarget = CameraTarget() -- GLOBAL!?
-		self.playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
-		playerSwitcher = self.playerSwitcher -- Can't do without this global var for the moment
-		Game.init(self)
+        --		jake = sewersMap:spawn(Jake, 95, 37)
+        --		brian = cityMap:spawn(Brian, 93, 73)
+        --		brian = jailMap:spawn(Brian,  25, 37)
+        elwood.dir = DIR_UP
+        jake.dir = DIR_UP
+        brian.dir = DIR_DOWN
 
-		self.viewPort.target = gameCameraTarget
+        gameCameraTarget = CameraTarget() -- GLOBAL!?
+        self.playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
+        playerSwitcher = self.playerSwitcher -- Can't do without this global var for the moment
 
-		self.playerSwitcher:addPlayerHost(elwood)
-		--self.playerSwitcher:addPlayerHost(jake)
-		--self.playerSwitcher:addPlayerHost(brian)
+        -- Call superfunction
+        Game.init(self)
 
-		-- Tell the HUD about the playerSwitcher
-		self.hud:setPlayerSwitcher(self.playerSwitcher)
+        self.viewPort.target = gameCameraTarget
 
-		-- Show startup screen
-		show_main_menu = 1
-		main_menu_bg = {
-			bm = m_get_bitmap("bb_startup.bmp"),
-			alpha = 0,
-			drawMode = DM_TRANS,
-		}
+        self.playerSwitcher:addPlayerHost(elwood)
+        --self.playerSwitcher:addPlayerHost(jake)
+        --self.playerSwitcher:addPlayerHost(brian)
 
-		ActionController:addSequence{
-			ActionExModeOn(),
-			ActionPlaySong("data/music/mainmenu.ogg", 100),
-			ActionTweenVariable(main_menu_bg, "alpha", 100, 255),
-			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
-			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, SnowyWeather(cityMap)),
-		}
-	end;
+        -- Tell the HUD about the playerSwitcher
+        self.hud:setPlayerSwitcher(self.playerSwitcher)
 
-	event_render = function(self)
-		-- Set HUD to invisible while main menu is shown
-		self.playerSwitcher.bVisible = not show_main_menu
+        -- Show startup screen
+        show_main_menu = 1
+        main_menu_bg = {
+            bm = m_get_bitmap("bb_startup.bmp"),
+            alpha = 0,
+            drawMode = DM_TRANS,
+        }
 
-		if (show_main_menu) then
-			local width, height = m_screen_size()
-			local w, h = m_bitmap_size(main_menu_bg.bm)
+        ActionController:addSequence{
+            ActionExModeOn(),
+            ActionPlaySong("data/music/mainmenu.ogg", 100),
+            ActionTweenVariable(main_menu_bg, "alpha", 100, 255),
+            ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
+            ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, SnowyWeather(cityMap)),
+        }
+    end;
 
-			self.canvas:setDrawMode(main_menu_bg.drawMode)
-			self.canvas:setCursor((width - w) / 2, (height - h) / 2)
-			self.canvas:setAlpha(main_menu_bg.alpha)
-			self.canvas:drawIcon(main_menu_bg.bm)
-		end
+    event_render = function(self)
+        -- Set HUD to invisible while main menu is shown
+        self.playerSwitcher.bVisible = not show_main_menu
 
-		Game.event_render(self)
-	end;
+        if (show_main_menu) then
+            local width, height = m_screen_size()
+            local w, h = m_bitmap_size(main_menu_bg.bm)
 
-	defaultproperties = {
-		playerClass = nil,
-		mainMenuClass = MainMenu,
-		ingameMenuClass = IngameMenu,
-		conversationWindowClass = BBRpgConversationWindow,
-		guiThemeClass = BBRpgGuiTheme,
-		hudClass = BBRpgHud,
-	};
+            self.canvas:setDrawMode(main_menu_bg.drawMode)
+            self.canvas:setCursor((width - w) / 2, (height - h) / 2)
+            self.canvas:setAlpha(main_menu_bg.alpha)
+            self.canvas:drawIcon(main_menu_bg.bm)
+        end
+
+        Game.event_render(self)
+    end;
+
+    defaultproperties = {
+        playerClass = nil,
+        mainMenuClass = MainMenu,
+        ingameMenuClass = IngameMenu,
+        conversationWindowClass = BBRpgConversationWindow,
+        guiThemeClass = BBRpgGuiTheme,
+        hudClass = BBRpgHud,
+    };
 }
