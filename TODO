@@ -8,7 +8,6 @@ Niet ingedeeld:
 - Zijmuren in 2e layer stoppen zodat ze boven de brede lijken zitten
 - Experience fijn tunen
 - Animated tiles in the sewer
-- Sounds effects
 - Fading music
 - Na samenbrengen brothers in huis nog opdracht met nitro/rope/skimask
 ? Hier en daar een plas op de weg, of smurrie
@@ -20,11 +19,11 @@ Bjorn:
 - Add map to HUD in sewers when found
 
 Georg:
-! Monsters in de sewers plaatsen
 - Scripts schrijven bij ontmoeten Brian
 ? Witte lijntjes in Jake's optrekje wegwerken
 
 Frode:
+- Dead bodies for crocodile and rat
 - Walkie talkie inventory picture
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
@@ -32,6 +31,4 @@ Frode:
 - Draw map item + inventory graphic
 
 Hedde:
-! Krokodil scripten (eerst gewoon met AIController)
-! Rat scripten (eerst gewoon met AIController)
-- AI voor random rondlopen + aanvallen
+- Sounds effects
