@@ -17,10 +17,7 @@ EnemyGuard = Enemy:subclass
 		charging = 0,
 		attackMinDam = 0,
 		attackMaxDam = 5,
-
--- hack ?? !!
-		maxHealth = 1,
-		health = 1,
+		maxHealth = 70,
 
 		bDead = false,
 		bAttacking = false,
@@ -45,10 +42,7 @@ EnemyGuard2 = Enemy:subclass
 		charging = 0,
 		attackMinDam = 0,
 		attackMaxDam = 5,
-
--- hack ?? !!
-		maxHealth = 1,
-		health = 1,
+		maxHealth = 70,
 
 		bDead = false,
 		bAttacking = false,
@@ -73,10 +67,7 @@ EnemyGuard3 = Enemy:subclass
 		charging = 0,
 		attackMinDam = 0,
 		attackMaxDam = 5,
-
--- hack ?? !!
-		maxHealth = 1,
-		health = 1,
+		maxHealth = 70,
 
 		bDead = false,
 		bAttacking = false,

@@ -224,7 +224,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "Finally, the exit."},
 		},
 		TooDangerous = {
-			{"{PLAYER}", "I'd better not come to near these guys..."},
+			{"{PLAYER}", "I'd better not come too near these guys..."},
 		},
 		RemovePutdeksel = {
 			{"{PLAYER}", "Ah yes, it's moving... Good thing we memorized the sewer system."},
