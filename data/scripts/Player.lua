@@ -80,14 +80,6 @@ Player = Character:subclass
 		Character.tick(self)
 	end;
 
-	takeDamage = function(self, damage, instigator, damageType, momentum, location)
-		Character.takeDamage(self, damage, instigator, damageType, momentum, location)
-		if (damage > 0) then
-			local obj = self:spawn(BloodSplat, self.x, self.y)
-			obj.offset_z = obj.offset_z + 24
-		end
-	end;
-
 	died = function(self, killer, damageType, location)
 		Character.died(self, killer, damageType, location)
 

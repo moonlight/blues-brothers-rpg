@@ -46,19 +46,19 @@ Pawn = Actor:subclass
 	takeDamage = function(self, damage, instigator, damageType, momentum, location)
 		if (damage > 0) then
 			local actualDamage = damage
-			self.health = self.health - damage
+			self.health = self.health - actualDamage
 
-			if (self.health <= 0) then
+			-- Some blood flying around maybe?
+			if (not self.bDead and self.hitEffectClass) then
+				local obj = self:spawn(self.hitEffectClass, self.x, self.y)
+				obj.offset_z = obj.offset_z + self.hitEffectHeight
+			end
+
+			if (self.health <= 0 and not self.bDead) then
 				-- Pawn died
-				local killer
-				if (instigator) then
-					killer = instigator.controller
-				end
-				self:died(killer, damageType, location)
-			else
-				if (self.controller) then
-					self.controller:notifyTakeDamage(actualDamage, instigator, damageType, momentum, location);
-				end
+				self:died(instigator, damageType, location)
+			elseif (self.controller) then
+				self.controller:notifyTakeDamage(actualDamage, instigator, damageType, momentum, location);
 			end
 
 			self:makeNoise(15)
@@ -138,6 +138,7 @@ Pawn = Actor:subclass
 
 	defaultproperties = {
 		bSleeping = false,
+		bDead = false,
 
 		-- The Controller possessing this Pawn
 		controller = nil,
@@ -149,6 +150,8 @@ Pawn = Actor:subclass
 		obstacle = 1,
 		bCenterBitmap = true,
 
+		hitEffectClass = BloodSplat,
+		hitEffectHeight = 24,
 		controllerClass = nil,
 		bCenterOnTile = true,
 	};

@@ -43,19 +43,6 @@ Enemy = Character:subclass
 
 	--== Notifications ==--
 
-	takeDamage = function(self, damage, instigator, damageType, momentum, location)
-		m_message("Enemy "..self:toString().." took "..damage.." damage.")
-
-		-- If not dead, play fair
-		if (not self.bDead) then
-			Character.takeDamage(self, damage, instigator, damageType, momentum, location)
-			if (damage > 0 and self.hitEffectClass) then
-				local obj = self:spawn(self.hitEffectClass, self.x, self.y)
-				obj.offset_z = obj.offset_z + self.hitEffectHeight
-			end
-		end
-	end;
-
 	died = function(self, killer, damageType, location)
 		Character.died(self, killer, damageType, location)
 
@@ -89,11 +76,8 @@ Enemy = Character:subclass
 		attackMinDam = 0,
 		attackMaxDam = 5,
 
-		bDead = false,
 		bAttacking = false,
 
-		hitEffectClass = BloodSplat,
-		hitEffectHeight = 24,
 		deathBitmap = nil,
 
 		controllerClass = AIController,
