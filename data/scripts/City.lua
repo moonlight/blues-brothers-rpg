@@ -64,6 +64,7 @@ City = Map:subclass
 
 		-- The doors in this area
 		self:spawn(DoorJake, 93, 72);
+		self.restPlaceDoor = self:spawn(DoorLocked, 76, 72)
 
 		-- Spawn portals
 		self.jakePortal = self:spawn(Portal, 93, 72);
@@ -71,6 +72,9 @@ City = Map:subclass
 
 		self.sewersInPortal = self:spawn(Portal, 119, 63);
 		self.sewersInPortal:setOutDir(DIR_UP);
+
+		self.restPlacePortal = self:spawn(Portal, 76, 72)
+		self.restPlacePortal:setOutDir(DIR_DOWN)
 
 		copcar = self:spawn(CopCar, 106, 123);
 	end;

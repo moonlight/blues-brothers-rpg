@@ -17,7 +17,7 @@ Sewers = Map:subclass
 		self:spawn(WallAndTube2, 54, 25);
 		self:spawn(Ladder1,  73,  37);
 		self:spawn(Ladder2, 152,  10);
-		self:spawn(Ladder2,  44,  47);
+		self:spawn(Ladder3,  44,  47);
 
 		self:spawn(FenceH5, 131,  47);
 		self:spawn(FenceH3, 136,  98);
@@ -50,6 +50,8 @@ Sewers = Map:subclass
 		self.stairsInPortal:setOutDir(DIR_DOWN);
 		self.stairsOutPortal = self:spawn(Portal, 152,  10);
 		self.stairsOutPortal:setOutDir(DIR_DOWN);
+		self.stairsOutPortal2 = self:spawn(Portal, 44,  47);
+		self.stairsOutPortal2:setOutDir(DIR_DOWN);
 	end;
 
 	defaultproperties = {

@@ -28,12 +28,12 @@ Lever = Actor:subclass
 		
 		if (self.gate) then
 			self.gate:switch()
-		end
+		end
 		self:updateBitmap()
 	end;
 	
-	opens = function(self, gate)		self.gate = gate
-	end;
+	opens = function(self, gate)		self.gate = gate
+	end;
 	defaultproperties = {
 		gate = nil,
 		offset_y = -12,
@@ -71,7 +71,7 @@ Lever2 = Actor:subclass
 			end
 			if (self.gate) then
 				self.gate:switch()
-			end			self:updateBitmap()
+			end			self:updateBitmap()
 		else
 			ActionController:addSequence{
 				ActionConversation(lang:getConv("LeverNotElwood")),
@@ -79,8 +79,8 @@ Lever2 = Actor:subclass
 		end
 	end;
 	
-	opens = function(self, gate)		self.gate = gate
-	end;
+	opens = function(self, gate)		self.gate = gate
+	end;
 	defaultproperties = {
 		gate = nil,
 		offset_y = -12,
@@ -142,7 +142,7 @@ WallAndTube = Actor:subclass
 
 	init = function(self)
 		Actor.init(self)
-	end;
+	end;
 	event_bumped_into = function(self, player)
 		if (player:instanceOf(Elwood)) then
 			ActionController:addSequence{

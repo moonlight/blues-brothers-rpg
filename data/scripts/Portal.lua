@@ -12,6 +12,10 @@ Portal = Actor:subclass
 		if (not self.linkedPortal) then return end
 
 		if (actor:instanceOf(Player)) then
+			if (self.onUse) then
+				self.onUse()
+			end
+
 			actor:walk(actor.dir, true)
 
 			ActionController:addSequence{

@@ -38,6 +38,13 @@ BBRpg = Game:subclass
 
 		sewersMap.stairsOutPortal:linkToPortal(cellsMap.sewersOutPortal)
 		cellsMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
+
+		sewersMap.stairsOutPortal2:linkToPortal(restMap.sewerPortal)
+		restMap.sewerPortal:linkToPortal(sewersMap.stairsOutPortal2)
+
+		restMap.doorPortal:linkToPortal(cityMap.restPlacePortal)
+		cityMap.restPlacePortal:linkToPortal(restMap.doorPortal)
+
 		
 		-- Spawn the player
 		playerController = PlayerController()
