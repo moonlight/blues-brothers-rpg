@@ -289,7 +289,7 @@ void exit_program()
 	console.log(CON_LOG, CON_ALWAYS, "Game ended");
 
 	console.log(CON_LOG, CON_ALWAYS, "Deleting objects...");
-	list<Map*>::iterator i;
+	list<TiledMap*>::iterator i;
 	while (!maps.empty())
 	{
 		i = maps.begin();

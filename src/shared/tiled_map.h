@@ -19,6 +19,7 @@
 
 using namespace std;
 
+class Object;
 
 #define DAT_MAPDATA  DAT_ID('M','A','P',' ')
 
@@ -128,28 +129,13 @@ protected:
 };
 
 
-// Entity class ==============================================================
-
-class Entity {
-public:
-	Entity();
-	bool visible(BITMAP *dest, Point screenCoords);
-	void draw(BITMAP *dest, Point topLeft);
-
-	Point pos;
-	BITMAP* bitmap;
-	int drawMode;
-	int alpha;
-	bool selected;
-};
+// Entity sorting helper class ===============================================
 
 class EntityP {
 public:
-	EntityP(Entity *ent) {this->ent = ent;}
-	Entity *ent;
-	bool operator< (const EntityP& X) const {
-		return (ent->pos.y + ent->pos.z < X.ent->pos.y + X.ent->pos.z);
-	}
+	EntityP(Object *ent) {this->ent = ent;}
+	Object *ent;
+	bool operator< (const EntityP& X) const;
 };
 
 
@@ -182,14 +168,6 @@ private:
 //  Defines a generic tiled map interface and data model.
 
 
-// Comparator used for determining entity draw order
-
-struct greater_y : public binary_function<Entity*, Entity*, bool> {
-	bool operator()(Entity* a, Entity* b) {
-		return a->pos.y > b->pos.y;
-	}
-};
-
 class TiledMap {
 public:
 	TiledMap();
@@ -198,6 +176,7 @@ public:
 	// Map functions
 	void resizeTo(int w, int h, int dx = 0, int dy = 0);
 	void saveTo(PACKFILE* file);
+	int loadMap(const char* mapName);
 	void loadFrom(PACKFILE* file, TileRepository *tileRepository);
 	void loadFromOld(PACKFILE *file, TileRepository *tileRepository);
 
@@ -207,8 +186,6 @@ public:
 	// Tile and entity methods
 	//Tile* getTile(Point tileCoords);
 	TiledMapLayer* getLayer(int i);
-	void addEntity(Entity* entity);
-	void removeEntity(Entity* entity);
 
 	// Draw the map
 	virtual void setCamera(Point cameraCoords, Rectangle screenRect, bool centerCamera = false, bool modify = true);
@@ -216,6 +193,12 @@ public:
 	virtual void drawLayer(BITMAP *dest, bool drawObstacle, TiledMapLayer *layer, int opacity = 255) = 0;
 
 	void drawEntities(BITMAP *dest);
+
+	Object* addObject(int x, int y, const char* type);
+	Object* registerObject(int tableRef);
+	void updateObjects();
+	void removeReference(Object* obj);
+	void addReference(Object* obj);
 
 	// Coordinate space converters
 	virtual Point screenToTile(Point screenCoords);
@@ -231,12 +214,13 @@ public:
 	TiledMapLayer *mapLayers[2];
 	int nrLayers;
 
+	// Entity list
+	list<Object*> objects;
+
+
 protected:
 	//Tile** tileMap;
 	int mapWidth, mapHeight;
-
-	// Entity list
-	list<Entity*> entities;
 
 	// Camera properties
 	Point cameraCoords;

@@ -9,8 +9,10 @@
     (at your option) any later version.
 */
 
+#include "object.h"
 #include "tiled_map.h"
 #include "../common.h"
+#include "../script.h"
 #include <stdio.h>
 #include <allegro.h>
 #include <map>
@@ -101,84 +103,10 @@ void Tile::setType(TileType *tileType)
 }
 
 
-// Entity class ==============================================================
+// Entity sorting helper class ===============================================
 
-Entity::Entity()
-{
-	bitmap = NULL;
-	drawMode = DM_MASKED;
-	alpha = 255;
-	selected = false;
-}
-
-bool Entity::visible(BITMAP *dest, Point screenCoords)
-{
-	if (!bitmap) return false;
-
-	return !(dest->cl > screenCoords.x + bitmap->w ||
-			 dest->cr < screenCoords.x ||
-			 dest->ct > (screenCoords.y - pos.z) ||
-			 dest->cb < (screenCoords.y - pos.z ) - bitmap->h);
-}
-
-void Entity::draw(BITMAP *dest, Point screenCoords)
-{
-	if (bitmap) {
-		switch (drawMode)
-		{
-		case DM_MULTIPLY:
-			set_multiply_blender(0,0,0,alpha);
-			drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-			break;
-		case DM_ADD:
-			set_add_blender(0,0,0,alpha);
-			drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-			break;
-		case DM_TRANS:
-			set_trans_blender(0,0,0,alpha);
-			drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-			break;
-		case DM_ALPHA:
-			set_alpha_blender();
-			break;
-		case DM_MASKED:
-			draw_sprite(
-				dest,
-				bitmap,
-				screenCoords.x,
-				screenCoords.y - bitmap->h - pos.z
-			);
-			break;
-		}
-
-		switch (drawMode) {
-		case DM_ADD:
-		case DM_MULTIPLY:
-		case DM_ALPHA:
-		case DM_TRANS:
-			draw_trans_sprite(
-				dest,
-				bitmap,
-				screenCoords.x,
-				screenCoords.y - bitmap->h - pos.z
-			);
-			drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
-			break;
-		}
-
-		if (debug_mode || selected) {
-			rect(
-				dest,
-				screenCoords.x-1, screenCoords.y - bitmap->h - pos.z-1,
-				screenCoords.x + bitmap->w+1, screenCoords.y - pos.z+1,
-				makecol(150,0,0)
-			);
-		}
-	}
-
-	if (debug_mode || selected) {
-		textprintf(dest, font, screenCoords.x - 1, screenCoords.y + 2, makecol(128,128,128), "%i, %i", pos.x, pos.y);
-	}
+bool EntityP::operator< (const EntityP& X) const {
+	return (ent->pos.y + ent->pos.z < X.ent->pos.y + X.ent->pos.z);
 }
 
 
@@ -496,12 +424,20 @@ TiledMap::TiledMap():
 
 TiledMap::~TiledMap()
 {
-	// Delete the layers!!
+	// Delete the layers
 	for (int i = 0; i < nrLayers; i++) {
 		if (mapLayers[i]) {
 			delete mapLayers[i];
 			mapLayers[i] = NULL;
 		}
+	}
+
+	// Delete the objects
+	list<Object*>::iterator i;
+	while (!objects.empty()) {
+		i = objects.begin();
+		delete (*i);
+		objects.erase(i);
 	}
 }
 
@@ -511,13 +447,12 @@ void TiledMap::setCamera(Point cam, Rectangle rect, bool center, bool modify)
 		cam.x -= rect.w / 2;
 		cam.y -= rect.h / 2;
 	}
-	if (modify)
-	{
+	if (modify) {
 		Point mapSize = getMapSize();
 		cam.x = MAX(0, MIN(mapSize.x - rect.w, cam.x));
 		cam.y = MAX(0, MIN(mapSize.y - rect.h, cam.y));
 	}
-
+	
 	cameraCoords = cam;
 	cameraScreenRect = rect;
 }
@@ -546,6 +481,17 @@ void TiledMap::saveTo(PACKFILE *file)
 
 	// Extra newline fixes last tile not loaded.
 	pack_fputs("\n", file);
+}
+
+int TiledMap::loadMap(const char* mapName)
+{
+	char tempstr[256] = "";
+	usprintf(tempstr, "%s", mapName);
+
+	PACKFILE *file = pack_fopen(tempstr, F_READ_PACKED);
+	this->loadFrom(file, tileRepository);
+	pack_fclose(file);
+	return 0;
 }
 
 void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
@@ -597,23 +543,63 @@ TiledMapLayer *TiledMap::getLayer(int i)
 	}
 }
 
-void TiledMap::addEntity(Entity* entity)
+Object* TiledMap::addObject(int x, int y, const char* type)
 {
-	if (entity) entities.push_front(entity);
+	console.log(CON_LOG, CON_VDEBUG, "Adding object of type \"%s\"...", type);
+
+	lua_getglobal(L, type);
+	if (!lua_istable(L, -1)) {
+		console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error: object type \"%s\" not defined.", type);
+	}
+	lua_pop(L, 1);
+
+	lua_newtable(L);
+	Object* newObject = new Object(lua_ref(L, 1), this);
+	newObject->x = x;
+	newObject->y = y;
+	
+	lua_getglobal(L, "inherit");
+	lua_getref(L, newObject->tableRef);
+	lua_getglobal(L, type);
+	if (lua_istable(L, -1)) {
+		lua_call(L, 2, 0);
+	}
+
+	objects.push_back(newObject);
+	newObject->initialize();
+
+	return newObject;
 }
 
-void TiledMap::removeEntity(Entity* entity)
+void TiledMap::removeReference(Object* obj)
 {
-	if (entity) entities.remove(entity);
+	if (obj) objects.remove(obj);
 }
+
+void TiledMap::addReference(Object* obj)
+{
+	if (obj) objects.push_back(obj);
+}
+
+Object* TiledMap::registerObject(int tableRef)
+{
+	console.log(CON_LOG, CON_VDEBUG, "Registering object.");
+	Object* newObject = new Object(tableRef, this);
+	
+	objects.push_back(newObject);
+	newObject->initialize();
+
+	return newObject;
+}
+
 
 void TiledMap::drawEntities(BITMAP *dest)
 {
 	list<EntityP> visibleEnts;
-	list<Entity*>::iterator i;
+	list<Object*>::iterator i;
 	list<EntityP>::iterator j;
 
-	for (i = entities.begin(); i != entities.end(); i++)
+	for (i = objects.begin(); i != objects.end(); i++)
 	{
 		if ((*i)->visible(dest, mapToScreen((*i)->pos)))
 		{
@@ -629,10 +615,47 @@ void TiledMap::drawEntities(BITMAP *dest)
 	}
 
 	if (debug_mode) {
-		textprintf(dest, font, cameraScreenRect.x + 10, cameraScreenRect.y + 10, makecol(200,200,200), "%i entities", entities.size());
+		textprintf(dest, font, cameraScreenRect.x + 10, cameraScreenRect.y + 10, makecol(200,200,200), "%i entities", objects.size());
 		textprintf(dest, font, cameraScreenRect.x + 10, cameraScreenRect.y + 20, makecol(200,200,200), "%i drawn entities", visibleEnts.size());
 	}
 }
+
+void TiledMap::updateObjects()
+{
+	list<Object*>::iterator i;
+
+	// Destroy all objects at the beginning of the object map
+	// that should be destroyed
+	while (!objects.empty() && (*objects.begin())->_destroy)
+	{
+		i = objects.begin();
+
+		delete (*i);
+		objects.erase(i);
+	}
+
+	// Iterate through all objects, destroying the dead and updating the others.
+	for (i = objects.begin(); i != objects.end(); i++)
+	{
+		if ((*i)->_destroy)
+		{
+			//console.log(CON_CONSOLE, CON_DEBUG, "Destroying object at (%d, %d)", (*i)->x, (*i)->y);
+			list<Object*>::iterator i2 = i;
+
+			// We can safely iterate one back because the first object never needs to
+			// be destroyed.
+			i--;
+
+			delete (*i2);
+			objects.erase(i2);
+		}
+		else
+		{
+			(*i)->update();
+		}
+	}
+}
+
 
 Point TiledMap::screenToTile(Point screenCoords)
 {
@@ -650,14 +673,24 @@ Point TiledMap::tileToScreen(Point tileCoords)
 
 SquareMap::SquareMap(int tileSize)
 {
-	tileWidth = tileSize;
-	tileHeight = tileSize;
+	this->tileWidth = tileSize;
+	this->tileHeight = tileSize;
+	setCamera(
+		Point(0,0),
+		Rectangle(0, 0, buffer->w, buffer->h),
+		false, false
+	);
 }
 
 SquareMap::SquareMap(int tileWidth, int tileHeight)
 {
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
+	setCamera(
+		Point(0,0),
+		Rectangle(0, 0, buffer->w, buffer->h),
+		false, false
+	);
 }
 
 void SquareMap::draw(BITMAP *dest, bool drawObstacle)

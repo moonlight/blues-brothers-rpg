@@ -1,8 +1,13 @@
 /*
- *  The Moonlight RPG engine  (see readme.txt about version info)
- *  By Bjørn Lindeijer
- *
- ************************************************************************************/
+    The Moonlight Engine - An extendable, portable, RPG-focused game engine.
+    Project Home: http://moeng.sourceforge.net/
+    Copyright (C) 2003  Bjørn Lindeijer
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+*/
 
 #include <allegro.h>
 #include <vector>
@@ -12,7 +17,7 @@
 #include "gui_procs.h"
 #include "../shared/tiled_map.h"
 #include "../shared/engine.h"
-
+#include "../shared/object.h"
 
 
 // Global variables
@@ -24,7 +29,7 @@ int debug_mode = 1;
 FONT* engine_font = NULL;
 list<Object*> selectedObjects;
 int selectedObjectType = 0;
-Map* theMap = NULL;
+//Map* theMap = NULL;
 bool selecting = false;
 int selection_start_x, selection_end_x;
 int selection_start_y, selection_end_y;
@@ -39,7 +44,7 @@ int selectedLayer = 0;
 vector<char*> tileSets;
 vector<TileType*> activeTileset;
 
-Entity* hoverEntity = NULL;
+Object* hoverEntity = NULL;
 BITMAP* hoverBitmap = NULL;
 
 char map_filename[1024] = "";
@@ -330,7 +335,7 @@ int menu_item_new_map()
 
 			if (itile_w > 0 && itile_h > 0 && imap_w > 0 && imap_h > 0)
 			{
-				theMap->setMap(currentMap);
+				//theMap->setMap(currentMap);
 				currentMap->resizeTo(0, 0);
 				currentMap->resizeTo(imap_w, imap_h);
 				ustrzcpy(map_filename, sizeof map_filename, "untitled.map");
@@ -362,7 +367,7 @@ int menu_item_load_map()
 		{
 			PACKFILE *file = pack_fopen(path_buf, F_READ_PACKED);
 			if (file) {
-				theMap->setMap(currentMap);
+				//theMap->setMap(currentMap);
 				currentMap->loadFrom(file, tileRepository);
 				pack_fclose(file);
 				ustrcpy(map_filename, path_buf);
@@ -391,7 +396,7 @@ int menu_item_load_old_map()
 		{
 			PACKFILE *file = pack_fopen(path_buf, F_READ_PACKED);
 			if (file) {
-				theMap->setMap(currentMap);
+				//theMap->setMap(currentMap);
 				currentMap->loadFromOld(file, tileRepository);
 				pack_fclose(file);
 				ustrcpy(map_filename, path_buf);
@@ -836,7 +841,7 @@ void deselect_objects()
 	list<Object*>::iterator i;
 	while (selectedObjects.size() > 0) {
 		Object* obj = selectedObjects.front();
-		obj->entity->selected = false;
+		obj->selected = false;
 		selectedObjects.remove(obj);
 	}
 }
@@ -845,7 +850,7 @@ void select_object(Object* obj)
 {
 	deselect_objects();
 
-	obj->entity->selected = true;
+	obj->selected = true;
 	selectedObjects.push_front(obj);
 }
 
@@ -855,7 +860,7 @@ void select_objects(list<Object*> objs)
 
 	list<Object*>::iterator i;
 	for (i = objs.begin(); i != objs.end(); i++) {
-		(*i)->entity->selected = true;
+		(*i)->selected = true;
 		selectedObjects.push_front((*i));
 	}
 }
@@ -864,7 +869,7 @@ void delete_objects(list<Object*> objs)
 {
 	while (objs.size() > 0) {
 		Object* obj = objs.front();
-		if (obj->entity->selected) selectedObjects.remove(obj);
+		if (obj->selected) selectedObjects.remove(obj);
 		//callMemberFunction(obj->tableRef, "destroy", "");
 		objs.remove(obj);
 		delete obj;

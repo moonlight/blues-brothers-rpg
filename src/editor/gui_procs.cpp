@@ -1,8 +1,13 @@
 /*
- *  The Moonlight RPG engine  (see readme.txt about version info)
- *  By Bjørn Lindeijer
- *
- ************************************************************************************/
+    The Moonlight Engine - An extendable, portable, RPG-focused game engine.
+    Project Home: http://moeng.sourceforge.net/
+    Copyright (C) 2003  Bjørn Lindeijer
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+*/
 
 #include <allegro.h>
 #include "agup.h"
@@ -12,6 +17,7 @@
 #include "../shared/tiled_map.h"
 #include "script.h"
 #include "../shared/engine.h"
+#include "../shared/object.h"
 #include "../common.h"
 
 
@@ -274,7 +280,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 		{
 			list<Object*>::iterator i;
 			// Iterate through all objects, calling the preRender function
-			for (i = theMap->objects.begin(); i != theMap->objects.end(); i++) {
+			for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++) {
 				callMemberFunction((*i)->tableRef, "preRender");
 				(*i)->update_entity();
 			}
@@ -378,14 +384,17 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 	case MSG_IDLE:
 		if (d->flags & D_GOTMOUSE) {
 			if (hoverEntity) {
-				Point hoverTile = currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y()));
+				Point hoverTile = currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y() + TILES_H));
 				Point new_hover = currentMap->tileToMap(hoverTile);
 				new_hover.x -= 12;
 				//Tile* cursorTile = currentMap->getTile(hoverTile);
 
-				if (hoverEntity->pos.x != new_hover.x ||
-					hoverEntity->pos.y != new_hover.y) {
-					hoverEntity->pos = new_hover;
+				if (hoverEntity->x != hoverTile.x ||
+					hoverEntity->y != hoverTile.y) {
+					hoverEntity->x = hoverTile.x;
+					hoverEntity->y = hoverTile.y;
+					//hoverEntity->mapPos = hoverTile;
+					hoverEntity->update_entity();
 					d->flags |= D_DIRTY;
 				}
 
@@ -418,11 +427,11 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 		break;
 
 	case MSG_GOTMOUSE:
-		if (hoverEntity) currentMap->addEntity(hoverEntity);
+		if (hoverEntity) currentMap->addReference(hoverEntity);
 		break;
 
 	case MSG_LOSTMOUSE:
-		if (hoverEntity) currentMap->removeEntity(hoverEntity);
+		if (hoverEntity) currentMap->removeReference(hoverEntity);
 		//uszprintf(status_message, 1024, "");
 		status_message[0] = '\0';
 		break;
@@ -477,7 +486,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 				lua_pushstring(L, typeName);
 				lua_gettable(L, LUA_GLOBALSINDEX);
 				if (!lua_isnil(L, -1)) {
-					lua_call(L, putLuaArguments(L, "m", theMap), 1);
+					lua_call(L, putLuaArguments(L, "m", currentMap), 1);
 					if (lua_istable(L, -1)) {
 						objectInstance = lua_ref(L, -1);
 					}
@@ -608,9 +617,9 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 				// Select the objects within the rectangle
 				list<Object*> objects;
 				list<Object*>::iterator i;
-				for (i = theMap->objects.begin(); i != theMap->objects.end(); i++)
+				for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++)
 				{
-					Point pos = (*i)->entity->pos;
+					Point pos = (*i)->pos;
 
 					if (selection_start_x > selection_end_x) {
 						int temp = selection_end_x;

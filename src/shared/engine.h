@@ -15,11 +15,10 @@
 #include "tiled_map.h"
 #include "../script.h"
 #include <list>
-#include "map.h"
 
 using namespace std;
 
-extern list<Map*> maps;
+extern list<TiledMap*> maps;
 
 #define DIR_NONE		-1
 #define DIR_UP			0
@@ -29,48 +28,6 @@ extern list<Map*> maps;
 
 #define TILES_W			24
 #define TILES_H			24
-
-
-
-//====================================================================================
-
-class Object
-{
-	static int id_counter;
-	Point mapPos;						// The position on the map
-
-public:
-	int _destroy;						// Object will be destroyed during next update.
-	double walking, speed;
-	int dir, prev_dir;
-	int count, tick;
-	BITMAP* bitmap;
-	double x, y, px, py, nx, ny;
-	int w, h;
-	int obstacle;						// Object is an obstacle to other objects.
-	int offset_x, offset_y, offset_z;
-	int id;
-	int tableRef;						// A reference to the associated Lua table
-	Entity* entity;						// A pointer to the associated map entity
-
-	Object(int luaTableRef, Map* myMap);
-	~Object();
-
-	// Methods
-	void walk(int dir, bool col);
-	void set_dir(int dir);
-
-	void initialize();
-	void check_stand_on();
-	void update();
-	void update_entity();
-
-	Map* getMap() {return map;}
-	void setMap(Map *newMap);
-
-private:
-	Map* map;
-};
 
 
 

@@ -15,7 +15,7 @@
 #include <vector>
 #include "../shared/tiled_map.h"
 #include "../shared/console.h"
-#include "../shared/map.h"
+#include "../shared/object.h"
 
 
 #define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0 beta"
@@ -27,7 +27,7 @@ extern DATAFILE *data;
 extern int debug_mode;
 extern FONT* engine_font;
 extern Console console;
-extern Map* theMap;
+//extern TiledMap* theMap;
 extern list<Object*> selectedObjects;
 extern int selectedObjectType;
 extern bool selecting;
@@ -43,7 +43,7 @@ extern int selectedLayer;
 extern vector<char*> tileSets;
 extern vector<TileType*> activeTileset;
 
-extern Entity* hoverEntity;
+extern Object* hoverEntity;
 extern BITMAP* hoverBitmap;
 
 extern int map_edit_mode;

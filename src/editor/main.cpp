@@ -1,8 +1,13 @@
 /*
- *  The Moonlight RPG engine  (see readme.txt about version info)
- *  By Bjørn Lindeijer
- *
- ************************************************************************************/
+    The Moonlight Engine - An extendable, portable, RPG-focused game engine.
+    Project Home: http://moeng.sourceforge.net/
+    Copyright (C) 2003  Bjørn Lindeijer
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+*/
 
 #include <allegro.h>
 #include "agup.h"
@@ -11,6 +16,7 @@
 #include "../shared/tiled_map.h"
 #include "script.h"
 #include "../common.h"
+#include "../shared/engine.h"
 
 
 void initialize();
@@ -232,11 +238,10 @@ void initialize()
 		}
 	}
 
-	theMap = new Map();
-	currentMap = theMap->map;
+	currentMap = new SquareMap(TILES_W, TILES_H);
 	ustrcpy(map_filename, "untitled.map");
 
-	hoverEntity = new Entity();
+	hoverEntity = new Object(0, NULL);
 	hoverBitmap = create_bitmap(24, 24);
 	if (hoverBitmap) {
 		clear_to_color(hoverBitmap, makecol(255,0,255));

@@ -184,14 +184,13 @@ void Canvas::drawBitmap(BITMAP *bmp, int dw, int dh, int sx, int sy, int sw, int
 	curX += dw;
 }
 
-void Canvas::drawViewport(int x, int y, int w, int h, int tx, int ty, Map* map)
+void Canvas::drawViewport(int x, int y, int w, int h, int tx, int ty, TiledMap* map)
 {
-	map->map->setCamera(
+	map->setCamera(
 		Point(tx, ty),
 		Rectangle(x, y, w, h),
 		true, true
 	);
 
-	map->map->draw(buffer);
+	map->draw(buffer);
 }
-

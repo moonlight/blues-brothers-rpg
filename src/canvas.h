@@ -13,6 +13,7 @@
 #define _INCLUDED_CANVAS_H_
 
 #include <allegro.h>
+#include "shared/tiled_map.h"
 
 class Canvas
 {
@@ -32,7 +33,7 @@ public:
 	void bitmapSize(BITMAP *bmp, int *width, int *height);
 	void drawText(const char *text);
 	void drawBitmap(BITMAP *bmp, int dw, int dh, int sx, int sy, int sw, int sh);
-	void drawViewport(int x, int y, int w, int h, int tx, int ty, Map* map);
+	void drawViewport(int x, int y, int w, int h, int tx, int ty, TiledMap* map);
 
 private:
 	int curX, curY;		// The current cursor position

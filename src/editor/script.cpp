@@ -12,6 +12,7 @@
 #include <allegro.h>
 #include <stdarg.h>
 #include "../shared/engine.h"
+#include "../shared/object.h"
 #include "editor.h"
 #include "../shared/console.h"
 #include "script.h"
@@ -171,7 +172,7 @@ int pushLuaValues(const char* desc, va_list vals)
 			case 's': lua_pushstring       (L,  va_arg(vals, char* ));             break; // String
 			case 'b': lua_pushlightuserdata(L,  va_arg(vals, BITMAP*));            break; // Bitmap
 			case 'o': lua_getref           (L, (va_arg(vals, Object*))->tableRef); break; // Object
-			case 'm': lua_pushlightuserdata(L,  va_arg(vals, Map*));               break; // Map
+			case 'm': lua_pushlightuserdata(L,  va_arg(vals, TiledMap*));               break; // TiledMap
 			default: valc--;
 			}
 
@@ -356,8 +357,8 @@ void getLuaArguments(lua_State *L, const char *args, ...)
 
 		case 'm':
 			{
-				Map **a = va_arg(ap, Map**);
-				if (lua_islightuserdata(L, -n + argc)) *a = (Map*)lua_touserdata(L, -n + argc);
+				TiledMap **a = va_arg(ap, TiledMap**);
+				if (lua_islightuserdata(L, -n + argc)) *a = (TiledMap*)lua_touserdata(L, -n + argc);
 				else luaL_typerror(L, argc+1, lua_typename(L, LUA_TLIGHTUSERDATA));
 			}
 			break;
@@ -423,7 +424,7 @@ int l_add_object(lua_State *L)
 {
 	int x, y;
 	const char* type;
-	Map* map;
+	TiledMap* map;
 
 	getLuaArguments(L, "iism", &x, &y, &type, &map);
 
@@ -454,7 +455,7 @@ int l_register_class(lua_State *L)
 int l_register_object(lua_State *L)
 {
 	int ref;
-	Map *map;
+	TiledMap *map;
 
 	getLuaArguments(L, "tm", &ref, &map);
 	
@@ -543,7 +544,7 @@ int l_load_map(lua_State *L)
 
 	if (exists(map_name)) {
 		console.log(CON_LOG, CON_ALWAYS, "Loading map \"%s\"...", map_name);
-		Map* map = new Map();
+		TiledMap* map = new SquareMap(TILES_W, TILES_H);
 		map->loadMap(map_name);
 		maps.push_front(map);
 		return putLuaArguments(L, "m", map);
@@ -583,23 +584,23 @@ int object_gettable(lua_State *L)
 			return 0;
 		}
 
-		if (strcmp(index, "speed"    ) == 0) {return putLuaArguments(L, "d", obj->speed           );}
-		if (strcmp(index, "walking"  ) == 0) {return putLuaArguments(L, "d", obj->walking         );}
-		if (strcmp(index, "x"        ) == 0) {return putLuaArguments(L, "d", obj->x               );}
-		if (strcmp(index, "y"        ) == 0) {return putLuaArguments(L, "d", obj->y               );}
-		if (strcmp(index, "w"        ) == 0) {return putLuaArguments(L, "i", obj->w               );}
-		if (strcmp(index, "h"        ) == 0) {return putLuaArguments(L, "i", obj->h               );}
-		if (strcmp(index, "offset_x" ) == 0) {return putLuaArguments(L, "i", obj->offset_x        );}
-		if (strcmp(index, "offset_y" ) == 0) {return putLuaArguments(L, "i", obj->offset_y        );}
-		if (strcmp(index, "offset_z" ) == 0) {return putLuaArguments(L, "i", obj->offset_z        );}
-		if (strcmp(index, "draw_mode") == 0) {return putLuaArguments(L, "i", obj->entity->drawMode);}
-		if (strcmp(index, "alpha"    ) == 0) {return putLuaArguments(L, "i", obj->entity->alpha   );}
-		if (strcmp(index, "dir"      ) == 0) {return putLuaArguments(L, "i", obj->dir             );}
-		if (strcmp(index, "tick_time") == 0) {return putLuaArguments(L, "i", obj->tick            );}
-		if (strcmp(index, "obstacle" ) == 0) {return putLuaArguments(L, "i", obj->obstacle        );}
-		if (strcmp(index, "bitmap"   ) == 0) {return putLuaArguments(L, "b", obj->bitmap          );}
-		if (strcmp(index, "map"      ) == 0) {return putLuaArguments(L, "m", obj->getMap()        );}
-		if (strcmp(index, "id"       ) == 0) {return putLuaArguments(L, "i", obj->id              );}
+		if (strcmp(index, "speed"    ) == 0) {return putLuaArguments(L, "d", obj->speed    );}
+		if (strcmp(index, "walking"  ) == 0) {return putLuaArguments(L, "d", obj->walking  );}
+		if (strcmp(index, "x"        ) == 0) {return putLuaArguments(L, "d", obj->x        );}
+		if (strcmp(index, "y"        ) == 0) {return putLuaArguments(L, "d", obj->y        );}
+		if (strcmp(index, "w"        ) == 0) {return putLuaArguments(L, "i", obj->w        );}
+		if (strcmp(index, "h"        ) == 0) {return putLuaArguments(L, "i", obj->h        );}
+		if (strcmp(index, "offset_x" ) == 0) {return putLuaArguments(L, "i", obj->offset_x );}
+		if (strcmp(index, "offset_y" ) == 0) {return putLuaArguments(L, "i", obj->offset_y );}
+		if (strcmp(index, "offset_z" ) == 0) {return putLuaArguments(L, "i", obj->offset_z );}
+		if (strcmp(index, "draw_mode") == 0) {return putLuaArguments(L, "i", obj->drawMode );}
+		if (strcmp(index, "alpha"    ) == 0) {return putLuaArguments(L, "i", obj->alpha    );}
+		if (strcmp(index, "dir"      ) == 0) {return putLuaArguments(L, "i", obj->dir      );}
+		if (strcmp(index, "tick_time") == 0) {return putLuaArguments(L, "i", obj->tick     );}
+		if (strcmp(index, "obstacle" ) == 0) {return putLuaArguments(L, "i", obj->obstacle );}
+		if (strcmp(index, "bitmap"   ) == 0) {return putLuaArguments(L, "b", obj->bitmap   );}
+		if (strcmp(index, "map"      ) == 0) {return putLuaArguments(L, "m", obj->getMap() );}
+		if (strcmp(index, "id"       ) == 0) {return putLuaArguments(L, "i", obj->id       );}
 
 		// None of the above, so deal with the value normally
 		/*
@@ -654,23 +655,23 @@ int object_settable(lua_State *L)
 			return 0;
 		}
 
-		     if (strcmp(index, "speed"    ) == 0) {obj->speed            = lua_tonumber(L, -1);}
-		else if (strcmp(index, "walking"  ) == 0) {obj->walking          = lua_tonumber(L, -1);}
-		else if (strcmp(index, "x"        ) == 0) {obj->x                = lua_tonumber(L, -1);}
-		else if (strcmp(index, "y"        ) == 0) {obj->y                = lua_tonumber(L, -1);}
-		else if (strcmp(index, "w"        ) == 0) {obj->w                = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "h"        ) == 0) {obj->h                = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "offset_x" ) == 0) {obj->offset_x         = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "offset_y" ) == 0) {obj->offset_y         = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "offset_z" ) == 0) {obj->offset_z         = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "draw_mode") == 0) {obj->entity->drawMode = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "alpha"    ) == 0) {obj->entity->alpha    = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "dir"      ) == 0) {obj->dir              = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "tick_time") == 0) {obj->tick             = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "obstacle" ) == 0) {obj->obstacle         = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "bitmap"   ) == 0) {obj->bitmap           = (BITMAP*)lua_touserdata(L, -1);}
+		     if (strcmp(index, "speed"    ) == 0) {obj->speed    = lua_tonumber(L, -1);}
+		else if (strcmp(index, "walking"  ) == 0) {obj->walking  = lua_tonumber(L, -1);}
+		else if (strcmp(index, "x"        ) == 0) {obj->x        = lua_tonumber(L, -1);}
+		else if (strcmp(index, "y"        ) == 0) {obj->y        = lua_tonumber(L, -1);}
+		else if (strcmp(index, "w"        ) == 0) {obj->w        = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "h"        ) == 0) {obj->h        = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "offset_x" ) == 0) {obj->offset_x = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "offset_y" ) == 0) {obj->offset_y = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "offset_z" ) == 0) {obj->offset_z = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "draw_mode") == 0) {obj->drawMode = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "alpha"    ) == 0) {obj->alpha    = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "dir"      ) == 0) {obj->dir      = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "tick_time") == 0) {obj->tick     = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "obstacle" ) == 0) {obj->obstacle = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "bitmap"   ) == 0) {obj->bitmap   = (BITMAP*)lua_touserdata(L, -1);}
 		else if (strcmp(index, "map"      ) == 0) {
-			Map* newMap = (Map*)lua_touserdata(L, -1);
+			TiledMap* newMap = (TiledMap*)lua_touserdata(L, -1);
 			if (newMap != obj->getMap()) obj->setMap(newMap);
 		}
 		else {
