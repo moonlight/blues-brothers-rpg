@@ -1031,7 +1031,12 @@ int object_settable(lua_State *L)
 		else if (strcmp(index, "offset_y" ) == 0) {obj->offset_y = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "offset_z" ) == 0) {obj->offset_z = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "draw_mode") == 0) {obj->drawMode = (int)lua_tonumber(L, -1);}
-		else if (strcmp(index, "alpha"    ) == 0) {obj->alpha    = (int)lua_tonumber(L, -1);}
+		else if (strcmp(index, "alpha"    ) == 0) {
+			obj->alpha = (int)lua_tonumber(L, -1);
+			obj->drawMode = (obj->alpha == 255) ?
+				((obj->drawMode == DM_TRANS) ? DM_MASKED : obj->drawMode) :
+				((obj->drawMode == DM_MASKED) ? DM_TRANS : obj->drawMode);
+		}
 		else if (strcmp(index, "dir"      ) == 0) {obj->dir      = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "tick_time") == 0) {obj->tick     = (int)lua_tonumber(L, -1);}
 		else if (strcmp(index, "obstacle" ) == 0) {obj->obstacle = (int)lua_tonumber(L, -1);}
