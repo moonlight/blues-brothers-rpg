@@ -33,6 +33,10 @@ City = Map:subclass
 		self.jakePortal = self:spawn(Portal, 93, 72);
 		self.jakePortal:setOutDir(DIR_DOWN);
 
+		self.sewersInPortal = self:spawn(Portal, 106, 72)
+		self.sewersInPortal:setOutDir(DIR_UP);
+		self.sewersOutPortal = self:spawn(Portal, 106, 69)
+		self.sewersOutPortal:setOutDir(DIR_UP);
 		copcar = self:spawn(CopCar, 106, 123);
 --		Wheel1 = self:spawn(Wheel, 107, 123);
 --		Wheel1.offset_x = 5;

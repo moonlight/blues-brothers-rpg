@@ -18,7 +18,7 @@ MainMenu = GuiMenu:subclass
 			ActionFadeOutMap(50),
 			ActionSetVariable(_G, "show_main_menu", nil),
 			ActionCallFunction(elwood.setMap, elwood, sewersMap),
-			ActionSetPosition(elwood, 57, 22, DIR_DOWN),
+			ActionSetPosition(elwood, 78, 38, DIR_DOWN),
 			ActionSetPosition(jake, 95, 37, DIR_DOWN),
 			ActionFadeInMap(50),
 			ActionExModeOff(),

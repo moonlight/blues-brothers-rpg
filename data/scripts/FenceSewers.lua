@@ -100,9 +100,30 @@ FenceH7 = Decoration:subclass
 		Decoration.init(self)
 	end;
 
+	switch = function(self)
+		if (self.isOpen == false) then
+			self.isOpen = true
+			self.obstacle = 0
+		else
+			self.isOpen = false
+			self.obstacle = 1
+		end
+
+		self:updateBitmap()
+	end;
+
+	updateBitmap = function(self)
+		if (self.isOpen == false) then
+			self.bitmap = self.bitmaps[1]
+		else
+			self.bitmap = self.bitmaps[2]
+		end
+	end;
+
 	defaultproperties = {
 		bCenterBitmap = false,
 		bCenterOnTile = false,
+		isOpen = false,
 		obstacle = 1,
 		h = 1,
 		w = 7,
@@ -123,7 +144,7 @@ FenceV8 = Decoration:subclass
 	defaultproperties = {
 		bCenterBitmap = false,
 		bCenterOnTile = false,
-		offset_y = -33,
+		offset_y = -34,
 		offset_x = 5,
 		obstacle = 1,
 		w = 1,

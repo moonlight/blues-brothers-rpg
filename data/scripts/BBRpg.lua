@@ -26,9 +26,14 @@ BBRpg = Game:subclass
 		sewersMap = Sewers()
 		jakesMap = JakesPlace()
 
+		-- Links between portals
 		cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)
 		jakesMap.doorPortal:linkToPortal(cityMap.jakePortal)
-
+		sewersMap.stairsInPortal:linkToPortal(cityMap.sewersInPortal)
+		cityMap.sewersInPortal:linkToPortal(sewersMap.stairsInPortal)		
+		sewersMap.stairsOutPortal:linkToPortal(cityMap.sewersOutPortal)
+		cityMap.sewersOutPortal:linkToPortal(sewersMap.stairsOutPortal)
+		
 		-- Spawn the player
 		playerController = PlayerController()
 

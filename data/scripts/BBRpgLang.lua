@@ -205,6 +205,9 @@ BBRpgLang = Lang:subclass
 			{"Jake", "Good plan."},
 			{"Elwood", "Why don't the three of us start a band?"},
 		},		
+		WallAndTubeElwood = {
+			{"{PLAYER}", "Hmmm, I can't get in the tube. It's to damn small!"},
+		},
 		WallAndTube1 = {
 			{"{PLAYER}", "I'm gonna crawl in this tube."},
 		},

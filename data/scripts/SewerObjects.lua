@@ -5,9 +5,9 @@
 import("Actor.lua")
 import("Decoration.lua")
 
-Lever1 = Actor:subclass
+Lever = Actor:subclass
 {
-	name = "Lever1";
+	name = "Lever";
 
 	init = function(self)
 		Actor.init(self)
@@ -25,11 +25,19 @@ Lever1 = Actor:subclass
 		else
 			self.isOpen = false
 		end
+		
+		if (self.gate) then
+			self.gate:switch()
+		end
 		self:updateBitmap()
 	end;
-
+	
+	opens = function(self, gate)		self.gate = gate
+	end;
 	defaultproperties = {
+		gate = nil,
 		offset_y = -12,
+		offset_x = 12,
 		isOpen = false,
 		bCanActivate = true,
 		bitmaps = extr_array(m_get_bitmap("lever.bmp"), 5, 15),
@@ -50,7 +58,7 @@ Ladder1 = Decoration:subclass
 		bCenterBitmap = false,
 		bCenterOnTile = false,
 		offset_y = 0,
-		obstacle = 1,
+		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("ladder.bmp"),
 	}
@@ -69,7 +77,7 @@ Ladder2 = Decoration:subclass
 		bCenterBitmap = false,
 		bCenterOnTile = false,
 		offset_y = 0,
-		obstacle = 1,
+		obstacle = 0,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("ladder.bmp"),
 	}
@@ -81,27 +89,31 @@ WallAndTube = Actor:subclass
 
 	init = function(self)
 		Actor.init(self)
-	end;
-
-	event_bumped_into = function(self, obj)
-		local player = m_get_player()
-
-		if (player.dir == DIR_UP) then
+	end;
+	event_bumped_into = function(self, player)
+		if (player:instanceOf(Elwood)) then
 			ActionController:addSequence{
-				ActionExModeOn(),
-				ActionConversation(lang:getConv("WallAndTube1")),
-				ActionSetPosition(m_get_player(), 54, 45, DIR_UP),
+				ActionExModeOn(),	
+				ActionConversation(lang:getConv("WallAndTubeElwood")),
 				ActionExModeOff(),
 			}
 		else
-			ActionController:addSequence{
-				ActionExModeOn(),
-				ActionConversation(lang:getConv("WallAndTube2")),
-				ActionSetPosition(m_get_player(), 54, 47, DIR_DOWN),
-				ActionExModeOff(),
-			}
+			if (player.dir == DIR_UP) then
+				ActionController:addSequence{
+					ActionExModeOn(),
+					ActionConversation(lang:getConv("WallAndTube1")),
+					ActionSetPosition(player, 54, 46, DIR_UP),
+					ActionExModeOff(),
+				}
+			else
+				ActionController:addSequence{
+					ActionExModeOn(),
+					ActionConversation(lang:getConv("WallAndTube2")),
+					ActionSetPosition(player, 54, 48, DIR_DOWN),
+					ActionExModeOff(),
+				}
+			end
 		end
-			
 	end;
 
 	defaultproperties = {
@@ -122,25 +134,31 @@ WallAndTube2 = Actor:subclass
 		Actor.init(self)
 	end;
 
-	event_bumped_into = function(self, obj)
-		local player = m_get_player()
+	event_bumped_into = function(self, player)
 
-		if (player.dir == DIR_DOWN) then
+		if (player:instanceOf(Elwood)) then
 			ActionController:addSequence{
-				ActionExModeOn(),
-				ActionConversation(lang:getConv("WallAndTube1")),
-				ActionSetPosition(m_get_player(), 54, 25, DIR_DOWN),
+				ActionExModeOn(),	
+				ActionConversation(lang:getConv("WallAndTubeElwood")),
 				ActionExModeOff(),
 			}
 		else
-			ActionController:addSequence{
-				ActionExModeOn(),
-				ActionConversation(lang:getConv("WallAndTube2")),
-				ActionSetPosition(m_get_player(), 54, 23, DIR_UP),
-				ActionExModeOff(),
-			}
-		end
-			
+			if (player.dir == DIR_DOWN) then
+				ActionController:addSequence{
+					ActionExModeOn(),
+					ActionConversation(lang:getConv("WallAndTube1")),
+					ActionSetPosition(player, 54, 26, DIR_DOWN),
+					ActionExModeOff(),
+				}
+			else
+				ActionController:addSequence{
+					ActionExModeOn(),
+					ActionConversation(lang:getConv("WallAndTube2")),
+					ActionSetPosition(player, 54, 24, DIR_UP),
+					ActionExModeOff(),
+				}
+			end
+		end			
 	end;
 
 	defaultproperties = {
