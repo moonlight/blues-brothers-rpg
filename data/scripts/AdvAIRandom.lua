@@ -43,8 +43,12 @@ AdvAIRandom = Controller:subclass
 	notifyWalkFinished = function(self)
                 if (self.distanceToWalk <= 0 and self.pawn.bAttacking == false) then
 		        -- Reached his goal, pause and choose new goal.
-			-- korte wachttijd, anders staat ie na elke tile even (te lang) stil
-			self.waitTime = math.random(4) + 1
+			if (self.target or self.scaring) then
+				-- korte wachttijd, anders staat ie na elke tile even (te lang) stil
+				self.waitTime = math.random(4) + 1
+			else
+				self.waitTime = math.random(100) + 2
+			end;
 		else
 		        -- Walking to goal, keep walking.
 		        self.distanceToWalk = self.distanceToWalk - 1
@@ -87,7 +91,6 @@ AdvAIRandom = Controller:subclass
 
 	-- timebom
 	tick = function(self)
-		m_message("ns: " .. self.nature .. "," .. self.pawn.nature)
 		if (self.pawn.bDead) then return end
 
 		if (self.pawn.charging > 0) then self.pawn.charging = self.pawn.charging - 1 end
@@ -111,6 +114,7 @@ AdvAIRandom = Controller:subclass
 				if (self.target) then
 					playerDist = self.pawn:distanceTo(self.target)
 				elseif (self.scaring) then
+					-- bangmakerij
 					playerDist = self.pawn:distanceTo(self.scaring)
 				else
 					playerDist = 100
@@ -120,24 +124,30 @@ AdvAIRandom = Controller:subclass
 					self.pawn.dir = self.pawn:directionTo(self.target)
 					self.pawn:attack()
 					self.waitTime = self.pawn.attackTime + self.pawn.chargeTime + 10
-				end;
-
-				self.distanceToWalk = 0
-
-				if (self.target and playerDist < 5) then
-					-- hot persuit mode
-					self.pawn.dir = self:goingDirection(self.pawn:directionTo(self.target), nil);
-				elseif (self.scaring and playerDist < 15) then
-					-- scared; will run in opposit direction
-					local tmpdir = self.pawn:directionTo(self.scaring)
-					self.pawn.dir = self:goingDirection(self:reverseDirection(tmpdir), tmpdir);
 				else
-					-- walk around
-					self.scaring = nil;
-					self.target = nil;
-					self.pawn.dir = self.pawn:randomFreeTileAround()
+					if (self.target or self.scaring) then
+						-- direct loopafstand bij vijand of bangmaker
+						self.distanceToWalk = 0
+					else
+						-- anders random loopafstand
+						self.distanceToWalk = -1 + math.random(3)
+					end;
+
+					if (self.target and playerDist < 5) then
+						-- hot persuit mode
+						self.pawn.dir = self:goingDirection(self.pawn:directionTo(self.target), nil);
+					elseif (self.scaring and playerDist < 15) then
+						-- scared; will run in opposit direction
+						local tmpdir = self.pawn:directionTo(self.scaring)
+						self.pawn.dir = self:goingDirection(self:reverseDirection(tmpdir), tmpdir);
+					else
+						-- walk around
+						self.scaring = nil;
+						self.target = nil;
+						self.pawn.dir = self.pawn:randomFreeTileAround()
+					end;
+					self.pawn:walk(self.pawn.dir)
 				end;
-				self.pawn:walk(self.pawn.dir)
 			end
 		end;
 	end;
