@@ -162,7 +162,48 @@ Bed = Decoration:subclass
 	name = "Bed";
 	bPlaceable = true;
 
+	activatedBy = function(self, obj)
+		local bitmapje = self.bitmap
+	
+		if (obj.health == obj.maxHealth) then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("BedAwake")),
+			}
+		elseif (not self.bOccupied) then
+			ActionController:addSequence{
+				ActionSetVariable(self, "bOccupied", true),
+				ActionConversation(lang:getConv("BedTiredBefore")),
+				ActionSetVariable(obj, "bSleeping", true),
+				ActionChangeBitmap(self, obj.sleepBitmap),
+				ActionChangeBitmap(obj.shadow, nil),
+				ActionSetVariable(obj, "alpha", 0),
+				ActionSetVariable(obj, "bitmap"),
+				ActionSetVariable(obj, "obstacle", 0),
+				ActionSetVariable(obj, "onActivate",
+					function(self2)
+						self2.bSleeping = false
+						self2.onActivate = nil
+						ActionController:addSequence{
+							ActionSetVariable(obj, "alpha", 255),
+							ActionSetVariable(obj, "dir", DIR_DOWN),
+							ActionChangeBitmap(self, bitmapje),
+							ActionChangeBitmap(obj.shadow, obj.shadow.bitmap),
+							ActionConversation(lang:getConv("BedTiredAfter")),
+							ActionSetVariable(obj, "obstacle", 1),
+							ActionSetVariable(self, "bOccupied", false),
+						}
+					end),
+			}
+		else
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("BedOccupied")),
+			}
+		end
+	end;
+	
 	defaultproperties = {
+		bOccupied = false,
+		bCanActivate = true,
 		bCenterOnTile = false,
 		bCenterBitmap = false,
 		offset_x = 2,
@@ -172,6 +213,7 @@ Bed = Decoration:subclass
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("bed.bmp"),
 	}
+	
 }
 
 Couch = Decoration:subclass

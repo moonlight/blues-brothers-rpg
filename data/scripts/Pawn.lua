@@ -126,6 +126,8 @@ Pawn = Actor:subclass
 
 
 	defaultproperties = {
+		bSleeping = false,
+
 		-- The Controller possessing this Pawn
 		controller = nil,
 

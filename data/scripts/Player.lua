@@ -124,7 +124,8 @@ Player = Character:subclass
 
 	defaultproperties =
 	{
-		deathBitmap = m_get_bitmap("elwood_dead.bmp"),
+		deathBitmap = nil,
+		sleepBitmap = nil,
 		strength = 5,
 		dexterity = 5,
 		agility = 5,

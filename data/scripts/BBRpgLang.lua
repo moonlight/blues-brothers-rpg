@@ -235,6 +235,19 @@ BBRpgLang = Lang:subclass
 			{"Guard 1", "What?! What are you doing here! Lock the door!"},
 			{"Guard 2", "Prepare for combat."},
 		},
+		BedTiredBefore = {
+			{"{PLAYER}", "Djeez, I'm wasted. Let's take a nap."},
+		},
+		BedTiredAfter = {
+			{"{PLAYER}", "Ah, that was great."},
+		},
+		BedAwake = {
+			{"{PLAYER}", "I can always return here to take a nap."},
+		},
+		BedOccupied = {
+			{"{PLAYER}", "Hmm, it seems that somebody is sleeping in this bed."},
+		},
+
 		
 		-- Conversation tables. Used for random events.
 		Guitar = {

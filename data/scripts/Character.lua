@@ -64,6 +64,7 @@ Character = Pawn:subclass
 
 	tick = function(self)
 		Pawn.tick(self)
+		if (self.bSleeping and self.health < self.maxHealth) then self.health = self.health + 0.002 end
 		self:updateBitmap()
 	end;
 
@@ -107,6 +108,8 @@ Character = Pawn:subclass
 			if (v:instanceOf(class)) then return true end
 		end
 	end;
+
+
 
 	-- To be implemented: removeFromInventory = function(self, obj)
 
