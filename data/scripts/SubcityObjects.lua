@@ -20,25 +20,57 @@ Dustbin = Decoration:subclass
 {
 	name = "Dustbin";
 	bPlaceable = true;
+	
+	init = function(self)
+	    self.snowTop = self:spawn(SnowOnDustbin, self.x, self.y)
+	end;
 
 	takeDamage = function(self, damage)
 		m_message("Dustbin hit!")
+
 		ActionController:addSequence{
-			ActionTweenVariable(
-				self, "offset_x", 20, 1 , self.offset_x,
-				function(from, to, perc)
-					return from+math.ceil(math.mod(perc * 6, 2) -0.5)
-				end
-			),
-			ActionSetVariable(self, "offset_x", self.offset_x),
+			ActionParallel {
+				ActionSequence {
+					ActionTweenVariable(
+						self, "offset_x", 20, 1 , self.offset_x,
+						function(from, to, perc)
+							return from+math.ceil(math.mod(perc * 6, 2) -0.5)
+						end
+					),
+					ActionSetVariable(self, "offset_x", self.offset_x),
+				},
+				ActionSequence {
+					ActionSetVariable(self.snowTop, "offset_y", 3),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.tga")),
+					ActionTweenVariable(self.snowTop, "alpha", 25, 0),
+					ActionSetVariable(self.snowTop, "offset_y", 4),
+					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.tga")),
+					ActionTweenVariable(self.snowTop, "alpha", 100, 0),
+				},
+			}
 		}
 	end;
-
+	
 	defaultproperties = {
 		obstacle = 1,
 		draw_mode = DM_ALPHA,
 		bitmap = m_get_bitmap("dustbin.tga"),
 		convTableKeyword = "Dustbin",
+	}
+}
+SnowOnDustbin = Decoration:subclass
+{
+	name = "SnowOnDustbin";
+	bPlaceable = true;
+	
+	defaultproperties = {
+	    z = 100,
+	    offset_z = 100,
+	    offset_y = 20,
+	    offset_x = 3,
+	    alpha = 255,
+	    draw_mode = DM_ALPHA,
+	    bitmap = m_get_bitmap("dustbin_snow1.tga"),
 	}
 }
 
