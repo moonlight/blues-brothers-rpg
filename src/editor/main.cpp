@@ -193,8 +193,7 @@ void initialize()
 	h = 24;
 	x = margin;
 	y = main_dlg[6].y - margin - h;
-	for (i = 0; i < 5; i++)
-	{
+	for (i = 0; i < 5; i++) {
 		set_dialog_size(&edit_obstacle_layer[i],   x + i*(w+margin),     y,     w,     h);
 		set_dialog_size(&edit_obstacle_layer[i+5], x + i*(w+margin) + 2, y + 2, w - 4, h - 4);
 	}
@@ -210,6 +209,14 @@ void initialize()
 	set_dialog_size(&main_dlg[5],          x,                 y + h - 14,      w - 11,                14);
 	set_dialog_size(&main_dlg[10],         x + w - 12,        y + h - 12,      10,                    10);
 
+	// Edit objects area
+	w = 123;
+	h = 120;
+	x = margin;
+	y = main_dlg[6].y - margin - h;
+	set_dialog_size(&edit_objects_layer[0], x,                y,               w,                     h);
+	set_dialog_size(&edit_objects_layer[1], 136, main_dlg[6].y - margin - 14,  97,                    14);
+	
 
 	// Initialize map and tile stuff
 	tileRepository = new TileRepository();
