@@ -333,8 +333,8 @@ BBRpgLang = Lang:subclass
 			{{"Mr. Prosser", "Don't touch it."}},
 		},
 		Sunflower2 = {
-			{{"{Player}", "Another Sunflower of van Gogh?!"}},
-			{{"{Player}", "This is weird..."}},
+			{{"{PLAYER}", "Another Sunflower of van Gogh?!"}},
+			{{"{PLAYER}", "This is weird..."}},
 		},
 		MessPile = {
 			{{"{PLAYER}", "Wow, here's a pile that's hard to clean up."}},

@@ -25,7 +25,7 @@ ElecDoor = Actor:subclass
 			self.closeTimer = self.closeTimer - 1
 			if (self.closeTimer <= 0) then
 				self.closeTimer = 1
-				if (table.getn(m_get_objects_at(self.x, self.y, self.map)) == 1) then
+				if (table.getn(m_get_objects_at(self.x + 0.5, self.y - 0.5, self.map)) == 1) then
 					self.closeTimer = 0
 					self.toStatus = 0
 				end
