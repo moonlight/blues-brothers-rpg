@@ -12,7 +12,7 @@ BBRpgHud = Hud:subclass
 	postRender = function(self, canvas)
 		local player = self.playerSwitcher:getCurrentHost()
 		if (player) then
-			if (player.map == sewersMap.map) then
+			if (player.myMap:instanceOf(Sewers)) then
 				-- Draw map icon in top right
 				guiTheme:drawBox(320 - 50 - 18, 14, 54, 54)
 				canvas:setCursor(320 - 50 - 16, 16)

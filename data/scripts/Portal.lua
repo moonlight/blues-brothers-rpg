@@ -20,7 +20,7 @@ Portal = Actor:subclass
 					ActionWalk(actor, actor.dir, 1, false),
 					ActionFadeOutMap(100 / actor.speed),
 				},
-				ActionCallFunction(actor.setMap, actor, self.linkedPortal.map),
+				ActionCallFunction(actor.setMap, actor, self.linkedPortal.myMap),
 				ActionSetPosition(actor, self.linkedPortal.x, self.linkedPortal.y),
 				ActionParallel{
 					ActionFadeInMap(100 / actor.speed),
