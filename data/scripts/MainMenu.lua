@@ -22,7 +22,7 @@ MainMenu = GuiMenu:subclass
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
 			ActionSetPosition(elwood, 94, 73, DIR_UP, cityMap),
-			ActionSetPosition(jake, 33, 11, DIR_UP, cityMap),
+			ActionSetPosition(jake, 93, 73, DIR_UP, cityMap),
 			ActionSetCameraTarget(elwood, false),
 			ActionPlaySong(cityMap.musicFilename, 100),
 			ActionFadeInMap(100),
