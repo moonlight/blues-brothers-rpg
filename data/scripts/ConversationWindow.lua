@@ -1,7 +1,7 @@
 --
 -- This file contains the conversation windows class.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Interaction.lua")
 

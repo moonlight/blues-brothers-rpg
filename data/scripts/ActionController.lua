@@ -3,7 +3,7 @@
 -- can add actions to the controller, which will execute in
 -- parralel. The actions are defined elsewhere.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 ActionController =
 {

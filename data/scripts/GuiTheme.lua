@@ -1,6 +1,6 @@
 --
 -- The GUI theme
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 

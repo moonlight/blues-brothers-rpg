@@ -36,7 +36,7 @@
 --   ActionShowMapName(bitmap)
 --   ActionSetCameraTarget(target [, tween])
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 
 import("Object.lua")

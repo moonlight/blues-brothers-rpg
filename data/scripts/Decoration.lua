@@ -1,7 +1,8 @@
--- Decoration.lua
+--
 -- A subclass for decorations. Decorations can be animated and usually have
 -- some remarks attached to it.
--- By Bjørn Lindeijer
+--
+-- By Bjorn Lindeijer
 
 import("Actor.lua")
 

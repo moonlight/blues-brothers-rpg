@@ -1,6 +1,6 @@
 -- radio.lua
 -- The radio set, including the jumping speaker and pile of CDs.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Decoration.lua")
 import("Animation.lua")

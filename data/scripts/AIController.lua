@@ -1,6 +1,6 @@
 --
 -- Controls the behaviour of an enemy Pawn
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Controller.lua")
 

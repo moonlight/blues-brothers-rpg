@@ -1,6 +1,6 @@
 --
 -- A box used for use around message windows and menus
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 

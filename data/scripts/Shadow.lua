@@ -1,6 +1,6 @@
 --
 -- A shadow following his caster
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Actor.lua")
 

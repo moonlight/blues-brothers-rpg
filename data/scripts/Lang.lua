@@ -1,6 +1,6 @@
--- lang.lua
+--
 -- Contains all the stuff that is being said in the game
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 --
 -- This object holds written text, to easy translation of the game. Variables

@@ -1,6 +1,6 @@
 --
 -- The BBRpg GUI theme
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("GuiTheme.lua")
 

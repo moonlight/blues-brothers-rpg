@@ -15,7 +15,7 @@
 --
 -- This class is heavily based upon the architecture of the Unreal Engine.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 

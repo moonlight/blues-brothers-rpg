@@ -1,6 +1,6 @@
 --
--- Het ingame menu
--- By Bjørn Lindeijer
+-- The ingame menu
+-- By Bjorn Lindeijer
 
 import("GuiMenu.lua")
 

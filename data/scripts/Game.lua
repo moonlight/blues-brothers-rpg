@@ -1,6 +1,6 @@
 --
 -- This file defines some global functions for the game.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 import("ConversationWindow.lua")

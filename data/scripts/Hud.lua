@@ -1,6 +1,6 @@
 --
 -- This file contains the code for putting the HUD on the screen.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Interaction.lua")
 

@@ -1,7 +1,7 @@
 --
 -- PlayerControllers are used by human players to control pawns.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Controller.lua")
 

@@ -3,7 +3,7 @@
 -- with the player (such as a menu). One InteractionMaster is used to handle
 -- all the interactions.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 
 import("Object.lua")

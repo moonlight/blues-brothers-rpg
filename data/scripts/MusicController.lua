@@ -1,11 +1,10 @@
--- music_control.lua
 --
 -- This file contains the music controller. It can be told to play and stop
 -- songs. As a bonus, it can also dynamically change the parameters of a
 -- channel over a period of time. Using this feature it can fade from one
 -- music to another.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 MC_NORMAL         = 0
 MC_FADE_IN        = 1

@@ -1,5 +1,5 @@
 -- Some spiders
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Enemy.lua")
 import("AIController.lua")

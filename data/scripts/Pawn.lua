@@ -1,6 +1,6 @@
 --
 -- A base class for anything that walks like a character
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Actor.lua")
 

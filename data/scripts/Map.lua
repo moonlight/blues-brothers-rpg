@@ -1,6 +1,6 @@
 --
 -- The Map class
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 
 import("Object.lua")

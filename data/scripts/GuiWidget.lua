@@ -1,6 +1,6 @@
 --
 -- The base class for any GUI widget.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 

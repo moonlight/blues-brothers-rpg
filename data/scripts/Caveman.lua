@@ -1,6 +1,6 @@
 --
 -- Caveman classes
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Enemy.lua")
 import("AnimationFunctions.lua")

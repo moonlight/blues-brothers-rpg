@@ -1,7 +1,7 @@
 --
 -- A sound object that can be either a short sample or an entire song. It can
 -- fade out and in and can be set to loop.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Object.lua")
 

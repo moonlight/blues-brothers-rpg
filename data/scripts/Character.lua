@@ -1,6 +1,6 @@
 --
 -- A character is a pawn with a specific animation scheme
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("Pawn.lua")
 import("Shadow.lua")

@@ -3,7 +3,7 @@
 -- job is to take input, postRender and tick calls and route them to
 -- individual interactions.
 --
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 
 import("Object.lua")

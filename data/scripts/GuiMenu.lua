@@ -1,4 +1,4 @@
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 
 import("Interaction.lua")

@@ -1,7 +1,7 @@
 --
 -- A modification of the general AIController, to take care
 -- of the queens ability to give birth.
--- By Bjørn Lindeijer
+-- By Bjorn Lindeijer
 
 import("AIController.lua")
 
