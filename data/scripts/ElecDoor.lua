@@ -89,3 +89,55 @@ ElecDoor = Actor:subclass
 	}
 }
 
+ElecDoorPrison = ElecDoor:subclass
+{
+	name = "ElecDoorPrison";
+
+	event_bumped_into = function(self, obj)
+		local dummy = cellsMap:spawn(Dummy, obj.x, obj.y - 2)
+
+		ElecDoor.event_bumped_into(self, obj)
+
+		if (self.firstTime) then
+			ActionController:addSequence{
+				ActionExModeOn(),
+				ActionWait(50),
+				ActionWalkPath(obj, "U2"),
+				ActionSetCameraTarget(dummy, false),
+				ActionTweenVariable(dummy, "y", 100, obj.y - 7),
+				ActionParallel{
+					ActionSequence{
+						ActionWait(20),
+						ActionSetVariable(self.evil_guard1, "dir", DIR_DOWN),
+						ActionWait(10),
+						ActionSetVariable(self.evil_guard2, "dir", DIR_DOWN),						
+					},
+					ActionSequence{
+						ActionConversation(lang:getConv("FightGuards")),
+					},
+				},
+				ActionWalkPath(obj, "U3"),
+				ActionExModeOff(),
+			};
+
+			self.firstTime = false
+		end
+	end;
+	
+	defaultproperties = {
+		firstTime = true,
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		offset_x = -3,
+		tick_time = 0,
+		isLocked = false,
+		closeTimer = 0,
+		openTime = 3,
+		period = 0.25,
+		bCanActivate = true,
+		obstacle = 1,
+		toStatus = 0,
+		status = 0,
+		bitmaps = extr_array(m_get_bitmap("elec_door.bmp"), 29, 59),
+	}
+}

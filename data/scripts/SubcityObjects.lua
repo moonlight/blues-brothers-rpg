@@ -569,7 +569,6 @@ TooDangerous2 = Actor:subclass
 			ActionSetCameraTarget(dummy, false),
 			ActionTweenVariable(dummy, "y", obj.x, obj.y - 4),
 			ActionConversation(lang:getConv("TooDangerous")),
---			ActionTweenVariable(dummy, "y", obj.x, obj.y),
 			ActionSetCameraTarget(obj, true),
 			ActionWalkPath(obj,"D1"),
 			

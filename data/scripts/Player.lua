@@ -98,7 +98,8 @@ Player = Character:subclass
 		end
 
 		self.charAnim = nil
-		self.bitmap = m_get_bitmap("frode_dead.tga")
+		self:setBitmap(self.deathBitmap)
+		
 		ActionController:addSequence({
 			ActionExModeOn(),
 			ActionWait(200),
@@ -123,6 +124,7 @@ Player = Character:subclass
 
 	defaultproperties =
 	{
+		deathBitmap = m_get_bitmap("elwood_dead.bmp"),
 		strength = 5,
 		dexterity = 5,
 		agility = 5,

@@ -36,4 +36,12 @@ BBRpgGuiTheme = GuiTheme:subclass
 	getTextColor = function(self)
 		return 190, 190, 190
 	end;
+
+	defaultproperties =
+	{
+		bitmap = m_get_bitmap("gui_green.bmp"),
+		font = "font_sansserif8.pcx",
+		borderWidth = 2,
+		canvas = nil,
+	};
 }

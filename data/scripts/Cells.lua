@@ -13,6 +13,10 @@ Cells = Map:subclass
 
 		Map.init(self, "data/maps/cells.map")
 
+		-- Evil guards
+		local evil_guard1 = self:spawn(EnemyGuard, 33, 55); evil_guard1.dir = DIR_RIGHT
+		local evil_guard2 = self:spawn(EnemyGuard, 35, 55); evil_guard2.dir = DIR_LEFT
+		
 		-- Evil prisoners
 		self:spawn(Prisoner1, 51, 21)
 		self:spawn(Prisoner1, 51, 28)
@@ -130,6 +134,7 @@ Cells = Map:subclass
 
 		-- Flatscreens
 		obj = self:spawn(Flatscreen, 33, 57); obj.offset_y = -10; obj.offset_z = 15
+		obj = self:spawn(Flatscreen, 38, 57); obj.offset_y = -10; obj.offset_z = 15
 
 		-- Prison doors
 		self:spawn(PrisonDoor1, 23, 19)
@@ -192,9 +197,11 @@ Cells = Map:subclass
 		obj = self:spawn(Convergence, 14, 68); obj.offset_x = 6; obj.offset_y = 6; obj.alpha = 90
 
 		-- Spawn electric doors
-		obj = self:spawn(ElecDoor, 11, 61);
-		obj.isLocked = true;
-		self:spawn(ElecDoor, 34, 63);
+		obj = self:spawn(ElecDoor, 11, 61)
+		obj.isLocked = true
+		local prison_door = self:spawn(ElecDoorPrison, 34, 63)
+		prison_door.evil_guard1 = evil_guard1
+		prison_door.evil_guard2 = evil_guard2
 				
 		-- Spawn portals
 		self.sewersOutPortal = self:spawn(Portal, 65, 77);
