@@ -4,6 +4,7 @@ import("Player.lua")
 EnemyGuard = Enemy:subclass
 {
 	name = "EnemyGuard";
+	bPlaceable = true;
 
 	defaultproperties = {
 		speed = 3,

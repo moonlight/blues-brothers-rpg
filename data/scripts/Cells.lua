@@ -139,40 +139,7 @@ Cells = Map:subclass
 		obj = self:spawn(Flatscreen, 33, 57); obj.offset_y = -10; obj.offset_z = 15
 		obj = self:spawn(Flatscreen, 38, 57); obj.offset_y = -10; obj.offset_z = 15
 
-		-- Prison doors
-		self:spawn(PrisonDoor1, 23, 19)
-		self:spawn(PrisonDoor1, 30, 19)
-		self:spawn(PrisonDoor1, 37, 19)
-		self:spawn(PrisonDoor1, 44, 19)
-		
-		self:spawn(PrisonDoor1, 23, 112)
-		self:spawn(PrisonDoor1, 30, 112)
-		self:spawn(PrisonDoor1, 37, 112)
-		self:spawn(PrisonDoor1, 44, 112)
-		
 		-- Prison beds
-		self:spawn(PrisonBed, 51,  20)
-		self:spawn(PrisonBed, 51,  27)
-		self:spawn(PrisonBed, 51,  34)
-		self:spawn(PrisonBed, 51,  41)
-		self:spawn(PrisonBed, 51,  48)
-		self:spawn(PrisonBed, 51,  55)
-		
-		self:spawn(PrisonBed, 51,  71)
-		self:spawn(PrisonBed, 51,  78)
-		self:spawn(PrisonBed, 51,  85)
-		self:spawn(PrisonBed, 51,  92)
-		self:spawn(PrisonBed, 51,  99)
-		self:spawn(PrisonBed, 51, 106)
-
-		self:spawn(PrisonBed, 30,  85)
-		self:spawn(PrisonBed, 30,  92)
-		self:spawn(PrisonBed, 30,  99)
-
-		self:spawn(PrisonBed, 30,  27)
-		self:spawn(PrisonBed, 30,  34)
-		self:spawn(PrisonBed, 30,  41)
-
 		obj = self:spawn(PrisonBed, 14,  20); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 14,  27); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 14,  34); obj.offset_x = 7
