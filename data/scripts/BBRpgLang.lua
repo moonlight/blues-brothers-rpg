@@ -28,7 +28,7 @@ BBRpgLang = Lang:subclass
 		},
 		Intro3 = {
 			{"Elwood", "Thank you for your hospitality."},
-			{"Guard", "You're welcome. I hope for you I won't see you again."},
+			{"Guard", "You're welcome. For your sake, I hope I won't lay eyes on you again."},
 			{"Elwood", "We'll see..."},
 		},
 		Intro4 = {
@@ -102,7 +102,7 @@ BBRpgLang = Lang:subclass
 		Intro7 = {
 			{"Jake", "So, here we are!"},
 			{"Elwood", "Where are we?"},
-			{"Jake", "My neighbourhood! My appartement is right over there!"},
+			{"Jake", "My neighborhood! My apartment is right over there!"},
 			{"Elwood", "Let's get to work."},
 		},
 		WhereKeys = {
