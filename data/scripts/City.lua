@@ -11,8 +11,13 @@ City = Map:subclass
 	init = function(self)
 		Map.init(self, "data/maps/city1.map")
 
+		-- Spawn the crowbar needed to remove the putdeksel.
+		self:spawn(Crowbar, 66, 42)
+
 		-- No go areas.
-		self:spawn(TooDangerous, 63, 80)
+		self:spawn(TooDangerous,  63, 80)
+		self:spawn(TooDangerous2, 93, 36)
+		
 		-- Litter the city with stuff
 		self:spawn(MessPile , 119, 161);
 		self:spawn(Dustbin  , 102,  73);
@@ -26,8 +31,10 @@ City = Map:subclass
 		self:spawn(Putdeksel, 119, 63);
 		
 		-- Spawn the enemies
-		self:spawn(Punk, 56, 74);
-		self:spawn(Punk, 56, 77);
+		self:spawn(Punk, 57, 74);
+		self:spawn(Punk, 57, 77);
+		self:spawn(Punk, 94, 31);
+		self:spawn(Punk, 97, 31);
 
 		-- The doors in this area
 		self:spawn(DoorJake, 93, 72);
@@ -36,11 +43,8 @@ City = Map:subclass
 		self.jakePortal = self:spawn(Portal, 93, 72);
 		self.jakePortal:setOutDir(DIR_DOWN);
 
-		self.sewersInPortal = self:spawn(Portal, 106, 72);
+		self.sewersInPortal = self:spawn(Portal, 119, 63);
 		self.sewersInPortal:setOutDir(DIR_UP);
-
---		self.sewersOutPortal = self:spawn(Portal, 106, 69);
---		self.sewersOutPortal:setOutDir(DIR_UP);
 
 		copcar = self:spawn(CopCar, 106, 123);
 --		Wheel1 = self:spawn(Wheel, 107, 123);

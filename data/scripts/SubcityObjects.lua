@@ -438,7 +438,19 @@ Putdeksel = Actor:subclass
 	bPlaceable = true;
 
 	activatedBy = function(self, obj)
-
+		if (obj:hasObjectType(Crowbar)) then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("RemovePutdeksel")),
+			}
+			self.offset_x = -15
+			self.offset_y = -15
+			self.bCanActivate = false
+			self.obstacle = 0
+		else
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("CantRemovePutdeksel")),
+			}
+		end;
 	end;
 
 	defaultproperties = {
@@ -447,7 +459,7 @@ Putdeksel = Actor:subclass
 		offset_y = -11,
 		offset_z = -6,
 		bitmap = m_get_bitmap("putdeksel.bmp"),
-		obstacle = 0,
+		obstacle = 1,
 	}
 }
 
@@ -456,9 +468,16 @@ Crowbar = Decoration:subclass
 	name = "Crowbar";
 	bPlaceable = true;
 	
+	activatedBy = function(self, obj)
+		ActionController:addSequence{
+			ActionConversation(lang:getConv("Crowbar")),
+		}
+		obj:addToInventory(self)
+	end;
+	
 	defaultproperties = {
 		bCanActivate = true,
-		obstacle = 0,
+		obstacle = 1,
 		bitmap = m_get_bitmap("crowbar.bmp"),
 	}
 }
@@ -481,5 +500,33 @@ TooDangerous = Actor:subclass
 		obstacle = 0,
 		w = 1,
 		h = 8,
+	}	
+}
+
+TooDangerous2 = Actor:subclass
+{
+	name = "TooDangerous2";
+
+	event_stand_on = function(self, obj)
+		local dummy = cityMap:spawn(Dummy, obj.x, obj.y)
+
+		ActionController:addSequence{
+			ActionExModeOn(),	
+			ActionSetCameraTarget(dummy, false),
+			ActionTweenVariable(dummy, "y", obj.x, obj.y - 4),
+			ActionConversation(lang:getConv("TooDangerous")),
+--			ActionTweenVariable(dummy, "y", obj.x, obj.y),
+			ActionSetCameraTarget(obj, true),
+			ActionWalkPath(obj,"D1"),
+			
+			ActionExModeOff(),
+		}
+	end;
+
+	defaultproperties = {
+		bCanActivate = true,	
+		obstacle = 0,
+		w = 7,
+		h = 1,
 	}	
 }

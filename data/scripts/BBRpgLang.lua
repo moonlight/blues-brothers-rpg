@@ -275,6 +275,15 @@ BBRpgLang = Lang:subclass
 		},
 		TooDangerous = {
 			{"{PLAYER}", "I need some kind of a weapon to pass these guys..."},
-		},		
+		},
+		RemovePutdeksel = {
+			{"{PLAYER}", "Ah yes, it's moving..."},
+		},
+		CantRemovePutdeksel = {
+			{"{PLAYER}", "It won't move. I need a tool to remove it."},
+		},
+		Crowbar = {
+			{"{PLAYER}", "Hey, a crowbar. That might come in handy."},
+		},
 	};
 }
