@@ -394,7 +394,7 @@ LamppostLeft = Actor:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
-		bitmap = m_get_bitmap("lamppost_w.bmp"),
+		bitmap = m_get_bitmap("lamppost_snow_w.bmp"),
 		offset_y = -15,
 		offset_x = -12,
 		obstacle = 1,
@@ -407,7 +407,7 @@ LamppostRight = Actor:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
-		bitmap = m_get_bitmap("lamppost_e.bmp"),
+		bitmap = m_get_bitmap("lamppost_snow_e.bmp"),
 		offset_y = -15,
 		offset_x = 9,
 		obstacle = 1,
