@@ -7,8 +7,6 @@
 #include <allegro.h>
 #include "agup.h"
 #include "aphoton.h"
-#include "agtk.h"
-#include "awin95.h"
 #include "editor.h"
 #include "tiled_map.h"
 #include "script.h"
