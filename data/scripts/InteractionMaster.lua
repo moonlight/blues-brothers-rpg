@@ -12,6 +12,10 @@ InteractionMaster = Object:subclass
 {
 	name = "InteractionMaster";
 
+	init = function(self, viewport)
+		self.viewport = viewport
+	end;
+
 	addInteraction = function(self, interaction)
 		table.insert(self.globalInteractions, 1, interaction)
 		interaction:setInteractionMaster(self)
@@ -143,5 +147,6 @@ InteractionMaster = Object:subclass
 
 	defaultproperties = {
 		globalInteractions = {},
+		viewport = nil,
 	};
 }

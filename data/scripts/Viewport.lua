@@ -13,13 +13,32 @@ Viewport = Object:subclass
 		self.h = h or self.h
 	end;
 
-	render = function(self)
-		if (not self.target or not self.target.map) then
-			m_message("No target for viewport")
-			return
-		end
+	mapToScreen = function(self, x, y, z)
+		if (not self.target or not self.target.map) then return end
 
-		local width, height = m_screen_size()
+		if (not z) then z = 0 end
+
+		return m_map_to_screen(
+			x, y, z,
+			self.x, self.y,
+			self.w, self.h,
+			self.target.x, self.target.y, self.target.map
+		)
+	end;
+
+	screenToMap = function(self, x, y)
+		if (not self.target or not self.target.map) then return end
+		
+		return m_screen_to_map(
+			x, y,
+			self.x, self.y,
+			self.w, self.h,
+			self.target.x, self.target.y, self.target.map
+		)
+	end;
+
+	render = function(self)
+		if (not self.target or not self.target.map) then return end
 
 		if (self.target) then
 			m_draw_viewport(
@@ -36,9 +55,6 @@ Viewport = Object:subclass
 		y = 0,
 		w = 0,
 		h = 0,
-		tx = 0,
-		ty = 0,
-		map = nil,
 		target = nil,
 	};
 }

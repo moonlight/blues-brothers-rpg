@@ -76,6 +76,7 @@ BBRpg = Game:subclass
 			ActionPlaySong("data/music/bb1.ogg", 200),
 			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
+			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, SnowyWeather(cityMap)),
 		}
 	end;
 

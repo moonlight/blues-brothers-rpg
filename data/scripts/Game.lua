@@ -31,7 +31,7 @@ Game = Object:subclass
 		self.viewPort = Viewport(0, 0, width, height)
 
 		self.canvas = Canvas()
-		self.interactionMaster = InteractionMaster()
+		self.interactionMaster = InteractionMaster(self.viewPort)
 
 		-- Create HUD if a HUD class was given
 		if (self.hudClass) then
