@@ -9,16 +9,16 @@ BBRpgLang = Lang:subclass
 	name = "BBRpgLang";
 
 	vars = {
-		PLAYER     = "Elwood",
-		PLAY       = "Start",
-		QUICKSTART = "Quickstart",
-		CREDITS    = "Credits",
-		QUIT       = "Quit",
-		CONTINUE   = "Continue",
+		PLAY = "Start",
+		QUICKPLAY = "Quickstart",
+		CREDITS = "Credits",
+		LANGUAGE = "Language",
+		QUIT = "Quit",
+		CONTINUE = "Continue",
 	};
 
 	convs = {
-				-- Conversations. Used in sequences.
+		-- Conversations. Used in sequences.
 		Intro1 = {
 			{"Mr. Prosser", "Standard parole 3 out of 5. Good behavior."},
 			{"Mr. Prosser", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
@@ -361,5 +361,9 @@ BBRpgLang = Lang:subclass
 		ChristmasTree = {
 			{{"{PLAYER}", "That's one huge Christmas tree!"}},
 		},
+	};
+
+	defaultproperties = {
+		languageName = "English",
 	};
 }

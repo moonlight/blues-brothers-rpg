@@ -114,13 +114,21 @@ PlayerSwitcher = Interaction:subclass
 				-- Switch player instantly
 				self:selectPlayerHost(self.playerHosts[self.currentHost])
 			else
+				local musicOut = ActionFadeOutMusic(50)
+				local musicIn = ActionPlaySong(nextHost.myMap.musicFilename, 50)
+
+				if (nextHost.myMap.musicFilename == MusicControl.currentSong) then
+					musicOut = ActionWait(0)
+					musicIn = ActionWait(0)
+				end
+
 				-- Switch player after fading out and fade in afterwards
 				ActionController:addSequence{
 					ActionSetVariable(self, "bActive", false),
-					ActionFadeOutMusic(50),
+					musicOut,
 					ActionFadeOutMap(50),
 					ActionCallFunction(self.selectPlayerHost, self, self.playerHosts[self.currentHost]),
-					ActionPlaySong(self.playerHosts[self.currentHost].myMap.musicFilename, 50),
+					musicIn,
 					ActionFadeInMap(50),
 					ActionSetVariable(self, "bActive", true),
 				}

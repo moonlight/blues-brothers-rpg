@@ -20,6 +20,7 @@ RestPlace = Map:subclass
 			cityMap.restPlaceDoor.bitmap = cityMap.restPlaceDoor.bitmaps[2]
 			cityMap.restPlaceDoor.obstacle = 0
 			cityMap.restPlaceDoor.convTableKeyword = nil
+			cityMap.restPlaceDoor.convTable = nil
 		end
 	end;
 

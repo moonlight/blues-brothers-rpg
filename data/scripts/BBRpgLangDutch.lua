@@ -4,22 +4,23 @@
 
 import("Lang.lua")
 
-BBRpgLang = Lang:subclass
+BBRpgLangDutch = Lang:subclass
 {
-	name = "BBRpgLang";
+	name = "BBRpgLangDutch";
 
 	vars = {
-		PLAYER   = "Elwood",
-		PLAY     = "Play",
-		CREDITS  = "Credits",
-		QUIT     = "Quit",
-		CONTINUE = "Continue",
+		PLAY = "Spelen",
+		QUICKPLAY = "Direct Spelen",
+		CREDITS = "Makers",
+		LANGUAGE = "Taal",
+		QUIT = "Afsluiten",
+		CONTINUE = "Doorgaan",
 	};
 
 	convs = {
-				-- Conversations. Used in sequences.
+		-- Conversations. Used in sequences.
 		Intro1 = {
-			{"Mr. Prosser", "Gevangene drie van de 5. Goed gedrag. Hier zijn je bezittingen: Een Timex digitaal horloge, kapot. Een ongebruikt condoom. Een gebruikt. <pause> Een zonnebril. Drieentwintig euro en zeven cent. Wilt u hier even tekenen?"},
+			{"Mr. Prosser", "Gevangene 3 van de 5. Goed gedrag. Hier zijn je bezittingen: Een Timex digitaal horloge, kapot. Een ongebruikt condoom, en een gebruikte. <pause> Een zonnebril. Drieentwintig euro en zeven cent. Wilt u hier even tekenen?"},
 		},
 		Intro2 = {
 			{"Guard", "Deze kant op."},
@@ -215,7 +216,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "Ik kan maar beter bij die lui uit de buurt blijven..."},
 		},
 		RemovePutdeksel = {
-			{"{PLAYER}", "Ah ja, hij beweegt... Gelukkig hebben we de kaarten van het riool goed bekeken."},
+			{"{PLAYER}", "Ah ja, hij beweegt... Gelukkig hebben we de kaarten van het riool uit ons hoofd geleerd."},
 		},
 		CantRemovePutdeksel = {
 			{"{PLAYER}", "Ik krijg hem niet in beweging. Ik denk dat ik een stuk gereedschap nodig heb om hem te bewegen."},
@@ -225,7 +226,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "Dat is geweldig. Die zullen we nodig hebben om het riool in te komen."},
 			{"Elwood", "Wat? Het riool?!"},
 			{"Jake", "Ja, wat anders? Klop jij liever aan bij de hoofdingang?"},
-			{"Elwood", "Waarom niet, ik doe alles om mijn mijn grote broer te bevrijden, die ik in mijn hele leven nog nooit gezien heb, en waarvan ik denk dat hij gestoord is omdat hij een miniversie van de Columbia ruimteveer gebouwd heeft."},
+			{"Elwood", "Waarom niet, ik doe alles om mijn grote broer te bevrijden, die ik in mijn hele leven nog nooit gezien heb, en waarvan ik denk dat hij gestoord is omdat hij een miniversie van de Columbia ruimteveer gebouwd heeft."},
 			{"Jake", "Ja, zo mag ik het horen. Laten we Brian the Brain bevrijden!"},
 		},
 		JakesDoorLocked = {
@@ -284,7 +285,7 @@ BBRpgLang = Lang:subclass
 		Guitar = {
 			{{"{PLAYER}", "Het is een gitaar!"}},
 			{{"{PLAYER}", "Als we niet probeerden de Vierde Wereld Oorlog te voorkomen zou ik er nu meteen op gaan spelen."}},
-			{{"{PLAYER}", "Dit lijkt me niet echt een voorwerp dat we dit nodig hebben voor onze missie."}},
+			{{"{PLAYER}", "Dit lijkt me niet echt een voorwerp dat we nodig hebben voor onze missie."}},
 		},
 		Keyboard = {
 			{{"{PLAYER}", "Laten we wat muziek maken!."}},
@@ -349,5 +350,9 @@ BBRpgLang = Lang:subclass
 		ChristmasTree = {
 			{{"{PLAYER}", "Dat is een grote kerstboom!"}},
 		},
+	};
+
+	defaultproperties = {
+		languageName = "Nederlands",
 	};
 }
