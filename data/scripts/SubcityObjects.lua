@@ -33,7 +33,7 @@ Dustbin = Decoration:subclass
 	takeDamage = function(self, damage)
 		m_message("Dustbin hit!")
 
-		if (self.snowTop) then
+		if (self.snowTop and (not self.snowfalling)) then
 			ActionController:addSequence{
 				ActionParallel {
 					ActionSequence {
@@ -46,6 +46,7 @@ Dustbin = Decoration:subclass
 						ActionSetVariable(self, "offset_x", self.offset_x),
 					},
 					ActionSequence {
+						ActionSetVariable(self, "snowfalling", true),
 						ActionSetVariable(self.snowTop, "offset_y", 16),
 						ActionSetVariable(self.snowTop, "offset_x", -6),
 						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.bmp")),
@@ -60,7 +61,9 @@ Dustbin = Decoration:subclass
 						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
 						ActionTweenVariable(self.snowTop, "alpha", 300, 0),
 						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
-						ActionTweenVariable(self.snowTop, "alpha", 1000, 255),
+						ActionTweenVariable(self.snowTop, "alpha", 500, 122),
+						ActionSetVariable(self, "snowfalling", false),
+						ActionTweenVariable(self.snowTop, "alpha", 500, 255),
 					},
 				}
 			}
@@ -69,6 +72,7 @@ Dustbin = Decoration:subclass
 	
 	defaultproperties = {
 		obstacle = 1,
+		snowfalling = false,
 		draw_mode = DM_ALPHA,
 		bitmap = m_get_bitmap("dustbin.tga"),
 		convTableKeyword = "Dustbin",
@@ -397,6 +401,21 @@ Clock = Decoration:subclass
 	}
 }
 
+Car = Decoration:subclass
+{
+	name = "Car";
+
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		obstacle = 1,
+		w = 3,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("car.bmp"),
+		convTableKeyword = "Car",
+	}
+}
+
 Car2 = Decoration:subclass
 {
 	name = "Car2";
@@ -411,6 +430,25 @@ Car2 = Decoration:subclass
 		convTableKeyword = "Car2",
 	}
 }
+
+CarShadow = Decoration:subclass
+{
+	name = "CarShadow";
+
+	defaultproperties = {
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		offset_x = 2,
+		offset_y = -20,
+		offset_z = -20,
+		obstacle = 1,
+		alpha = 70,
+		w = 3,
+		draw_mode = DM_TRANS,
+		bitmap = m_get_bitmap("car2_s.bmp"),
+	}
+}
+
 
 DoorJake = Decoration:subclass
 {

@@ -28,33 +28,29 @@ Jail = Map:subclass
 		self:spawn(ElecDoor, 14, 35);
 		self:spawn(ElecDoor, 16, 35);
 		self:spawn(ElecDoor, 18, 35);
-		obj = self:spawn(ElecDoor, 47, 13);
-		obj.isLocked = true;
-		obj = self:spawn(ElecDoor, 44, 49);
-		obj.isLocked = true;
-		obj = self:spawn(ElecDoor, 54, 49);
-		obj.isLocked = true;
-		obj = self:spawn(ElecDoor, 37, 35);
-		obj.isLocked = true;
-		obj = self:spawn(ElecDoor, 25, 35);
-		obj.isLocked = true;
+		obj = self:spawn(ElecDoor, 47, 13);	obj.isLocked = true
+		obj = self:spawn(ElecDoor, 44, 49);	obj.isLocked = true
+		obj = self:spawn(ElecDoor, 54, 49); obj.isLocked = true
+		obj = self:spawn(ElecDoor, 37, 35); obj.isLocked = true
+		obj = self:spawn(ElecDoor, 25, 35); obj.isLocked = true
 
-		self:spawn(Painting, 33, 13);
-		self:spawn(Painting2, 17, 41);
-		self:spawn(Boss    , 36, 15);
-		self:spawn(PileOfPaper, 38, 15);
-		self:spawn(Plant1  , 18, 14);
-		self:spawn(Plant1  , 28, 14);
-		self:spawn(Plant1  , 31, 14);
-		self:spawn(Plant1  , 41, 14);
-		self:spawn(Plant1  , 53, 14);
-		self:spawn(Plant1  , 59, 14);
-		self:spawn(Plant1  , 53, 28);
-		self:spawn(Plant1  , 59, 28);
-		self:spawn(Plant1  , 13, 42);
-		self:spawn(Plant1  , 19, 42);
+		self:spawn(Painting, 33, 13)
+		self:spawn(Painting2, 17, 41)
+		self:spawn(Boss    , 36, 15)
+		self:spawn(PileOfPaper, 38, 15)
+		self:spawn(Plant1  , 18, 14)
+		self:spawn(Plant1  , 28, 14)
+		self:spawn(Plant1  , 31, 14)
+		self:spawn(Plant1  , 41, 14)
+		self:spawn(Plant1  , 53, 14)
+		self:spawn(Plant1  , 59, 14)
+		self:spawn(Plant1  , 53, 28)
+		self:spawn(Plant1  , 59, 28)
+		self:spawn(Plant1  , 13, 42)
+		self:spawn(Plant1  , 19, 42)
 		self:spawn(ElevatorButtons, 16, 21)
-		
+		self:spawn(XmasTree, 20, 36)
+
 		guard = self:spawn(Guard, 37, 17);
 
 		ActionController:addSequence{

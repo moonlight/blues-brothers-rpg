@@ -100,8 +100,6 @@ BBRpgLang = Lang:subclass
 			{"Jake", "So, here we are!"},
 			{"Elwood", "Where are we?"},
 			{"Jake", "My neighbourhood! My appartement is right over there!"},
-			{"Elwood", "So now what?"},
-			{"Jake", "Well, we'll improve our fighting skills and buy some cool gear for our mission!"},
 			{"Elwood", "Let's get to work."},
 		},
 		WhereKeys = {
@@ -128,42 +126,37 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "You call this luck?"},
 			{"Jake", "Shut up."},
 		},
-		PlanEscape = {
-			{"Jake", "Now that we have my lucky key fob, we can prepare ourself for the Great Escape of Brian!"},
-			{"Elwood", "Ok, we need rope and skimasks!"},
-			{"Jake", "and nitrofuel for the car."},
-			{"Elwood", "to escape from the cop pursuit?"},
-			{"Jake", "Yes, and keeping up with traffic on the freeway..."},
-		},
-		FindRope = {
-			{"Jake", "Look it's rope!"},
-			{"Elwood", "You always need a rope!"},
-		},
-		FindSkimasks = {
-			{"Elwood", "Oh no."},
-			{"Jake", "Skimasks! Great!"},
-			{"Elwood", "They... They don't match our outfits..."},
-			{"Jake", "What do you mean?"},
-			{"Elwood", "They're pink."},
-			{"Jake", "Now you mention it..."},
-		},
-		FindNitrofuel = {
-			{"Jake", "Look! Nitrofuel!"},
-			{"Elwood", "This will make the car go..."},
-			{"Jake", "70 to 80Mph I'm afraid."},
-			{"Elwood", "God I miss our Blues Mobile."},
-		},
-		GotEverything = {
-			{"Jake", "We've got everything we need."},
-			{"Elwood", "Let's free our big brother, who I've never seen in my entire life, and who I think is a big nutcase building a 1/10th scaled version of the Columbia spaceshuttle."},
-			{"Jake", "Yeah! Let's free Brian the Brain!"},
-		},
-		FindBrian = {
+		FindBrian1Jake = {
 			{"Jake", "Brian!"},
 			{"Brian", "Jake!"},
+			{"Jake", "Here, take this walkie talkie to communicate with us."},
+		},
+		FindBrian2Jake = {
+			{"Brian", "Us?"},
 			{"Elwood", "Brian!"},
 			{"Brian", "Who are you?"},
 			{"Elwood", "I'm your other brother!"},
+			{"Brian", "I've another brother?"},
+			{"Jake", "Yes, he's adopted."},
+			{"Elwood", "What?"},
+			{"Brian", "I can't believe mom and dad never told us!"},
+			{"Jake", "Told you."},
+			{"Brian", "What?"},
+			{"Jake", "I can't believe mom and dad never told YOU <sigh>."},
+			{"Brian", "You knew?"},
+			{"Brian", "Then again, I can't believe mom and dad never told him that he's adopted."},
+			{"Elwood", "You're the adopted one, I'm a genuine Blues Brother!"},
+			{"Jake", "Please shut up both of you. Let us get the hell out of here."},
+		},
+		FindBrian1Elwood = {
+			{"Elwood", "Brian!"},
+			{"Brian", "Who are you?"},
+			{"Elwood", "I'm your other brother!"},
+			{"Brian", "I've another brother?"},
+			{"Elwood", "If you don't believe it, you can ask Jake for it with this walkie talkie."},
+		},
+		FindBrian2Elwood = {
+			{"Jake", "Brian!"},
 			{"Brian", "I've another brother?"},
 			{"Jake", "Yes, he's adopted."},
 			{"Elwood", "What?"},
@@ -188,15 +181,27 @@ BBRpgLang = Lang:subclass
 			{"Jake", "Who's Lee?"},
 			{"Brian", "He's the one with the Wall Mart Discount Plus Deluxe Card."},
 			{"Elwood", "Ofcourse, Lee!"},
+			{"Jake", "And where are the mini-rocket engines?"},
+			{"Brian", "Err, well, that may be a problem. I hid them in a mess pile just before I was arrested..."},
+			{"Elwood", "Well that's just great. And how are we supposed to find it?"},
+			{"Brian", "I guess we'd better start looking."}
 		},
-		Ending = {
+		FindMiniRocketEngines = {
+			{"{PLAYER}", "I think I see it. Yes, I see it, the mini-rocket engines are here."},
+			{"Brian", "Okay, that's great. Let's go to Lee and give it to him. He lives in the southwestern part of the suburbs at the 'Planetenlaan 192'."},
+			{"Jake", "Okay."},
+			{"Elwood", "See you there."},
+		},
+		Ending1 = {
 			{"Brian", "Lee!"},
 			{"Lee", "Hi."},
 			{"Elwood", "This is Lee?"},
 			{"Jake", "By assuming Brian knows the man, and the fact that Brian called him Lee, I'm pretty certain he is Lee."},
 			{"Lee", "Indeed, I'm the one who's called Lee."},
-			{"Brian", "We have the mini-rocket engines for the 1/10th scale version of the Columbia spaceshuttle which will carry your mini-attack satalite into space which will in his turn prevent the Fourth World War!"},
-			{"Lee", "Fifth."},
+			{"Brian", "We have the mini-rocket engines for the 1/10th scale version of the Columbia spaceshuttle which will carry your mini-attack satalite into space which will in his turn prevent the Fourth World War! Here you are."},
+		},
+		Ending2 = {
+			{"Lee", "Okay, that's great! By the way, it's the Fifth World War."},
 			{"Elwood", "Oh no, not again..."},
 			{"Jake", "Fifth? Bar fights?"},
 			{"Lee", "Indeed."},
@@ -207,7 +212,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Why don't the three of us start a band?"},
 		},		
 		WallAndTubeElwood = {
-			{"{PLAYER}", "Hmmm, I can't get in the tube. It's to damn small!"},
+			{"{PLAYER}", "I can't get in the tube. It's to damn small!"},
 		},
 		WallAndTube1 = {
 			{"{PLAYER}", "I'm gonna crawl in this tube."},
@@ -216,7 +221,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "Finally, the exit."},
 		},
 		TooDangerous = {
-			{"{PLAYER}", "I need some kind of a weapon to pass these guys..."},
+			{"{PLAYER}", "I'd better not come to near these guys..."},
 		},
 		RemovePutdeksel = {
 			{"{PLAYER}", "Ah yes, it's moving..."},
@@ -225,7 +230,11 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "It won't move. I need a tool to remove it."},
 		},
 		Crowbar = {
-			{"{PLAYER}", "Hey, a crowbar. That might come in handy."},
+			{"Jake", "There's my crowbar. We will be needing it to enter the sewers."},
+			{"Elwood", "What? The sewers?!"},
+			{"Jake", "Yeah, what else? Do you prefer to knock on the front door?"},
+			{"Elwood", "Why not, I'd do anything to free our big brother, who I've never seen in my entire life, and who I think is a big nutcase building a 1/10th scaled version of the Columbia spaceshuttle."},
+			{"Jake", "Yeah, that's the spirit! Let's free Brian the Brain!"},
 		},
 		JakesDoorLocked = {
 			{"{PLAYER}", "This door is locked. I need to find the key first."},
@@ -249,6 +258,9 @@ BBRpgLang = Lang:subclass
 		},
 		PrisonDoorLocked = {
 			{"{PLAYER}", "This door is locked."},
+		},
+		MessPileNoEngines = {
+			{"{PLAYER}", "It's a huge pile of mess."},
 		},
 		
 		-- Conversation tables. Used for random events.
@@ -276,6 +288,9 @@ BBRpgLang = Lang:subclass
 		},
 		Clock = {
 			{{"{PLAYER}", "It's a clock."}},
+		},
+		Car = {
+			{{"{PLAYER}", "Nice car."}},
 		},
 		Car2 = {
 			{{"{PLAYER}", "This car is trashed. Oh no, now I have to think of our old caddy again..."}},

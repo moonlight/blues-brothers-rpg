@@ -19,13 +19,41 @@ City = Map:subclass
 		self:spawn(TooDangerous2, 93, 36)
 		
 		-- Litter the city with stuff
-		self:spawn(MessPile , 119, 161);
-		self:spawn(Dustbin  , 102,  73);
-		self:spawn(Car2     , 108,  74);
 
-		self:spawn(Skimasks , 107,  54);
-		self:spawn(Rope     ,  22,  81);
-		self:spawn(Nitrofuel,  39,  19);
+		self:spawn(Dustbin  ,  51,  10);
+		self:spawn(Dustbin  ,  89,  10);
+		self:spawn(Dustbin  , 113,  10);
+		self:spawn(Dustbin  ,   2,  23);
+		self:spawn(Dustbin  ,  39,  23);
+		self:spawn(Dustbin  ,  79,  22);
+		self:spawn(Dustbin  , 111,  23);
+		self:spawn(Dustbin  , 102,  73);
+		self:spawn(Dustbin  ,  13,  83);
+		self:spawn(Dustbin  ,  22,  53);
+		self:spawn(Dustbin  ,  48,  80);
+		self:spawn(Dustbin  , 118, 117);
+		self:spawn(Dustbin  , 111,  58);
+		self:spawn(Dustbin  , 124,  44);
+		self:spawn(Dustbin  ,  74,  38);
+
+		skiMasks = self:spawn(Skimasks , 107,  54);
+
+		self:spawn(MessPile , 119, 161);
+		local Messpile2 = self:spawn(MessPile2, 31, 8);
+		MessPile2.engines = skiMasks
+		
+		-- Cars in the city
+		self:spawn(Car2, 108,  74);
+		self:spawn(CarShadow, 108, 74);
+		self:spawn(Car,   9,  25);
+		obj = self:spawn(CarShadow,   9, 25);	obj.offset_x = 3; obj.offset_y = -22;
+		self:spawn(Car2,  17,  55);
+		self:spawn(CarShadow,  17, 55);
+		self:spawn(Car,  47,  81);
+		obj = self:spawn(CarShadow,  47, 81);	obj.offset_x = 3; obj.offset_y = -22;
+
+--		self:spawn(Rope     ,  22,  81);
+--		self:spawn(Nitrofuel,  39,  19);
 
 		-- Spawn the removable `putdeksel'
 		self:spawn(Putdeksel, 119, 63);
