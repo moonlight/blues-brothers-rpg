@@ -7,7 +7,8 @@ import("Decoration.lua")
 Table = Decoration:subclass
 {
 	name = "Table";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -22,6 +23,7 @@ Table = Decoration:subclass
 Painting = Decoration:subclass
 {
 	name = "Painting";
+	bPlaceable = true;
 
 	defaultproperties = {
 		bCenterOnTile = false,
@@ -41,7 +43,7 @@ Painting = Decoration:subclass
 Painting2 = Decoration:subclass
 {
 	name = "Painting2";
-
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -74,7 +76,7 @@ Boss = Decoration:subclass
 PileOfPaper = Decoration:subclass
 {
 	name = "PileOfPaper";
-
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -90,7 +92,7 @@ PileOfPaper = Decoration:subclass
 Plant1 = Decoration:subclass
 {
 	name = "Plant1";
-
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -105,7 +107,8 @@ Plant1 = Decoration:subclass
 ElevatorButtons = Decoration:subclass
 {
 	name = "ElevatorButtons";
-
+	bPlaceable = true;
+	
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
