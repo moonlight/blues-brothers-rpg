@@ -176,6 +176,7 @@ Bed = Decoration:subclass
 
 	activatedBy = function(self, obj)
 		local bitmapje = self.bitmap
+		local schaduwtje = obj.shadow.bitmap
 	
 		if (obj.health == obj.maxHealth) then
 			ActionController:addSequence{
@@ -199,7 +200,7 @@ Bed = Decoration:subclass
 							ActionSetVariable(obj, "alpha", 255),
 							ActionSetVariable(obj, "dir", DIR_DOWN),
 							ActionChangeBitmap(self, bitmapje),
-							ActionChangeBitmap(obj.shadow, obj.shadow.bitmap),
+							ActionChangeBitmap(obj.shadow, schaduwtje),
 							ActionConversation(lang:getConv("BedTiredAfter")),
 							ActionSetVariable(obj, "obstacle", 1),
 							ActionSetVariable(self, "bOccupied", false),

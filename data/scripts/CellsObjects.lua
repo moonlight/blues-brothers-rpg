@@ -331,12 +331,13 @@ TriggerFreeBrian = Actor:subclass
 	name = "TriggerFreeBrian";
 
 	event_stand_on = function(self, obj)
-		if (firstTime == true) then
+		if (self.firstTime == true) then
 			if (obj == elwood) then
 				ActionController:addSequence{
 					ActionExModeOn(),	
 					ActionSetVariable(brian, "free", true),
 					ActionWalkPath(obj,"U3"),
+					ActionCallFunction(playerSwitcher.addPlayerHost, playerSwitcher, brian),
 					ActionConversation(lang:getConv("FindBrian1Elwood")),
 					ActionCallFunction(brian.addToInventory, brian, cityMap.walkieTalkie),
 					ActionSetVariable(elwood, "bWalkieTalkie", true),
@@ -345,18 +346,15 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetVariable(elwood, "bWalkieTalkie", false),
 					ActionSetVariable(brian, "bWalkieTalkie", false),
 					ActionFadeOutMap(100),
-					ActionCallFunction(elwood.setMap, elwood, jakesMap),
-					ActionCallFunction(  jake.setMap,   jake, jakesMap),
-					ActionCallFunction( brian.setMap,  brian, jakesMap),
-					ActionSetPosition(jake, 14, 18, DIR_RIGHT),
-					ActionSetPosition(brian, 15, 19, DIR_UP),
-					ActionSetPosition(elwood, 16, 19, DIR_UP),
+					ActionSetPosition(jake, 14, 18, DIR_RIGHT, jakesMap),
+					ActionSetPosition(brian, 15, 19, DIR_UP, jakesMap),
+					ActionSetPosition(elwood, 16, 19, DIR_UP, jakesMap),
 					ActionFadeInMap(100),
 					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}
-				firstTime = false
+				self.firstTime = false
 			else
 				ActionController:addSequence{
 					ActionExModeOn(),
@@ -370,18 +368,15 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetVariable(jake, "bWalkieTalkie", false),
 					ActionSetVariable(brian, "bWalkieTalkie", false),
 					ActionFadeOutMap(100),
-					ActionCallFunction(elwood.setMap, elwood, jakesMap),
-					ActionCallFunction(  jake.setMap,   jake, jakesMap),
-					ActionCallFunction( brian.setMap,  brian, jakesMap),
-					ActionSetPosition(jake, 14, 18, DIR_RIGHT),
-					ActionSetPosition(brian, 15, 19, DIR_UP),
-					ActionSetPosition(elwood, 16, 19, DIR_UP),
+					ActionSetPosition(jake, 14, 18, DIR_RIGHT, jakesMap),
+					ActionSetPosition(brian, 15, 19, DIR_UP, jakesMap),
+					ActionSetPosition(elwood, 16, 19, DIR_UP, jakesMap),
 					ActionFadeInMap(100),
 					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}
-				firstTime = false
+				self.firstTime = false
 			end
 		end
 	end;

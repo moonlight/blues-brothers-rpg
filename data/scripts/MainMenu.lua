@@ -18,7 +18,7 @@ MainMenu = GuiMenu:subclass
 			ActionFadeOutMap(50),
 			ActionSetVariable(_G, "show_main_menu", nil),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
-			ActionSetPosition(elwood,  23,  17, DIR_UP, cityMap),
+			ActionSetPosition(elwood, 34, 66, DIR_UP, cellsMap),
 			ActionFadeInMap(50),
 			ActionExModeOff(),
 		}

@@ -63,7 +63,7 @@ BBRpg = Game:subclass
 
 		self.playerSwitcher:addPlayerHost(elwood)
 		self.playerSwitcher:addPlayerHost(jake)
-		self.playerSwitcher:addPlayerHost(brian)
+		--self.playerSwitcher:addPlayerHost(brian)
 
 		-- Tell the HUD about the playerSwitcher
 		self.hud:setPlayerSwitcher(self.playerSwitcher)
