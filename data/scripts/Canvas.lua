@@ -55,4 +55,8 @@ Canvas = Object:subclass
 	setAlpha = function(self, alpha)
 		return m_set_alpha(alpha)
 	end;
+
+	setDrawMode = function(self, drawMode)
+		m_set_drawmode(drawMode)
+	end;
 }

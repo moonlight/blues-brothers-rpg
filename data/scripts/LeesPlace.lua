@@ -22,5 +22,8 @@ LeesPlace = Map:subclass
 		self:spawn(TV, 31, 21);
 		self:spawn(Bed, 15, 17);
 	end;
-}
 
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("leesplace.tga"),
+	}
+}

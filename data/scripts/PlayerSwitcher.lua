@@ -153,6 +153,8 @@ PlayerSwitcher = Interaction:subclass
 				invHeight = 0
 			end
 
+			canvas:setDrawMode(DM_TRANS)
+
 			-- Draw selection block
 			if (i == self.currentHost) then
 				guiTheme:drawBox(x - 3, y - 2, self.hb_w + 6, 14 + 5 + invHeight)

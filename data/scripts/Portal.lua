@@ -29,6 +29,7 @@ Portal = Actor:subclass
 						ActionCallFunction(actor.walk, actor, self.linkedPortal.outDir, true),
 					}
 				},
+				ActionShowMapName(self.linkedPortal.myMap.mapNameBitmap),
 				ActionExModeOff(),
 			}
 		end

@@ -28,7 +28,7 @@ Actor = Object:subclass
 			m_register_object(obj, map)
 		elseif (map:instanceOf(Map)) then
 			m_register_object(obj, map.map)
-			self.myMap = map
+			obj.myMap = map
 		else
 			error("No valid map given to create Actor on!")
 		end

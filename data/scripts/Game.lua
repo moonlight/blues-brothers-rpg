@@ -32,11 +32,13 @@ Game = Object:subclass
 
 		self.canvas = Canvas()
 		self.interactionMaster = InteractionMaster(self.viewPort)
+		interactionMaster = self.interactionMaster -- Make a nice global variable!
 
 		-- Create HUD if a HUD class was given
 		if (self.hudClass) then
 			self.hud = self.hudClass()
 			self.interactionMaster:addInteraction(self.hud)
+			hud = self.hud -- Yeah, make it global!
 		end
 
 		-- Add the conversation box
@@ -98,17 +100,17 @@ Game = Object:subclass
 			self.viewPort:render()
 		end
 
+		-- Set HUD to invisible while main menu is shown
+		if (self.hud) then
+			self.hud.bVisible = not show_main_menu
+		end
+
 		if (map_fade ~= nil and map_fade.alpha ~= nil and map_fade.alpha > 0) then
 			local w,h = m_screen_size()
 			m_set_alpha(map_fade.alpha)
 			m_set_cursor(0,0)
 			self.canvas:drawRect(m_get_bitmap("pixel_black.bmp"), w, h)
 			m_set_alpha(255)
-		end
-
-		-- Set HUD to invisible while main menu is shown
-		if (self.hud) then
-			self.hud.bVisible = not show_main_menu
 		end
 
 		self.interactionMaster:processPostRender(self.canvas)

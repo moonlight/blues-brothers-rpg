@@ -25,7 +25,7 @@ GuiMenu = Interaction:subclass
 		self.w = math.max(self.w, menuItem:getWidth())
 	end;
 
-	postRender = function(self)
+	postRender = function(self, canvas)
 		if (self.bCenter) then
 			local sw, sh = m_screen_size()
 			self.x = (sw - self.w) / 2
@@ -33,6 +33,7 @@ GuiMenu = Interaction:subclass
 		end
 
 		m_set_font(guiTheme.font)
+		canvas:setDrawMode(DM_TRANS)
 
 		local curr = 0
 		for i = 1, table.getn(self.menuItems) do
@@ -65,7 +66,7 @@ GuiMenu = Interaction:subclass
 		if (key == "up") then
 			self.selected = self.selected - 1
 			if (self.selected == 0) then self.selected = table.getn(self.menuItems) end
-			m_play_sample("bbsfx_door1.wav")
+			m_play_sample("bbsfx_hit1.wav")
 			return true
 		elseif (key == "down") then
 			self.selected = self.selected + 1
@@ -74,7 +75,7 @@ GuiMenu = Interaction:subclass
 			return true
 		elseif (key == "action") then
 			self.menuItems[self.selected].func()
-			m_play_sample("bbsfx_growl1.wav")
+			m_play_sample("bbsfx_hit1.wav")
 			return true
 		end
 	end;

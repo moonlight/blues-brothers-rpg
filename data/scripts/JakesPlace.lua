@@ -27,4 +27,8 @@ JakesPlace = Map:subclass
 		self:spawn(Bed, 5, 17);
 		self:spawn(Crowbar, 17, 19)
 	end;
+
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("jakesplace.tga"),
+	};
 }

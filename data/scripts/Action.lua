@@ -578,20 +578,23 @@ ActionShowMapName = Action:subclass
 	name = "ActionShowMapName";
 
 	init = function(self, bitmap)
+		if (not bitmap) then
+			self:log("Warning: no valid bitmap for showing map name!")
+		end
 		self.bitmap = bitmap
 	end;
 
 	exec = function(self)
-		-- Make sure no other ActionShowMapName sequence is taking place
-		ActionController:removeSequence(show_map_seq)
+		local mapInt = BBRpgMapname()
 
-		-- Start a new
+		mapInt.bitmap = self.bitmap
+
 		show_map_seq = ActionController:addSequence{
-			ActionWait(50),
-			ActionSetVariable(Hud, "map_name", self.bitmap),
-			ActionTweenVariable(Hud, "map_name_alpha", 100, 255, 0),
-			ActionWait(200),
-			ActionTweenVariable(Hud, "map_name_alpha", 100, 0, 255),
+			ActionCallFunction(interactionMaster.addInteraction, interactionMaster, mapInt),
+			ActionTweenVariable(mapInt, "perc", 50, 1, 0),
+			ActionWait(100),
+			ActionTweenVariable(mapInt, "perc", 50, 0, 1),
+			ActionCallFunction(interactionMaster.removeInteraction, interactionMaster, mapInt),
 		}
 
 		return true

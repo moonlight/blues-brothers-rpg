@@ -78,4 +78,8 @@ City = Map:subclass
 --		Wheel2 = self:spawn(Wheel, 110, 123);
 --		Wheel2.offset_x = -7;
 	end;
+
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("suburbs.tga"),
+	}
 }

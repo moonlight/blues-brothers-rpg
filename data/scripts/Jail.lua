@@ -59,4 +59,8 @@ Jail = Map:subclass
 		--	ActionShowMapName(m_get_bitmap("bb_title_prison.bmp")),
 		--}
 	end;
+
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("prison.tga"),
+	}
 }

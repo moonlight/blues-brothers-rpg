@@ -32,6 +32,8 @@ GuiTheme = Object:subclass
 	end;
 
 	drawBox = function(self, x, y, w, h)
+		self.canvas:setDrawMode(DM_TRANS)
+
 		-- Shadow
 		local alpha = m_set_alpha(64)
 		self:drawBoxEx(
@@ -54,6 +56,8 @@ GuiTheme = Object:subclass
 	end;
 	
 	drawLightBox = function(self, x, y, w, h)
+		self.canvas:setDrawMode(DM_TRANS)
+
 		local alpha = m_set_alpha(128)
 		self:drawBoxEx(
 			self.bg,

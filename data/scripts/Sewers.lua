@@ -49,4 +49,8 @@ Sewers = Map:subclass
 		self.stairsOutPortal = self:spawn(Portal, 152,  10);
 		self.stairsOutPortal:setOutDir(DIR_DOWN);
 	end;
+
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("sewers.tga"),
+	}
 }

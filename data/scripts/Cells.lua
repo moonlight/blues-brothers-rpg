@@ -185,4 +185,8 @@ Cells = Map:subclass
 		self.sewersOutPortal = self:spawn(Portal, 65, 77);
 		self.sewersOutPortal:setOutDir(DIR_UP);
 	end;
+
+	defaultproperties = {
+		mapNameBitmap = m_get_bitmap("prison.tga"),
+	}
 }

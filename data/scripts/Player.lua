@@ -59,6 +59,7 @@ Player = Character:subclass
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionSetState(self, CHR_ATTACK),
+				ActionPlaySample("bbsfx_hit1.wav"),
 				ActionWait(self.attack_speed),
 				ActionSetState(self, CHR_READY),
 				ActionSetVariable(self, "charging", self.charge_time),
