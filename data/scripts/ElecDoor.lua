@@ -97,7 +97,6 @@ ElecDoorPrison = ElecDoor:subclass
 		if self.isLocked2 then
 			ActionController:addSequence{
 				ActionConversation(lang:getConv("PrisonDoorLocked")),
-				ActionExModeOff(),
 			}
 		else
 			ElecDoor.activatedBy(self, obj)
@@ -105,12 +104,7 @@ ElecDoorPrison = ElecDoor:subclass
 	end;
 
 	event_bumped_into = function(self, obj)
-		if self.isLocked2 then
-			ActionController:addSequence{
-				ActionConversation(lang:getConv("PrisonDoorLocked")),
-				ActionExModeOff(),				
-			}
-		else
+		if (not self.isLocked2) then
 			ElecDoor.event_bumped_into(self, obj)
 		end
 

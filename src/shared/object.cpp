@@ -173,7 +173,7 @@ void Object::update()
 		walking -= speed;
 
 		if (walking <= 0) {
-			if (walking < 0) walking = 0;
+			walking = 0;
 			x = nx;
 			y = ny;
 			callMemberFunction(tableRef, "event_walk_finished");
