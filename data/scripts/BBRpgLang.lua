@@ -233,7 +233,8 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "It won't move. I need a tool to remove it."},
 		},
 		Crowbar = {
-			{"Jake", "There's my crowbar. We will be needing it to enter the sewers."},
+			{"PLAYER", "There's a crowbar."},
+			{"Jake", "That's great. We will be needing it to enter the sewers."},
 			{"Elwood", "What? The sewers?!"},
 			{"Jake", "Yeah, what else? Do you prefer to knock on the front door?"},
 			{"Elwood", "Why not, I'd do anything to free our big brother, who I've never seen in my entire life, and who I think is a big nutcase building a 1/100th scaled version of the Columbia spaceshuttle."},
@@ -268,7 +269,13 @@ BBRpgLang = Lang:subclass
 		PushButton = {
 			{"{PLAYER}", "Let's push this button."},
 		},
-		
+		LeverElwood = {
+			{"{PLAYER}", "One, two, three!"},
+		},
+		LeverNotElwood = {
+			{"{PLAYER}", "Damn, these levers are rusty. I can't pull them... Maybe Elwood can."},
+		},
+
 		-- Conversation tables. Used for random events.
 		Guitar = {
 			{{"{PLAYER}", "It's a guitar!"}},

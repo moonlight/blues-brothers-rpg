@@ -524,6 +524,44 @@ DoorLocked = Decoration:subclass
 	}
 }
 
+DoorInside = Decoration:subclass
+{
+	name = "DoorInside";
+	bPlaceable = true;
+
+	init = function(self)
+		self:updateBitmap()
+		Decoration.init(self)
+	end;
+
+	updateBitmap = function(self)
+		if (not self.isClosed) then
+			self:setBitmap(self.bitmaps[2])
+			self.obstacle = 0
+		else
+			self:setBitmap(self.bitmaps[1])
+			self.obstacle = 1
+		end
+	end;
+
+	activatedBy = function(self, obj)
+		m_message("DoorInside activated!")
+		self.isClosed = not self.isClosed
+
+		self:updateBitmap()
+	end;
+
+	defaultproperties = {
+		bCanActivate = true,		
+		bCenterOnTile = false,
+		bCenterBitmap = false,
+		isClosed = true,
+		obstacle = 1,
+		draw_mode = DM_MASKED,
+		bitmaps = extr_array(m_get_bitmap("door4.bmp"), 24, 48),
+	}
+}
+
 LamppostLeft = Actor:subclass
 {
 	name = "LamppostLeft";

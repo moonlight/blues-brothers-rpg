@@ -45,6 +45,53 @@ Lever = Actor:subclass
 	}
 }
 
+Lever2 = Actor:subclass
+{
+	name = "Lever2";
+
+	init = function(self)
+		Actor.init(self)
+		self:updateBitmap()
+	end;
+
+	updateBitmap = function(self)
+		if (self.isOpen == false) then self.bitmap = self.bitmaps[1]
+		else self.bitmap = self.bitmaps[2] end
+	end;
+
+	activatedBy = function(self, obj)
+		if (obj == elwood) then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("LeverElwood")),
+			};			
+			if (self.isOpen == false) then
+				self.isOpen = true
+			else
+				self.isOpen = false
+			end
+			if (self.gate) then
+				self.gate:switch()
+			end			self:updateBitmap()
+		else
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("LeverNotElwood")),
+			};
+		end
+	end;
+	
+	opens = function(self, gate)		self.gate = gate
+	end;
+	defaultproperties = {
+		gate = nil,
+		offset_y = -12,
+		offset_x = 12,
+		isOpen = false,
+		bCanActivate = true,
+		bitmaps = extr_array(m_get_bitmap("lever.bmp"), 5, 15),
+		ticktime = 1,
+	}
+}
+
 Ladder1 = Decoration:subclass
 {
 	name = "Ladder1";

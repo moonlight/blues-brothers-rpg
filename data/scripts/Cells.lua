@@ -163,8 +163,8 @@ Cells = Map:subclass
 		local button2 = self:spawn(Button, 33, 58)
 
 		-- Evil guards
-		local evil_guard1 = self:spawn(EnemyGuard, 33, 57); evil_guard1.dir = DIR_RIGHT
-		local evil_guard2 = self:spawn(EnemyGuard, 35, 57); evil_guard2.dir = DIR_LEFT
+		local evil_guard1 = self:spawn(EnemyGuard2, 33, 57); evil_guard1.dir = DIR_RIGHT
+		local evil_guard2 = self:spawn(EnemyGuard3, 35, 57); evil_guard2.dir = DIR_LEFT
 
 		-- Spawn electric doors
 		obj = self:spawn(ElecDoor, 11, 61)
