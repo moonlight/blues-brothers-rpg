@@ -22,6 +22,7 @@ DATA_LUA := $(wildcard data/scripts/*.lua)
 DATA_BMP := $(wildcard data/bitmaps/*.bmp wildcard data/bitmaps/*.tga)
 DATA_FONT := $(wildcard data/bitmaps/font_*.*)
 DATA_MAP := $(wildcard data/maps/*.map)
+DATA_SAMPS := $(wildcard data/samples/*.ogg)
 
 .PHONY: default remake clean
 
@@ -43,7 +44,7 @@ $(EDITOR_EXE): $(COMMON_OBJS) $(EDITOR_OBJS)
 # data.dat updater, vraagt de lijst vernieuwde datafiles op, loopt ze langs, kijkt waar ze bij horen
 # voegt ze toe aan de bij de groep behorende variabele en update dan de juiste groepen (door te 
 # testen op niet lege variables
-data.dat: $(DATA_LUA) $(DATA_BMP) $(DATA_FONT) $(DATA_MAP)
+data.dat: $(DATA_LUA) $(DATA_BMP) $(DATA_FONT) $(DATA_MAP) $(DATA_SAMPS)
 	@list='$?'; \
 	for file in $$list; do \
 	  if echo "$(DATA_LUA)" | grep "$$file" > /dev/null 2>/dev/null ; then \
@@ -58,8 +59,12 @@ data.dat: $(DATA_LUA) $(DATA_BMP) $(DATA_FONT) $(DATA_MAP)
 	  if echo "$(DATA_MAP)" | grep "$$file" > /dev/null 2>/dev/null ; then \
 	    DEMAPS="$$DEMAPS $$file"; \
 	  fi; \
+	  if echo "$(DATA_SAMPS)" | grep "$$file" > /dev/null 2>/dev/null ; then \
+	    DESAMPS="$$DESAMPS $$file"; \
+	  fi; \
 	done;\
 	if test -n "$$DELUAS" ; then dat -a -k -t LUA data.dat $$DELUAS; fi; \
 	if test -n "$$DEBMPS" ; then dat -a -k -t BMP data.dat $$DEBMPS; fi; \
 	if test -n "$$DEFONTS" ; then dat -a -k -t FONT data.dat $$DEFONTS; fi; \
 	if test -n "$$DEMAPS" ; then dat -a -k -t MAP data.dat $$DEMAPS; fi; \
+	if test -n "$$DESAMPS" ; then dat -a -k -t OGG data.dat $$DESAMPS; fi; \
