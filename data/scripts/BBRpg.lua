@@ -32,8 +32,10 @@ BBRpg = Game:subclass
 		-- Spawn the player
 		playerController = PlayerController()
 
-		elwood = jailMap:spawn(Elwood, 36, 17)
-		jake = cityMap:spawn(Jake, 111, 119)
+		-- elwood = jailMap:spawn(Elwood, 36, 17)
+		-- jake = cityMap:spawn(Jake, 111, 119)
+		elwood = sewersMap:spawn(Elwood, 78, 38)
+		jake = sewersMap:spawn(Jake, 95, 37)
 		brian = cityMap:spawn(Brian, 85, 75)
 		elwood.dir = DIR_UP
 		jake.dir = DIR_UP

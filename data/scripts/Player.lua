@@ -1,6 +1,6 @@
 --
 -- The player character is defined here.
--- By Bjørn Lindeijer
+-- By BjÃ¸rn Lindeijer
 
 import("Character.lua")
 import("AnimationFunctions.lua")
@@ -30,7 +30,7 @@ Player = Character:subclass
 		self.attack_speed = self.charge_time/2
 
 		-- Hack to play faster
-		--self.speed = self.speed * 2
+		self.speed = self.speed * 2.5
 		--self.attack_speed = self.attack_speed * 0.5
 		--self.charge_time = self.charge_time * 0.5
 		--self.maxHealth = self.maxHealth * 100
