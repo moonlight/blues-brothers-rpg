@@ -25,11 +25,11 @@
 BITMAP* buffer;
 
 DATAFILE *data;
-int debug_mode = 1;
+int debug_mode = 0;
 FONT* engine_font = NULL;
 list<Object*> selectedObjects;
 int selectedObjectType = 0;
-//Map* theMap = NULL;
+
 bool selecting = false;
 int selection_start_x, selection_end_x;
 int selection_start_y, selection_end_y;

@@ -586,6 +586,9 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 				double new_end_x, new_end_y;
 				selection_end_x = selection_start_x;
 				selection_end_y = selection_start_y;
+				list<Object*> objects;
+				list<Object*>::iterator i;
+				select_objects(objects);
 
 				while (gui_mouse_b() & 2) {
 					Point start = currentMap->screenToMap(Point(gui_mouse_x(), gui_mouse_y()));
@@ -597,8 +600,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 						selection_end_y = int(new_end_y);
 
 						// Select the objects within the rectangle
-						list<Object*> objects;
-						list<Object*>::iterator i;
+						objects.clear();
 						for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++) {
 							Point pos = (*i)->pos;
 							Point start, end;

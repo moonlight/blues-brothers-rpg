@@ -18,7 +18,7 @@
 #include "../shared/object.h"
 
 
-#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0 WIP"
+#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0"
 
 
 // Global variables
