@@ -130,7 +130,7 @@ Flatscreen = Decoration:subclass
 
 XmasTree = Decoration:subclass
 {
-	name = "Xmas";
+	name = "XmasTree";
 	bPlaceable = true;
 
 	defaultproperties = {

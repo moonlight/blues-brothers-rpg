@@ -15,11 +15,15 @@ Character = Pawn:subclass
 
 		self:updateBitmap()
 
+		Pawn.init(self)
+	end;
+
+	beginPlay = function(self)
+		Actor.beginPlay(self)
+
 		if (self.shadowClass) then
 			self.shadow = self:spawn(self.shadowClass, self.x, self.y)
-		end
-
-		Pawn.init(self)
+		end	
 	end;
 
 	updateBitmap = function(self)

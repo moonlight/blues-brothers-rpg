@@ -14,6 +14,14 @@ Map = Object:subclass
 		if (not self.map or type(self.map) ~= "userdata") then
 			error("Error while loading map \"".. mapName.."\"!")
 		end
+
+		-- Call beginPlay on all actors in the map
+		local objs = m_get_objects_on_map(self.map)
+		for k,v in pairs(objs) do
+			if (v:instanceOf(Actor)) then
+				v:beginPlay()
+			end
+		end
 	end;
 
 	spawn = function(self, class, x, y, owner)

@@ -8,7 +8,6 @@ import("AdvAIRandom")
 
 Rat = Enemy:subclass
 {
-	
 	name = "Rat";
 	
 	init = function(self)

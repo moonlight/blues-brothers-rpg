@@ -63,6 +63,9 @@ Actor = Object:subclass
 		end
 	end;
 
+	-- Called after init and not called in the editor
+	beginPlay = function(self)
+	end;
 
 	tick = function(self)
 		-- Handle animation
@@ -173,6 +176,9 @@ Actor = Object:subclass
 		-- Set owner
 		local owner = owner or self
 		if (owner) then obj:setOwner(owner) end
+
+		-- Call beginPlay
+		obj:beginPlay()
 
 		return obj
 	end;

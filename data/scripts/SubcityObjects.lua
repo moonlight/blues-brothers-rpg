@@ -21,9 +21,14 @@ Dustbin = Decoration:subclass
 	name = "Dustbin";
 	bPlaceable = true;
 	
+	beginPlay = function(self)
+		Decoration.beginPlay(self)
+		self.snowTop = self:spawn(SnowOnDustbin, x, y)
+	end;
+
 	setPosition = function(self, x, y)
 	    Decoration.setPosition(self, x, y)
-		if (not self.snowTop) then self.snowTop = self:spawn(SnowOnDustbin, x, y) end
+
 		if (self.snowTop) then
 			self.snowTop.x = self.x
 			self.snowTop.y = self.y
@@ -39,16 +44,20 @@ Dustbin = Decoration:subclass
 						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
 					end
 				),
+			},
+			ActionSetVariable(self, "offset_x", self.offset_x),
+		}
+		if (self.snowTop) then
+			ActionController:addSequence{
 				ActionTweenVariable(
 					self.snowTop, "offset_x", 20, 1, self.snowTop.offset_x,
 					function(from, to, perc)
 						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
 					end
 				),
-			},
-			ActionSetVariable(self, "offset_x", self.offset_x),
-			ActionSetVariable(self.snowTop, "offset_x", -7),
-		}
+				ActionSetVariable(self.snowTop, "offset_x", -7),
+			}
+		end
 		if (self.snowTop and (not self.snowfalling)) then
 			ActionController:addSequence{
 				ActionSetVariable(self, "snowfalling", true),

@@ -35,20 +35,15 @@ EnemyCaveman = Enemy:subclass
 		self:updateBitmap()
 	end;
 
-	died = function(self)
-		self.animation = nil
-		self.bitmap = m_get_bitmap("caveman_dead.bmp")
+	died = function(self, killer)
+		Enemy.died(self, killer)
 		self.offset_y = self.offset_y + 3
-		ActionController:addSequence({
-			ActionWait(100),
-			ActionSetVariable(self, "draw_mode", DM_TRANS),
-			ActionTweenVariable(self, "alpha", 200, 0),
-			ActionDestroyObject(self),
-		})
 	end;
 
 	attack = function(self, obj)
-		SpawnSparkyHit(obj.x, obj.y, obj.offset_x, obj.offset_y, obj.offset_z + 24)
+		if (obj) then
+			SpawnSparkyHit(obj.x, obj.y, obj.offset_x, obj.offset_y, obj.offset_z + 24)
+		end
 	end;
 
 	defaultproperties = {
@@ -56,6 +51,7 @@ EnemyCaveman = Enemy:subclass
 		draw_mode = DM_MASKED,
 		speed = 2,
 		charAnim = extr_char_anim(m_get_bitmap("caveman.bmp")),
+		deathBitmap = m_get_bitmap("caveman_dead.bmp"),
 	};
 }
 
