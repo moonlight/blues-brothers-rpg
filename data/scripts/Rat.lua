@@ -28,7 +28,7 @@ Rat = Enemy:subclass
 		attackMaxDam = 3,
 		maxHealth = 25,
 		speed = 4,
-		experience = 8,
+		experience = 11,
 
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("rat.bmp"), 16, 16),

@@ -19,9 +19,9 @@ BBRpgLang = Lang:subclass
 	convs = {
 				-- Conversations. Used in sequences.
 		Intro1 = {
-			{"Mr. ??", "Standard parole 3 out of 5. Good behavior."},
-			{"Mr. ??", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
-			{"Mr. ??", "Sign here please."},
+			{"Mr. Prosser", "Standard parole 3 out of 5. Good behavior."},
+			{"Mr. Prosser", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
+			{"Mr. Prosser", "Sign here please."},
 		},
 		Intro2 = {
 			{"Guard", "Follow me."},
@@ -91,7 +91,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "A friend of Brian, also member of ICC, and owner of a Wall Mart discount plus deluxe card, had asked Brian to get him a 1/100th scale version of the Columbia Spaceshuttle (..)."},
 			{"Elwood", "Wait a minute, what does Wall Mart have to do with this?"},
 			{"Jake", "Nothing, I just remembered that we need to do some shopping later."},
-			{"Jake", "Let me continue. With this 1/100th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Big-Attack-Satelite-Aimed-At-Washington-DC thus preventing the Fourth World War!"},
+			{"Jake", "Let me continue. With this 1/100th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Attack-Satelite-Aimed-At-Washington thus preventing the Fourth World War!"},
 			{"Elwood", "Third. Third World War. There've been only two Jake."},
 			{"Jake", "What about all the barfights we used to be in? Nothing but foreigners there."},
 			{"Elwood", "True..."},
@@ -110,7 +110,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Didn't you?"},
 			{"Jake", "Did I?"},
 			{"Elwood", "No."},
-			{"Jake", "Well, we must find them. My special lucky key fob is in my house. I'm not going to save the world without it."},
+			{"Jake", "Well, we must find them. My crowbar is in my house. We'll need it."},
 		},
 		AtJakesPlace = {
 			{"Jake", "Welcome in Case-del-Jake!"},
@@ -212,7 +212,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "What?"},
 			{"Elwood", "Shouldn't Lee do what he is suppost to do, while we go home, forget this dreadfull mission ever happened, and make some music?"},
 			{"Jake", "Good plan."},
-			{"Elwood", "Why don't the three of us start a band?"},
+			{"Elw00t", "Why don't the three of us start a band?"},
 		},		
 		WallAndTubeElwood = {
 			{"{PLAYER}", "I can't get in the tube. It's to damn small!"},
@@ -233,7 +233,7 @@ BBRpgLang = Lang:subclass
 			{"{PLAYER}", "It won't move. I need a tool to remove it."},
 		},
 		Crowbar = {
-			{"PLAYER", "There's a crowbar."},
+			{"{PLAYER}", "There's a crowbar."},
 			{"Jake", "That's great. We will be needing it to enter the sewers."},
 			{"Elwood", "What? The sewers?!"},
 			{"Jake", "Yeah, what else? Do you prefer to knock on the front door?"},

@@ -21,6 +21,8 @@ LeesPlace = Map:subclass
 		self:spawn(Clock, 31, 15);
 		self:spawn(TV, 31, 21);
 		self:spawn(Bed, 15, 17);
+
+		self:spawn(Lee, 32, 18);
 	end;
 
 	defaultproperties = {

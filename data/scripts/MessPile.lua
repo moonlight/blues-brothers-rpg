@@ -41,6 +41,7 @@ MessPile2 = Decoration:subclass
 				ActionSetPosition(jake, 31, 20, DIR_UP),
 				ActionSetPosition(elwood, 32, 20, DIR_UP),
 				ActionFadeInMap(100),
+				ActionShowMapName(m_get_bitmap("leesplace.tga")),
 				ActionConversation(lang:getConv("Ending1")),
 				ActionCallFunction(obj.removeFromInventory, obj, cityMap.engines),
 				ActionConversation(lang:getConv("Ending2")),

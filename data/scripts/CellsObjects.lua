@@ -335,6 +335,7 @@ TriggerFreeBrian = Actor:subclass
 			if (obj == elwood) then
 				ActionController:addSequence{
 					ActionExModeOn(),	
+					ActionSetVariable(brian, "free", true),
 					ActionWalkPath(obj,"U3"),
 					ActionConversation(lang:getConv("FindBrian1Elwood")),
 					ActionCallFunction(brian.addToInventory, brian, cityMap.walkieTalkie),
@@ -357,7 +358,8 @@ TriggerFreeBrian = Actor:subclass
 				firstTime = false
 			else
 				ActionController:addSequence{
-					ActionExModeOn(),	
+					ActionExModeOn(),
+					ActionSetVariable(brian, "free", true),
 					ActionWalkPath(obj,"U3"),
 					ActionConversation(lang:getConv("FindBrian1Jake")),
 					ActionCallFunction(brian.addToInventory, brian, cityMap.walkieTalkie),

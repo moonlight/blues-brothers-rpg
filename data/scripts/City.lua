@@ -34,7 +34,7 @@ City = Map:subclass
 		self:spawn(Dustbin,  13,  83);
 		self:spawn(Dustbin,  22,  53);
 		self:spawn(Dustbin,  48,  80);
-		self:spawn(Dustbin, 118, 117);
+		self:spawn(Dustbin, 118, 118);
 		self:spawn(Dustbin, 111,  58);
 		self:spawn(Dustbin, 124,  44);
 		self:spawn(Dustbin,  74,  38);

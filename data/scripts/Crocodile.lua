@@ -16,7 +16,7 @@ Crocodile = Enemy:subclass
 		attackMaxDam = 6,
 		maxHealth = 50,
 		speed = 3,
-		experience = 16,
+		experience = 25,
 
 		offset_y = 6,
 		draw_mode = DM_MASKED,

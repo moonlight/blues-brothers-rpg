@@ -49,7 +49,7 @@ Portal = Actor:subclass
 
 	defaultproperties = {
 		linkedPortal = nil,
-		bitmap = m_get_bitmap("target.tga"),
+		bitmap = nil, --m_get_bitmap("target.tga"),
 		draw_mode = DM_ALPHA,
 		w = 1,
 		h = 1,

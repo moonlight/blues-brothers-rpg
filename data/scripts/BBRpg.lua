@@ -43,14 +43,15 @@ BBRpg = Game:subclass
 
 		-- elwood = jailMap:spawn(Elwood, 36, 17)
 		jake = cityMap:spawn(Jake, 111, 119)
-		elwood = sewersMap:spawn(Elwood, 78, 38)
+		elwood = jailMap:spawn(Elwood, 36, 17)
+		brian = cellsMap:spawn(Brian,  37, 14)
+
 --		jake = sewersMap:spawn(Jake, 95, 37)
-		brian = cityMap:spawn(Brian, 93, 73)
---		brian = cityMap:spawn(Brian,  10, 84)
+--		brian = cityMap:spawn(Brian, 93, 73)
 --		brian = jailMap:spawn(Brian,  25, 37)
 		elwood.dir = DIR_UP
 		jake.dir = DIR_UP
-
+		brian.dir = DIR_DOWN
 
 		-- Call superfunction
 		Game.init(self)
@@ -77,7 +78,7 @@ BBRpg = Game:subclass
 
 		ActionController:addSequence{
 			ActionExModeOn(),
-			ActionPlaySong("data/music/bb1.ogg", 200),
+			--ActionPlaySong("data/music/bb1.ogg", 200),
 			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
 			ActionPlaySample("bbsfx_hit1.wav"),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),

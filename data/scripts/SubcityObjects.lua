@@ -675,12 +675,14 @@ TooDangerous = Actor:subclass
 	name = "TooDangerous";
 
 	event_stand_on = function(self, obj)
-		ActionController:addSequence{
-			ActionExModeOn(),	
-			ActionConversation(lang:getConv("TooDangerous")),
-			ActionWalkPath(obj,"R1"),
-			ActionExModeOff(),
-		}
+		if (not brian.free) then
+			ActionController:addSequence{
+				ActionExModeOn(),	
+				ActionConversation(lang:getConv("TooDangerous")),
+				ActionWalkPath(obj,"R1"),
+				ActionExModeOff(),
+			}
+		end
 	end;
 
 	defaultproperties = {
@@ -696,18 +698,20 @@ TooDangerous2 = Actor:subclass
 	name = "TooDangerous2";
 
 	event_stand_on = function(self, obj)
-		local dummy = cityMap:spawn(Dummy, obj.x, obj.y)
+		if (not brian.free) then
+			local dummy = cityMap:spawn(Dummy, obj.x, obj.y)
 
-		ActionController:addSequence{
-			ActionExModeOn(),	
-			ActionSetCameraTarget(dummy, false),
-			ActionTweenVariable(dummy, "y", obj.x, obj.y - 4),
-			ActionConversation(lang:getConv("TooDangerous")),
-			ActionSetCameraTarget(obj, true),
-			ActionWalkPath(obj,"D1"),
+			ActionController:addSequence{
+				ActionExModeOn(),	
+				ActionSetCameraTarget(dummy, false),
+				ActionTweenVariable(dummy, "y", obj.x, obj.y - 4),
+				ActionConversation(lang:getConv("TooDangerous")),
+				ActionSetCameraTarget(obj, true),
+				ActionWalkPath(obj,"D1"),
 			
-			ActionExModeOff(),
-		}
+				ActionExModeOff(),
+			}
+		end
 	end;
 
 	defaultproperties = {
@@ -734,6 +738,17 @@ Engines = Actor:subclass
 
 	defaultproperties = {
 		inventoryBitmap = m_get_bitmap("engines.bmp"),
+		obstacle = 0,
+	}
+}
+
+Lee = Actor:subclass
+{
+	name = "Lee";
+	bPlaceable = true;
+
+	defaultproperties = {
+		bitmap = m_get_bitmap("lee.bmp"),
 		obstacle = 0,
 	}
 }

@@ -11,5 +11,6 @@ Brian = Player:subclass
 		deathBitmap = m_get_bitmap("brian_dead.bmp"),
 		sleepBitmap = m_get_bitmap("bed_brian.bmp"),
 		charAnim = extr_char_anim(m_get_bitmap("brian.bmp"), 23, 40),
+		free = false,
 	};
 }

@@ -51,7 +51,7 @@ Jail = Map:subclass
 		self:spawn(ElevatorButtons, 16, 21)
 		self:spawn(XmasTree, 20, 36)
 
-		guard = self:spawn(Guard, 37, 17);
+		self.guard = self:spawn(Guard, 37, 17);
 	end;
 
 	defaultproperties = {
