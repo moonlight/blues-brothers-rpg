@@ -12,12 +12,12 @@ SOUND=true
 
 # deze functie haalt dubbele argumenten uit de paramter
 # eg. CLEAN a a b c c d  
-# echo $TMP
+# echo $MYRETVAL
 # a b c d
 function CLEAN () {
-    TMP=""
+    MYRETVAL=""
     for arg do
-	TMP=`echo "$TMP" | sed -e "s'$arg ''g"`" $arg"
+	MYRETVAL=`echo "$MYRETVAL" | sed -e "s'$arg ''g"`"$arg "
     done
 }
 
@@ -171,6 +171,34 @@ echo -n "Checking for alogg-config... "
     fi
 fi
 
+# extra alogg check
+echo -n "Checking for alogg... "
+    cat >conftest.cpp <<EOF
+#include <allegro.h>
+#include <alogg/alogg.h>
+
+int main(int argc, char **argv) {
+    alogg_init();
+
+    return 0;
+}
+END_OF_MAIN()
+
+EOF
+if $CC $CPPFLAGS conftest.cpp $LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc -o /dev/null > /dev/null 2>/dev/null ; then
+    # gelukt
+    LIBS="$LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc"
+    CPPFLAGS="$CPPFLAGS -DENABLE_SOUND"
+    SOUND=true
+    echo "yes"
+else
+    #niet gelukt
+    echo "no"
+    echo "*** If you want sound install alogg. http://lyrian.free.fr/alogg/"
+fi
+#rm -f conftest*
+
+
 
 ######################################################################
 ######################################################################
@@ -179,13 +207,13 @@ fi
 ######################################################################
 
 CLEAN $CPPFLAGS
-CPPFLAGS=$TMP
+CPPFLAGS=$MYRETVAL
 
 CLEAN $LIBS
-LIBS=$TMP
+LIBS=$MYRETVAL
 
 CLEAN $LIBS_ENGINE
-LIBS_ENGINE=$TMP
+LIBS_ENGINE=$MYRETVAL
 
 sed "s,@cc@,$CC,;
 s'@cppflags@'$CPPFLAGS';
