@@ -110,6 +110,13 @@ Player = Character:subclass
 		})
 	end;
 
+	event_bumped_into = function(self, obj)
+		-- Players move away for other players who try to enter this tile
+		if (obj:instanceOf(Player)) then
+			self:moveAway()
+		end
+	end;
+
 
 	gainExperience = function(self, xp)
 		self.experience = self.experience + xp

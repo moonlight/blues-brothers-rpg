@@ -37,6 +37,7 @@ Character = Pawn:subclass
 		end
 	end;
 
+
 	event_walk_start = function(self)
 		self.leg_used = 1 - self.leg_used
 	end;

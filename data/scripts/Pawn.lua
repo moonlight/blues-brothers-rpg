@@ -86,6 +86,17 @@ Pawn = Actor:subclass
 		end
 	end;
 
+	-- Ask this pawn to move away, he'll move away if possible
+	moveAway = function(self)
+		if (not self.bSleeping and self.walking == 0) then
+			local dir = self:randomFreeTileAround()
+			if (dir) then
+				self:walk(dir)
+			end
+		end
+	end;
+
+
 	attack = function(self)
 		-- Implement in subclass
 	end;
