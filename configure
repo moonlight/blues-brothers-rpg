@@ -9,6 +9,8 @@ EXE_EXT=
 ENGINE_EXE=rpg
 EDITOR_EXE=rpgedit
 SOUND=true
+LOG=/dev/null
+LOGERR=/dev/null
 
 # deze functie haalt dubbele argumenten uit de paramter
 # eg. CLEAN a a b c c d  
@@ -33,13 +35,18 @@ for arg do
 --with-include=PATH	- add this includedir
 --disable-sound		- disable sound support
 --debug			- compile with debug code
+--log			- save logs to configure.log configure.err
 "
 exit 0
 ;;
 	--with-libdir=*) LIBS="$LIBS -L"`echo "$arg" | sed -e 's/^[^=]*=//'` ;;
 	--with-include=*) CPPFLAGS="$CPPFLAGS -I"`echo "$arg" | sed -e 's/^[^=]*=//'` ;;
 	--disable-sound) SOUND=false ;;
-	--debug) echo "Enabling debugging..."; DEBUG=true
+	--debug) echo "Enabling debugging..."; DEBUG=true ;;
+	--log)
+	    LOG=configure.log
+	    LOGERR=configure.err
+	;;
     esac
 done
 
@@ -56,15 +63,15 @@ fi
 # alle output naar /dev/null
 ######################################################################
 echo -n "Checking for compiler... "
-if $CC --version > /dev/null 2> /dev/null ; then
+if $CC --version >$LOG 2>$LOGERR ; then
     echo "g++"
 else
     CC=c++
-    if $CC --version > /dev/null 2> /dev/null ; then
+    if $CC --version >>$LOG 2>>$LOGERR ; then
 	echo "c++"
     else
 	CC=cpp
-	if $CC --version > /dev/null 2> /dev/null ; then
+	if $CC --version >>$LOG 2>>$LOGERR ; then
 	    echo "cpp"
 	else
 	    echo "*** No c++ compiler"
@@ -78,7 +85,7 @@ fi
 # bestaat deze, dan de LIBS en CPPFLAGS toevoegen
 ######################################################################
 echo -n "Checking for allegro-config... "
-if allegro-config --version >/dev/null 2>/dev/null ; then
+if allegro-config --version >>$LOG 2>>$LOGERR ; then
     LIBS="$LIBS `allegro-config --libs`"
     CPPFLAGS="$CPPFLAGS `allegro-config --cppflags`"
     echo "yes"
@@ -105,7 +112,7 @@ END_OF_MAIN()
 // ^ some ALLEGRO macro
 
 EOF
-if $CC $CPPFLAGS conftest.cpp $LIBS -o /dev/null > /dev/null 2>/dev/null ; then
+if $CC $CPPFLAGS conftest.cpp $LIBS -o /dev/null >>$LOG 2>>$LOGERR ; then
     echo "yes"
 else
     echo "no"
@@ -137,7 +144,7 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
-if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null > /dev/null 2>/dev/null ; then
+if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
     LIBS="$LIBS -llua -llualib"
     echo "yes"
@@ -154,7 +161,7 @@ rm -f conftest*
 ######################################################################
 if $SOUND ; then
 echo -n "Checking for alogg-config... "
-    if alogg-config --version >/dev/null 2>/dev/null ; then
+    if alogg-config --version >>$LOG 2>>$LOGERR ; then
 	LIBS_ENGINE="$LIBS_ENGINE `alogg-config --libs`"
 	CPPFLAGS="$CPPFLAGS `alogg-config --cflags` -DENABLE_SOUND"
 	echo "yes"
@@ -179,7 +186,7 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
-if $CC $CPPFLAGS conftest.cpp $LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc -o /dev/null > /dev/null 2>/dev/null ; then
+if $CC $CPPFLAGS conftest.cpp $LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
     LIBS="$LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc"
     CPPFLAGS="$CPPFLAGS -DENABLE_SOUND"
