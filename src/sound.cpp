@@ -30,6 +30,7 @@ struct {
 	int voice;
 	struct alogg_stream *stream;
 	AUDIOSTREAM *ass;
+	char filename[128];
 } channels[CHANNELS];
 
 char *error;
@@ -89,13 +90,14 @@ int l_play_music(lua_State *L)
 				exit(1);
 			}
 			*/
-			channels[channel].stream = alogg_start_streaming(filename, BLOCK_SIZE);
-			channels[channel].ass = alogg_get_audio_stream(channels[channel].stream);
+			strncpy(channels[channel].filename, filename, 128);
+			channels[channel].stream = alogg_start_streaming(channels[channel].filename, BLOCK_SIZE);
 			if (!channels[channel].stream) {
 				fprintf(stderr,"Error opening %s\n", filename);
 				alogg_exit();
 				exit(1);
 			}
+			channels[channel].ass = alogg_get_audio_stream(channels[channel].stream);
 		}
 
 		/*
@@ -224,8 +226,15 @@ void poll_sound()
 		if (channels[i].stream) {
 			int ret = alogg_update_streaming(channels[i].stream);
 			if (ret == 0) {
-				channels[i].stream = NULL; // end of stream
-				channels[i].ass = NULL;
+				// Loop song
+				stop_music(i);
+				channels[i].stream = alogg_start_streaming(channels[i].filename, BLOCK_SIZE);
+				if (!channels[i].stream) {
+					fprintf(stderr,"Error opening %s\n", channels[i].filename);
+					alogg_exit();
+					exit(1);
+				}
+				channels[i].ass = alogg_get_audio_stream(channels[i].stream);
 				break;
 			}
 		}
