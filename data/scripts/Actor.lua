@@ -124,11 +124,15 @@ Actor = Object:subclass
 
 	-- Returns a table containing the directions in which free tiles where found.
 	freeTilesAround = function(self)
-		dirs = {}
-		if (table.getn(m_get_objects_at(self.x - 1, self.y, self.map)) == 0) then table.insert(dirs, DIR_LEFT ) end
-		if (table.getn(m_get_objects_at(self.x + 1, self.y, self.map)) == 0) then table.insert(dirs, DIR_RIGHT) end
-		if (table.getn(m_get_objects_at(self.x, self.y - 1, self.map)) == 0) then table.insert(dirs, DIR_UP   ) end
-		if (table.getn(m_get_objects_at(self.x, self.y + 1, self.map)) == 0) then table.insert(dirs, DIR_DOWN ) end
+		local dirs = {}
+		for i,v in ipairs(self.xDir) do
+			local x, y = self.x + self.xDir[i], self.y + self.yDir[i]
+			local objectsAtTile = m_get_objects_at(x, y, self.map)
+			local tileName, obstacle = m_get_tile_at(self.map, x - 0.5, y - 0.5)
+			if (table.getn(objectsAtTile) == 0 and obstacle == 0) then
+				table.insert(dirs, i - 1)
+			end
+		end
 		return dirs
 	end;
 
@@ -326,6 +330,19 @@ Actor = Object:subclass
 
 		bCenterBitmap = false,
 		bCenterOnTile = false,
+
+		xDir = {
+			 0,  -- DIR_UP
+			-1,  -- DIR_LEFT
+			 1,  -- DIR_RIGHT
+			 0,  -- DIR_DOWN
+		},
+		yDir = {
+			-1,  -- DIR_UP
+			 0,  -- DIR_LEFT
+			 0,  -- DIR_RIGHT
+			 1,  -- DIR_DOWN
+		},
 	};
 
 

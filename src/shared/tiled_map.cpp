@@ -73,7 +73,7 @@ TileType::~TileType()
 Tile::Tile()
 {
 	tileType = NULL;
-	obstacle = false;
+	obstacle = 0;
 }
 
 void Tile::saveTo(PACKFILE *file)

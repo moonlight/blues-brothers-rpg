@@ -930,7 +930,7 @@ int l_get_tile_at(lua_State *L)
 		Tile* tile = map->mapLayers[0]->getTile(Point(x, y));
 		if (tile) {
 			char *tileTypeName = tile->getType()->getName();
-			return putLuaArguments(L, "s", tileTypeName);
+			return putLuaArguments(L, "si", tileTypeName, tile->obstacle);
 		} else {
 			return 0;
 		}
