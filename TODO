@@ -16,15 +16,13 @@ Bjorn:
 ! Fix bug with two policemen
 ! Experience/levelup afmaken
 - Naam van area weergeven bij naartoe gaan
-- Add map to HUD in sewers when found
+- Sound effects afspelen met engine
 
 Georg:
 - Scripts schrijven bij ontmoeten Brian
 ? Witte lijntjes in Jake's optrekje wegwerken
 
 Frode:
-- Dead bodies for crocodile and rat
-- Walkie talkie inventory picture
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
 ? Sneeuw op de autos
