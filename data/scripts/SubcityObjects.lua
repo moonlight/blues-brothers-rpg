@@ -401,11 +401,16 @@ DoorJake = Decoration:subclass
 DoorLocked = Decoration:subclass
 {
 	name = "DoorLocked";
+	bPlaceable = true;
 
 	init = function(self)
-		self.convTable = lang:getConv("DoorLocked")
 		self.bitmap = self.bitmaps[1]
 		Decoration.init(self)
+	end;
+
+	activatedBy = function(self, instigator)
+		self.convTable = lang:getConv("DoorLocked")
+		Decoration.activatedBy(self, instigator)
 	end;
 
 	defaultproperties = {
