@@ -24,6 +24,7 @@ BBRpg = Game:subclass
 		cityMap   = City()
 		jailMap   = Jail()
 		sewersMap = Sewers()
+		leesMap   = LeesPlace()
 		jakesMap  = JakesPlace()
 		cellsMap  = Cells()
 

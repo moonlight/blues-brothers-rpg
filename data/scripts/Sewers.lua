@@ -56,7 +56,7 @@ Sewers = Map:subclass
 		self:spawn(Rat, 149,  77);
 		self:spawn(Rat, 116,  15);
 		self:spawn(Rat, 149,  15);
-		self:spawn(Rat, 133,  15);
+		self:spawn(Rat, 133,  50);
 		self:spawn(Crocodile, 133, 117);
 		self:spawn(Rat, 106, 117);
 		self:spawn(Rat, 144, 113);
