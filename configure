@@ -63,14 +63,20 @@ fi
 # alle output naar /dev/null
 ######################################################################
 echo -n "Checking for compiler... "
+echo "$CC --version" >$LOG 
+echo "$CC --version" >$LOGERR
 if $CC --version >$LOG 2>$LOGERR ; then
     echo "g++"
 else
     CC=c++
+    echo "$CC --version" >>$LOG 
+    echo "$CC --version" >>$LOGERR
     if $CC --version >>$LOG 2>>$LOGERR ; then
 	echo "c++"
     else
 	CC=cpp
+	echo "$CC --version" >>$LOG 
+	echo "$CC --version" >>$LOGERR
 	if $CC --version >>$LOG 2>>$LOGERR ; then
 	    echo "cpp"
 	else
@@ -85,6 +91,8 @@ fi
 # bestaat deze, dan de LIBS en CPPFLAGS toevoegen
 ######################################################################
 echo -n "Checking for allegro-config... "
+echo "allegro-config --version" >>$LOG
+echo "allegro-config --version" >>$LOGERR
 if allegro-config --version >>$LOG 2>>$LOGERR ; then
     LIBS="$LIBS `allegro-config --libs`"
     CPPFLAGS="$CPPFLAGS `allegro-config --cppflags`"
@@ -95,6 +103,8 @@ else
     echo "using -lalleg instead"
     LIBS="$LIBS -lalleg"
 fi
+echo "LIBS: $LIBS" >>$LOG
+echo "LIBS: $LIBS" >>$LOGERR
 
 ######################################################################
 # ff kijken of het ook compiled
@@ -112,6 +122,8 @@ END_OF_MAIN()
 // ^ some ALLEGRO macro
 
 EOF
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -o /dev/null" >>$LOG
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -o /dev/null" >>$LOGERR
 if $CC $CPPFLAGS conftest.cpp $LIBS -o /dev/null >>$LOG 2>>$LOGERR ; then
     echo "yes"
 else
@@ -144,6 +156,8 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null" >>$LOG
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null" >>$LOGERR
 if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
     LIBS="$LIBS -llua -llualib"
@@ -155,14 +169,18 @@ else
     echo "*** Please install lua. http://www.lua.org"
 fi
 rm -f conftest*
-    
+echo "LIBS: $LIBS" >>$LOG    
+echo "LIBS: $LIBS" >>$LOGERR
+
 ######################################################################
 # sound check
 ######################################################################
 if $SOUND ; then
 echo -n "Checking for alogg-config... "
+    echo "alogg-config --version" >>$LOG
+    echo "alogg-config --version" >>$LOGERR
     if alogg-config --version >>$LOG 2>>$LOGERR ; then
-	LIBS_ENGINE="$LIBS_ENGINE `alogg-config --libs`"
+	LIBS_ENGINE="`alogg-config --libs` $LIBS_ENGINE"
 	CPPFLAGS="$CPPFLAGS `alogg-config --cflags` -DENABLE_SOUND"
 	echo "yes"
     else
@@ -171,6 +189,10 @@ echo -n "Checking for alogg-config... "
 	SOUND=false
     fi
 fi
+echo "LIBS: $LIBS" >>$LOG
+echo "LIBS: $LIBS" >>$LOGERR
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOG
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOGERR
 
 # extra alogg check
 echo -n "Checking for alogg... "
@@ -186,9 +208,11 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
-if $CC $CPPFLAGS conftest.cpp $LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc -o /dev/null >>$LOG 2>>$LOGERR ; then
+echo "$CC $CPPFLAGS conftest.cpp -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS $LIBS_ENGINE -o /dev/null" >>$LOG
+echo "$CC $CPPFLAGS conftest.cpp -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS $LIBS_ENGINE -o /dev/null" >>$LOGERR
+if $CC $CPPFLAGS conftest.cpp -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS $LIBS_ENGINE -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
-    LIBS="$LIBS -lalogg -logg -lvorbis -lvorbisfile -lvorbisenc"
+    LIBS_ENGINE="-lalogg -logg -lvorbis -lvorbisfile -lvorbisenc $LIBS_ENGINE"
     CPPFLAGS="$CPPFLAGS -DENABLE_SOUND"
     SOUND=true
     echo "yes"
@@ -199,7 +223,10 @@ else
 fi
 rm -f conftest*
 
-
+echo "LIBS: $LIBS" >>$LOG
+echo "LIBS: $LIBS" >>$LOGERR
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOG
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOGERR
 
 ######################################################################
 ######################################################################
@@ -212,9 +239,13 @@ CPPFLAGS=$MYRETVAL
 
 CLEAN $LIBS
 LIBS=$MYRETVAL
+echo "LIBS: $LIBS" >>$LOG
+echo "LIBS: $LIBS" >>$LOGERR
 
 CLEAN $LIBS_ENGINE
 LIBS_ENGINE=$MYRETVAL
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOG
+echo "LIBS_ENGINE: $LIBS_ENGINE" >>$LOGERR
 
 sed "s,@cc@,$CC,;
 s'@cppflags@'$CPPFLAGS';
