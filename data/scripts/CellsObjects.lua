@@ -242,14 +242,36 @@ Button = Decoration:subclass
 	name = "Button";
 
 	activatedBy = function(self, obj)
-		ActionController:addSequence{
-			ActionConversation(lang:getConv("PushButton")),
-		}
+		if (self.acceptDir and obj.dir ~= self.acceptDir) then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("ButtonOutOfReach")),
+			}
+			return
+		end
 
 		self.isPushed = not self.isPushed
+
+		local append = ""
 		
 		if (self.door) then
 			self.door:switch()
+
+			if ((self.door:instanceOf(ElecDoorPrison) and not self.door.isLocked2) or
+				(self.door:instanceOf(PrisonDoor2) and self.door.obstacle == 0)) then
+				append = "Open"
+			else
+				append = "Close"
+			end
+		end
+
+		if (self.convKeyword) then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv(self.convKeyword .. append)),
+			}
+		else
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("PushButton")),
+			}
 		end
 	end;
 	

@@ -52,12 +52,6 @@ Jail = Map:subclass
 		self:spawn(XmasTree, 20, 36)
 
 		guard = self:spawn(Guard, 37, 17);
-
-		-- This is not the right place to add this sequence
-		--ActionController:addSequence{
-		--	ActionWait(50),
-		--	ActionShowMapName(m_get_bitmap("bb_title_prison.bmp")),
-		--}
 	end;
 
 	defaultproperties = {

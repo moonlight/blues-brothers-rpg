@@ -161,6 +161,10 @@ Cells = Map:subclass
 		-- Buttons to open the prison_door (1) and the door of Brians cell (2)
 		local button1 = self:spawn(Button, 32, 57)
 		local button2 = self:spawn(Button, 33, 58)
+		button1.acceptDir = DIR_LEFT
+		button2.acceptDir = DIR_DOWN
+		button1.convKeyword = "PrisonDoorButton"
+		button2.convKeyword = "BrianDoorButton"
 
 		-- Evil guards
 		local evil_guard1 = self:spawn(EnemyGuard2, 33, 57); evil_guard1.dir = DIR_RIGHT

@@ -81,6 +81,6 @@ EnemyGuard3 = Enemy:subclass
 		bDead = false,
 		bAttacking = false,
 
-		deathBitmap = m_get_bitmap("cop_dead.bmp"),
+		deathBitmap = m_get_bitmap("cop3_dead.bmp"),
 	};
 }

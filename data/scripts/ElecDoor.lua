@@ -105,7 +105,6 @@ ElecDoorPrison = ElecDoor:subclass
 
 	switch = function(self, obj)
 		self.isLocked2 = not self.isLocked2
-		
 	end;
 
 	event_bumped_into = function(self, obj)

@@ -269,6 +269,21 @@ BBRpgLang = Lang:subclass
 		PushButton = {
 			{"{PLAYER}", "Let's push this button."},
 		},
+		ButtonOutOfReach = {
+			{"{PLAYER}", "I cannot reach the buttons from this side of the control panel."},
+		},
+		PrisonDoorButtonOpen = {
+			{"{PLAYER}", "*PUSH* Now I have opened the door through which I entered."},
+		},
+		PrisonDoorButtonClose = {
+			{"{PLAYER}", "*PUSH* Now I have closed the door through which I entered."},
+		},
+		BrianDoorButtonOpen = {
+			{"{PLAYER}", "*PUSH* The lights seem to indicate I've just opened Brian's door."},
+		},
+		BrianDoorButtonClose = {
+			{"{PLAYER}", "*PUSH* The lights seem to indicate I've just closed Brian's door."},
+		},
 		LeverElwood = {
 			{"{PLAYER}", "One, two, three!"},
 		},

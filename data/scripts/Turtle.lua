@@ -15,7 +15,7 @@ Turtle = Enemy:subclass
 		offset_y = 4,
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("turtle.bmp"), 26, 14),
-		--deathBitmap = m_get_bitmap("turtle_dead.bmp"),
+		deathBitmap = m_get_bitmap("turtle_dead.bmp"),
 		nature = AGGRESSIVE,
 		controllerClass = AdvAIRandom,
 		
