@@ -542,11 +542,13 @@ Putdeksel = Actor:subclass
 			ActionController:addSequence{
 				ActionParallel{
 					ActionConversation(lang:getConv("RemovePutdeksel")),
-					ActionTweenVariable(self, "offset_x", 50, -15),
+					ActionSequence{
+						ActionTweenVariable(self, "offset_x", 50, -15),
+						ActionSetVariable(self, "obstacle", 0),
+					}
 				}
 			}
 			self.bCanActivate = false
-			self.obstacle = 0
 		else
 			ActionController:addSequence{
 				ActionConversation(lang:getConv("CantRemovePutdeksel")),
