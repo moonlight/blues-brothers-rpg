@@ -367,7 +367,13 @@ BBRpgLangDutch = Lang:subclass
 			{{"{PLAYER}", "Deze televisie werkt niet."}},
 		},
 		Lamppost = {
-			{{"{PLAYER}", "It's a lamppost."}},
+			{{"{PLAYER}", "Het is een lantaarnpaal."}},
+		},
+      FenceToCells = {
+			{{"{PLAYER}", "Verdorie, dit hek verspert de weg naar de gevangenis. We moeten een manier vinden om hem te openen."}},
+		},
+		FenceToLevers = {
+			{{"{PLAYER}", "Volgens de kaart zouden er aan de andere kant van dit hek hendels moeten zijn."}},
 		},
 	};
 

@@ -179,7 +179,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Nothing."},
 			{"Brian", "Okay, let's get to business. We must prevent the outbreak of the Fourth World War!"},
 			{"Elwood", "But how?"},
-			{"Brian", "Al I need are my mini-rocket engines, and give them to Lee!"},
+			{"Brian", "All I need are my mini-rocket engines, and give them to Lee!"},
 			{"Jake", "Who's Lee?"},
 			{"Brian", "He's the one who is going to launch the mini attack satelite."},
 			{"Elwood", "Ofcourse, Lee!"},
@@ -381,6 +381,12 @@ BBRpgLang = Lang:subclass
 		},
 		Lamppost = {
 			{{"{PLAYER}", "Het is een lantaarnpaal."}},
+		},
+      FenceToCells = {
+			{{"{PLAYER}", "Damn, this fence blocks the way to the prison. We need to find a way to open it."}},
+		},
+		FenceToLevers = {
+			{{"{PLAYER}", "According to the map there should be some levers on the other side of this fence."}},
 		},
 	};
 

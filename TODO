@@ -8,6 +8,13 @@ Niet ingedeeld:
 - Zijmuren in 2e layer stoppen zodat ze boven de brede lijken zitten
 - Experience fijn tunen
 - Animated tiles in the sewer
+- Walk together so the player has to walk less in the game.
+- For corpses: draw skeleton and flesh, fade out the flesh.
+- Improve tha blues
+- Make the combat more interesting, maybe use crowbar to fight? 
+- Speed up the game?
+- Make the map appear more natural?
+- Improve prisonguardAI
 
 Bjorn:
 ! Ability to quick-forward conversations
@@ -17,6 +24,12 @@ Bjorn:
 
 Georg:
 ? Witte lijntjes in Jake's optrekje wegwerken
+- Corpses should not be obstacles in most of the cases
+- Different messages corresponding to different percentages of
+maxHealth when leaving the bed.
+- Record new sounds.
+- Get rid of mistakes in the map of restplace
+- `Al I need'
 
 Frode:
 
