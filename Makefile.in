@@ -14,9 +14,7 @@ COMMON_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/shared/*.cpp))
 EDITOR_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/editor/*.cpp))
 ENGINE_OBJS := $(patsubst %.cpp, %.o, $(wildcard src/*.cpp))
 COMMON_LIBS := @libs@
-#COMMON_LIBS := -lalleg -llua -llualib
 ENGINE_LIBS := @libs_engine@
-#ENGINE_LIBS := =lalogg -logg -lvorbis -lvorbisfile -lvorbisenc
 
 DATA_LUA := $(wildcard data/scripts/*.lua)
 DATA_BMP := $(wildcard data/bitmaps/*.bmp wildcard data/bitmaps/*.tga)
