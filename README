@@ -1,22 +1,25 @@
----------------------------------------
-Moonlight Productions :: Cave Adventure
----------------------------------------
+-------------------------------------------
+Moonlight Productions :: Blues Brothers RPG
+-------------------------------------------
 
-Here is our second small RPG, a Cave Adventure. It's been made for the Spring
-2003 MiniRPG compo. After washing down a river, Frode (the main character)
-fell down a waterfall and just managed to reach out for a branch that was
-hanging about halfway down. Incidently, swinging towards the rock side, there
-happens to be an entrance to a cave behind the wall of water. Frode has the
-choice between either falling drop dead on the rocks below the waterfall or
-entering the cave to face the perils within. Naturally, in the spirit of bold
-exploration, he enters the cave...
+Finally we have reached a release of Blues Brothers RPG! It's been made for the
+Chione Challenge, the RPGDX Winter 2003 competition with lots of snow.
+
+The story begins when Elwood is released from prison. His brother Jake tells
+him about their third brother, Brian, who was adopted by their mother even
+before they were born. The game starts when Elwood and Jake made plans to safe
+their third brother who is still held in prison.
 
 
   Moonlight Productions (the part that worked on this game):
 
   Bjørn Lindeijer         (engine, scripts, graphics)
-  Georg Muntingh          (maps, scripts, graphics)
+  Georg Muntingh          (maps, scripts, graphics, story)
   Frode Lindeijer         (graphics)
+  Hedde Bosman            (music, soundfx, scripts, build system)
+  Ramon van Tol           (music)
+  Jasper Hafkenscheid     (the green couch)
+  Laurens van der Starre  (story)
   Jasper Muntingh         (music)
 
 
@@ -35,19 +38,20 @@ them to you here.
  Arrow keys - Move your character
  Spacebar   - Examine / Talk / Use / Activate / Continue dialogue
  Ctrl       - Attack
- ESC        - Open / Close menu
+ Escape     - Open / Close menu
+ Tab        - Switch to next Blues Brother
+ Shift+Tab  - Switch to previous Blues Brother
 
 
 ------------------------
 The Moonlight RPG engine
 ------------------------
 
-This RPG uses the Moonlight RPG engine, which is licensed under GPL and will 
-be distributed seperately when it's mature enough. Its current specifications 
-are:
+This RPG uses the Moonlight RPG engine, which is licensed under GPL. Its
+current specifications are:
 
-- Allegro for graphics, keyboard input and timers
-- AllegroOGG for OGG file playback
+- Allegro for graphics, keyboard input, timers and sample playback
+- alogg for OGG file playback
 - Using the Lua extension language for the scripting
 - Using object oriented, flexible tile engine
 - Comes with its own map/tile editor
@@ -71,31 +75,4 @@ If the game runs choppy, try reducing the colordepth to 16 or 15 bit.
 History
 -------
 
-January, -th -:-- (First post-contest release)
-
-- Added 24 and 32 bit colordepth support (32 enabled by default)
-- Added second layer to maps, above the objects
-- Added music
-- Added level name when entering level
-/ Added menu system
-- Added experience/levelup system
-/ Added inventory
-- Added new enemy type, Spider Queen
-- Added engine support for custom fonts
-/ Added French translation
-- Added timestamps to logs
-- Added character shadows
-- Added placing objects in the editor
-- Improved Game Over screen
-- Improved GUI
-- Improved engine coordinate system
-- Improved scripts structure, now Object Oriented
-/ Improved AI
-- Upgraded Lua from 4.0 to 5.0
-- Fixed little bug in linear animations
-- Fixed color of damage splats on spiders
-- Now all maps are loaded at startup (remembers killed enemies)
-- Many more small changes
-
-
-April, 29th 2:00 (First public release)
+January, 2nd 8:00 (First public release)
