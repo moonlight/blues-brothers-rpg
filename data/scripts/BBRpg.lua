@@ -4,6 +4,7 @@ import("MainMenu.lua")
 import("IngameMenu.lua")
 import("BBRpgConversationWindow.lua")
 import("BBRpgGuiTheme.lua")
+import("BBRpgHud.lua")
 
 
 BBRpg = Game:subclass
@@ -81,5 +82,6 @@ BBRpg = Game:subclass
 		ingameMenuClass = IngameMenu,
 		conversationWindowClass = BBRpgConversationWindow,
 		guiThemeClass = BBRpgGuiTheme,
+		hudClass = BBRpgHud,
 	};
 }
