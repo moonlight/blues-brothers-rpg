@@ -13,6 +13,60 @@ Cells = Map:subclass
 
 		Map.init(self, "data/maps/cells.map")
 
+		-- Evil prisoners
+		self:spawn(Prisoner1, 51, 21)
+		self:spawn(Prisoner1, 51, 28)
+		self:spawn(Prisoner2, 51, 35)
+		self:spawn(Prisoner1, 51, 42)
+		self:spawn(Prisoner2, 51, 49)
+		self:spawn(Prisoner2, 51, 56)
+
+		self:spawn(Prisoner1, 16, 21)
+		self:spawn(Prisoner2, 16, 28)
+		self:spawn(Prisoner2, 16, 35)
+		self:spawn(Prisoner1, 16, 42)
+		self:spawn(Prisoner3, 16, 49)
+		self:spawn(Prisoner1, 16, 56)
+				
+		self:spawn(Prisoner1, 51,  72)
+		self:spawn(Prisoner1, 51,  79)
+		self:spawn(Prisoner2, 51,  86)
+		self:spawn(Prisoner2, 51,  93)
+		self:spawn(Prisoner1, 51, 100)
+		self:spawn(Prisoner1, 51, 107)
+
+		self:spawn(Prisoner1, 16,  72)
+		self:spawn(Prisoner1, 16,  79)
+		self:spawn(Prisoner2, 16,  86)
+		self:spawn(Prisoner1, 16,  93)
+		self:spawn(Prisoner2, 16, 100)
+		self:spawn(Prisoner1, 16, 107)
+		
+		self:spawn(Prisoner1, 30, 28)
+		self:spawn(Prisoner3, 30, 35)
+		self:spawn(Prisoner2, 30, 42)
+
+		self:spawn(Prisoner1, 37, 28)
+		self:spawn(Prisoner2, 37, 35)
+		self:spawn(Prisoner1, 37, 42)
+		
+		self:spawn(Prisoner2, 30,  86)
+		self:spawn(Prisoner2, 30,  93)
+		self:spawn(Prisoner1, 30, 100)
+
+		self:spawn(Prisoner2, 37,  86)
+		self:spawn(Prisoner2, 37,  93)
+		self:spawn(Prisoner1, 37, 100)
+
+		self:spawn(Prisoner1, 23, 115)
+		self:spawn(Prisoner2, 30, 115)
+		self:spawn(Prisoner3, 37, 115)
+
+		self:spawn(Prisoner1, 23, 15)
+		self:spawn(Prisoner2, 30, 15)
+		self:spawn(Prisoner1, 37, 15)
+		self:spawn(Prisoner2, 44, 15)
+
 		-- White stripes at the wall
 		obj = self:spawn(Count5, 50, 46); obj.offset_x =  5; obj.offset_y = -5; obj.alpha = 90
 		obj = self:spawn(Count5, 50, 46); obj.offset_x = 15; obj.offset_y = -4; obj.alpha = 90
