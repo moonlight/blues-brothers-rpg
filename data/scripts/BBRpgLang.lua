@@ -52,8 +52,11 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Just a guess."},
 			{"Jake", "... Let's get in the car."},
 		},
-
+		Intro5a = {
+			{"Jake","Here take this walkie talkie. We'll need it to communicate."},
+		},
 		Intro6 = {
+			{"Elwood", "Djeez, these are larger than the GSM's they use in The X-files..."},
 			{"Jake", "Listen, we have important things to do."},
 			{"Elwood", "Yeah! Putting the band together again!"},
 			{"Jake", "No, we did that the last time remember?"},

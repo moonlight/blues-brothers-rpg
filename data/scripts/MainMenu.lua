@@ -17,7 +17,7 @@ MainMenu = GuiMenu:subclass
 		local startSequence = {
 			ActionFadeOutMap(50),
 			ActionSetVariable(_G, "show_main_menu", nil),
---			ActionCallFunction(jake.addToInventory, walkieTalkie, self),
+			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionCallFunction(elwood.setMap, elwood, sewersMap),
 			ActionCallFunction(jake.setMap, jake, leesMap),
 			ActionSetPosition(elwood, 145, 11, DIR_RIGHT),
@@ -92,6 +92,8 @@ MainMenu = GuiMenu:subclass
 			ActionWait(15),
 			ActionSetPosition(jake, 114, 108, DIR_DOWN),
 			ActionWait(180),
+			ActionConversation(lang:getConv("Intro5a")),
+			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
 			--ActionConversation(lang:getConv("Intro6")),
 			ActionTweenVariable(copcar, "x", 250, 118, function(from, to, perc)
 				perc = 1 - math.sin(perc * 0.5 * math.pi + 0.5 * math.pi)

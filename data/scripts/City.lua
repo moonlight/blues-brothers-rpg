@@ -11,6 +11,9 @@ City = Map:subclass
 	init = function(self)
 		Map.init(self, "data/maps/city1.map")
 
+		-- Spawn the walkie talkie. Needed by the addToInventory function.
+		walkieTalkie = self:spawn(WalkieTalkie, 1, 126)
+
 		-- Spawn the crowbar needed to remove the putdeksel.
 		self:spawn(KeyFob, 66, 42)		
 
@@ -20,21 +23,21 @@ City = Map:subclass
 		
 		-- Litter the city with stuff
 
-		self:spawn(Dustbin  ,  51,  10);
-		self:spawn(Dustbin  ,  89,  10);
-		self:spawn(Dustbin  , 113,  10);
-		self:spawn(Dustbin  ,   2,  23);
-		self:spawn(Dustbin  ,  39,  23);
-		self:spawn(Dustbin  ,  79,  22);
-		self:spawn(Dustbin  , 111,  23);
-		self:spawn(Dustbin  , 102,  73);
-		self:spawn(Dustbin  ,  13,  83);
-		self:spawn(Dustbin  ,  22,  53);
-		self:spawn(Dustbin  ,  48,  80);
-		self:spawn(Dustbin  , 118, 117);
-		self:spawn(Dustbin  , 111,  58);
-		self:spawn(Dustbin  , 124,  44);
-		self:spawn(Dustbin  ,  74,  38);
+		self:spawn(Dustbin,  51,  10);
+		self:spawn(Dustbin,  89,  10);
+		self:spawn(Dustbin, 113,  10);
+		self:spawn(Dustbin,   2,  23);
+		self:spawn(Dustbin,  39,  23);
+		self:spawn(Dustbin,  79,  22);
+		self:spawn(Dustbin, 111,  23);
+		self:spawn(Dustbin, 102,  73);
+		self:spawn(Dustbin,  13,  83);
+		self:spawn(Dustbin,  22,  53);
+		self:spawn(Dustbin,  48,  80);
+		self:spawn(Dustbin, 118, 117);
+		self:spawn(Dustbin, 111,  58);
+		self:spawn(Dustbin, 124,  44);
+		self:spawn(Dustbin,  74,  38);
 
 		skiMasks = self:spawn(Skimasks , 107,  54);
 

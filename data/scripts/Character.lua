@@ -105,7 +105,7 @@ Character = Pawn:subclass
 	end;
 
 	addToInventory = function(self, obj)
-		-- To be implemented: Check if there is place in the inventory?
+		-- To be implemented?: Check if there is place in the inventory.
 
 		table.insert(self.inventory, obj)
 

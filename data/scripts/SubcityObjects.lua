@@ -672,5 +672,16 @@ TooDangerous2 = Actor:subclass
 		obstacle = 0,
 		w = 7,
 		h = 1,
+	}
+}
+
+WalkieTalkie = Actor:subclass
+{
+	name = "WalkieTalkie";
+
+	defaultproperties = {
+		bitmap = m_get_bitmap("crowbar.bmp"),
+		bCanActivate = true,	
+		obstacle = 0,
 	}	
 }
