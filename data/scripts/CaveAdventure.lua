@@ -8,11 +8,11 @@ CaveAdventure = Game:subclass
 	name = "CaveAdventure";
 
 	init = function(self)
-		-- Call superfunction
-		Game.init(self)
-
 		-- Create language object
 		lang = CaveLang()               -- WARNING: Bad design, introducing global variable
+
+		-- Call superfunction
+		Game.init(self)
 
 		-- Load tile bitmaps
 		m_import_tile_bmp("cave.bmp", 24, 24, 0)

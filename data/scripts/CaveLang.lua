@@ -30,7 +30,7 @@ CaveLang = Lang:subclass
 	--
 	-- An array containing all the conversations present in the game
 	--
-	conv = {
+	convs = {
 		-- Game just starting
 
 		INTRO = {
@@ -174,19 +174,3 @@ CaveLang = Lang:subclass
 		},
 	};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
--- radio.lua
+--
 -- The radio set, including the jumping speaker and pile of CDs.
 -- By Bjorn Lindeijer
 
@@ -72,4 +72,3 @@ CDs = Decoration:subclass
 		convTableKeyword = "CDs",
 	}
 }
-

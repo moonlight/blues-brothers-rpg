@@ -170,7 +170,7 @@ camera = {
 function write_conversation(data)
 	local conversation = {}
 
-	for index, value in data do
+	for index, value in pairs(data) do
 		table.insert(conversation, value[1]..": \""..value[2].."\"")
 	end
 
