@@ -87,7 +87,14 @@ and sound effects seperately, or turn either off completely.
 History
 -------
 
-1.1.0 - January, 4th (First post-compo release)
+1.1.1 - October, Xth (Final release)
+
+/ A lot of small fixes
+/ Some more efficient object handling
+TODO: Examine commit messages
+
+
+1.1.0 - January, 10th (First post-compo release)
 
 * Added the Blues music, the biggest thing missing in our previous version
 * Added some more sounds

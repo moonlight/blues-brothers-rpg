@@ -5,222 +5,224 @@ import("Decoration.lua")
 
 WallJakesPlace = Decoration:subclass
 {
-	name = "WallJakesPlace";
+    name = "WallJakesPlace";
 
-	defaultproperties = {
-		bCenterBitmap = false,
-		bCenterOnTile = false,
-		obstacle = 0,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("wall_jakes_place.bmp"),
-	}
+    defaultproperties = {
+        bCenterBitmap = false,
+        bCenterOnTile = false,
+        obstacle = 0,
+        draw_mode = DM_MASKED,
+        bitmap = m_get_bitmap("wall_jakes_place.bmp"),
+    }
 }
 
 Dustbin = Decoration:subclass
 {
-	name = "Dustbin";
-	bPlaceable = true;
-	
-	beginPlay = function(self)
-		Decoration.beginPlay(self)
-		self.snowTop = self:spawn(SnowOnDustbin, x, y)
-	end;
+    name = "Dustbin";
+    bPlaceable = true;
 
-	setPosition = function(self, x, y)
-	    Decoration.setPosition(self, x, y)
+    beginPlay = function(self)
+        Decoration.beginPlay(self)
+        self.snowTop = self:spawn(SnowOnDustbin, x, y)
+    end;
 
-		if (self.snowTop) then
-			self.snowTop.x = self.x
-			self.snowTop.y = self.y
-		end
-	end;
+    setPosition = function(self, x, y)
+        Decoration.setPosition(self, x, y)
 
-	takeDamage = function(self, damage)
-		m_play_sample("bbsfx_hit4.wav")
-		ActionController:addSequence{
-			ActionParallel{
-				ActionTweenVariable(
-					self, "offset_x", 20, 1, self.offset_x,
-					function(from, to, perc)
-						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
-					end
-				),
-			},
-			ActionSetVariable(self, "offset_x", self.offset_x),
-		}
-		if (self.snowTop) then
-			ActionController:addSequence{
-				ActionTweenVariable(
-					self.snowTop, "offset_x", 20, 1, self.snowTop.offset_x,
-					function(from, to, perc)
-						return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
-					end
-				),
-				ActionSetVariable(self.snowTop, "offset_x", -7),
-			}
-		end
-		if (self.snowTop and (not self.snowfalling)) then
-			ActionController:addSequence{
-				ActionSetVariable(self, "snowfalling", true),
-				ActionTweenVariable(self.snowTop, "offset_z", 20, -6),
-				ActionSetVariable(self.snowTop, "offset_z", 14),
-				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
-				ActionTweenVariable(self.snowTop, "alpha", 300, 0),
-				ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
-				ActionTweenVariable(self.snowTop, "alpha", 500, 122),
-				ActionSetVariable(self, "snowfalling", false),
-				ActionTweenVariable(self.snowTop, "alpha", 500, 255),
-			}
-		end
-	end;
-	
-	defaultproperties = {
-		obstacle = 1,
-		snowfalling = false,
-		draw_mode = DM_ALPHA,
-		bitmap = m_get_bitmap("dustbin.tga"),
-		convTableKeyword = "Dustbin",
-		snowTop = SnowOnDustbin,
-	}
+        if (self.snowTop) then
+            self.snowTop.x = self.x
+            self.snowTop.y = self.y
+        end
+    end;
+
+    takeDamage = function(self, damage)
+        m_play_sample("bbsfx_hit4.wav")
+        ActionController:addSequence{
+            ActionParallel{
+                ActionTweenVariable(
+                    self, "offset_x", 20, 1, self.offset_x,
+                    function(from, to, perc)
+                        return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+                    end
+                ),
+            },
+            ActionSetVariable(self, "offset_x", self.offset_x),
+        }
+        if (self.snowTop) then
+            ActionController:addSequence{
+                ActionTweenVariable(
+                    self.snowTop, "offset_x", 20, 1, self.snowTop.offset_x,
+                    function(from, to, perc)
+                        return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+                    end
+                ),
+                ActionSetVariable(self.snowTop, "offset_x", -7),
+            }
+        end
+        if (self.snowTop and (not self.snowfalling)) then
+            ActionController:addSequence{
+                ActionSetVariable(self, "snowfalling", true),
+                ActionTweenVariable(self.snowTop, "offset_z", 20, -6),
+                ActionSetVariable(self.snowTop, "offset_z", 14),
+                ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
+                ActionTweenVariable(self.snowTop, "alpha", 300, 0),
+                ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
+                ActionTweenVariable(self.snowTop, "alpha", 500, 122),
+                ActionSetVariable(self, "snowfalling", false),
+                ActionTweenVariable(self.snowTop, "alpha", 500, 255),
+            }
+        end
+    end;
+
+    defaultproperties = {
+        obstacle = 1,
+        snowfalling = false,
+        draw_mode = DM_ALPHA,
+        bitmap = m_get_bitmap("dustbin.tga"),
+        convTableKeyword = "Dustbin",
+        snowTop = SnowOnDustbin,
+    }
 }
 
 SnowOnDustbin = Actor:subclass
 {
-	name = "SnowOnDustbin";
-	bPlaceable = false;
-	
-	defaultproperties = {
-	    offset_z = 14,
-	    offset_y = 10,
-	    offset_x = -7,
-	    alpha = 255,
-	    draw_mode = DM_TRANS,
-	    bitmap = m_get_bitmap("dustbin_snow1.bmp"),
-	}
+    name = "SnowOnDustbin";
+    bPlaceable = false;
+
+    defaultproperties = {
+        offset_z = 14,
+        offset_y = 10,
+        offset_x = -7,
+        alpha = 255,
+        draw_mode = DM_TRANS,
+        bitmap = m_get_bitmap("dustbin_snow1.bmp"),
+    }
 }
 
 Keyboard = Decoration:subclass
 {
-	name = "Keyboard";
-	
-	tick = function(self)
-		self.counter = math.mod(self.counter + 1, 8)
-		self:updateBitmap()
-	end;
+    name = "Keyboard";
 
-	updateBitmap = function(self)
-		self.counter = self.counter + 1
-		if (self.counter == 1) then self:setBitmap(self.bitmaps[5])
-		elseif (self.counter == 5) then self:setBitmap(self.bitmaps[1])
-		elseif (self.counter == 2 or self.counter == 6) then self:setBitmap(self.bitmaps[2])
-		elseif (self.counter == 3 or self.counter == 7) then self:setBitmap(self.bitmaps[3])
-		elseif (self.counter == 4 or self.counter == 8) then self:setBitmap(self.bitmaps[4]) end
-		self.counter = self.counter - 1
-	end;
+    tick = function(self)
+        self.counter = math.mod(self.counter + 1, 8)
+        self:updateBitmap()
+    end;
 
-	defaultproperties = {
-		offset_z = 15,
-		obstacle = 0,
-		tick_time = 60,
-		counter = 1,
-		draw_mode = DM_MASKED,
-		bitmaps = extr_array(m_get_bitmap("keyboard.bmp"), 56, 13),
-		convTableKeyword = "Keyboard",
-	}
+    updateBitmap = function(self)
+        self.counter = self.counter + 1
+        if (self.counter == 1) then self:setBitmap(self.bitmaps[5])
+        elseif (self.counter == 5) then self:setBitmap(self.bitmaps[1])
+        elseif (self.counter == 2 or self.counter == 6) then self:setBitmap(self.bitmaps[2])
+        elseif (self.counter == 3 or self.counter == 7) then self:setBitmap(self.bitmaps[3])
+        elseif (self.counter == 4 or self.counter == 8) then self:setBitmap(self.bitmaps[4]) end
+        self.counter = self.counter - 1
+    end;
+
+    defaultproperties = {
+        offset_z = 15,
+        obstacle = 0,
+        tick_time = 60,
+        counter = 1,
+        draw_mode = DM_MASKED,
+        bitmaps = extr_array(m_get_bitmap("keyboard.bmp"), 56, 13),
+        convTableKeyword = "Keyboard",
+    }
 }
 
 Onderstel = Decoration:subclass
 {
-	name = "Onderstel";
-	bPlaceable = true;
+    name = "Onderstel";
+    bPlaceable = true;
 
-	defaultproperties = {
-		obstacle = 0,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("onderstel.bmp"),
-	}
+    defaultproperties = {
+        obstacle = 0,
+        draw_mode = DM_MASKED,
+        bitmap = m_get_bitmap("onderstel.bmp"),
+    }
 }
 
 Guitar = Decoration:subclass
 {
-	name = "Guitar";
-	
-	init = function(self)
-		Decoration.init(self)
-	end;
+    name = "Guitar";
 
-	defaultproperties = {
-		obstacle = 1,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("guitar.bmp"),
-		convTableKeyword = "Guitar",
-	}
+    init = function(self)
+        Decoration.init(self)
+    end;
+
+    defaultproperties = {
+        obstacle = 1,
+        draw_mode = DM_MASKED,
+        bitmap = m_get_bitmap("guitar.bmp"),
+        convTableKeyword = "Guitar",
+    }
 }
 
 TV = Decoration:subclass
 {
-	name = "TV";
-	bPlaceable = true;
+    name = "TV";
+    bPlaceable = true;
 
-	defaultproperties = {
-		obstacle = 1,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("tv.bmp"),
-		convTableKeyword = "TV",
-	}
+    defaultproperties = {
+        obstacle = 1,
+        draw_mode = DM_MASKED,
+        bitmap = m_get_bitmap("tv.bmp"),
+        convTableKeyword = "TV",
+    }
 }
 
 Bed = Decoration:subclass
 {
-	name = "Bed";
-	bPlaceable = true;
+    name = "Bed";
+    bPlaceable = true;
 
-	activatedBy = function(self, obj)
-		local bitmapje = self.bitmap
-	
-		if (obj.health == obj.maxHealth) then
-			ActionController:addSequence{
-				ActionConversation(lang:getConv("BedAwake")),
-			}
-		elseif (not self.bOccupied) then
-			ActionController:addSequence{
-				ActionSetVariable(self, "bOccupied", true),
-				ActionConversation(lang:getConv("BedTiredBefore")),
-				ActionCallFunction(obj.setSleeping, obj, true),
-				ActionChangeBitmap(self, obj.sleepBitmap),
-				ActionSetVariable(obj, "onActivate",
-					function(self2)
-						self2.onActivate = nil
-						ActionController:addSequence{
-							ActionCallFunction(obj.setSleeping, obj, false),
-							ActionSetVariable(obj, "dir", DIR_DOWN),
-							ActionChangeBitmap(self, bitmapje),
-							ActionConversation(lang:getConv("BedTiredAfterTable")[math.floor(table.getn(lang:getConv("BedTiredAfterTable")) * obj.health / obj.maxHealth) + 1]),
-							ActionSetVariable(obj, "obstacle", 1),
-							ActionSetVariable(self, "bOccupied", false),
-						}
-					end),get_new_n(self.prev_random, table.getn(self.convTable))
-			}
-		else
-			ActionController:addSequence{
-				ActionConversation(lang:getConv("BedOccupied")),
-			}
-		end
-	end;
-	
-	defaultproperties = {
-		bOccupied = false,
-		bCanActivate = true,
-		bCenterOnTile = false,
-		bCenterBitmap = false,
-		offset_x = 2,
-		offset_y = -5,
-		obstacle = 1,
-		w = 2,
-		draw_mode = DM_MASKED,
-		bitmap = m_get_bitmap("bed.bmp"),
-	}
-	
+    activatedBy = function(self, obj)
+        local bitmapje = self.bitmap
+
+        if (obj.health == obj.maxHealth) then
+            ActionController:addSequence{
+                ActionConversation(lang:getConv("BedAwake")),
+            }
+        elseif (not self.bOccupied) then
+            local afterTable = lang:getConv("BedTiredAfterTable")
+            local options = table.getn(afterTable) - 1
+
+            ActionController:addSequence{
+                ActionSetVariable(self, "bOccupied", true),
+                ActionConversation(lang:getConv("BedTiredBefore")),
+                ActionCallFunction(obj.setSleeping, obj, true),
+                ActionChangeBitmap(self, obj.sleepBitmap),
+                ActionSetVariable(obj, "onActivate",
+                    function(self2)
+                        self2.onActivate = nil
+                        ActionController:addSequence{
+                            ActionCallFunction(obj.setSleeping, obj, false),
+                            ActionSetVariable(obj, "dir", DIR_DOWN),
+                            ActionChangeBitmap(self, bitmapje),
+                            ActionConversation(afterTable[math.floor(options * obj.health / obj.maxHealth) + 1]),
+                            ActionSetVariable(obj, "obstacle", 1),
+                            ActionSetVariable(self, "bOccupied", false),
+                        }
+                    end),
+            }
+        else
+            ActionController:addSequence{
+                ActionConversation(lang:getConv("BedOccupied")),
+            }
+        end
+    end;
+
+    defaultproperties = {
+        bOccupied = false,
+        bCanActivate = true,
+        bCenterOnTile = false,
+        bCenterBitmap = false,
+        offset_x = 2,
+        offset_y = -5,
+        obstacle = 1,
+        w = 2,
+        draw_mode = DM_MASKED,
+        bitmap = m_get_bitmap("bed.bmp"),
+    }
 }
 
 Couch = Decoration:subclass
