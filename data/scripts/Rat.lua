@@ -46,7 +46,7 @@ Rat = Character:subclass
 			playerDist = playerDistance(self)
 			local player = m_get_player()
 
-			if (playerDist < 5 and scared == true) then
+			if (playerDist < 5 and self.scared) then
 				self:walk(reverseDirection(playerDirection(self)))
 			elseif (self.walk_interval == 0) then
 				self:walk(math.random(4))

@@ -9,14 +9,13 @@ Niet ingedeeld:
 - Experience/levelup afmaken en fijn tunen
 
 Bjorn:
-- HUD: Namen van de brothers weergeven
-- HUD: Items weergeven die iemand bij zich heeft
 
 Georg:
 - Daarna naar Brian in de gevangenis en er over nadenken hoe hem eruit
 te krijgen
 
 Frode:
+- Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
 - Electronica voor in de `control room'
 

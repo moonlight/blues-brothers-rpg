@@ -47,10 +47,8 @@ Character = Pawn:subclass
 
 		-- Check for snow tiles
 		local tile = m_get_tile_at(self.map, self.x - 0.5, self.y - 0.5)
-		m_message(tile)
 		for k,v in pairs(self.snowTiles) do
 			if (v == tile) then
-				m_message("Standing on snow!")
 				local snowFeet = self:spawn(SnowFeet)
 				snowFeet:setDirection(self.dir)
 				break

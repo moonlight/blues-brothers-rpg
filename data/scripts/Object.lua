@@ -16,7 +16,7 @@ Object =
 	new = function(self, ...)
 		if (self._instance) then error("new() called on instance, should be called on class.") end
 
-		m_message("Creating new "..self.name)
+		--m_message("Creating new "..self.name)
 		local obj = {}
 		setmetatable(obj, {__index = self})
 		obj._class = self

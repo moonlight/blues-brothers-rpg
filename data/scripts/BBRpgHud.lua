@@ -17,5 +17,5 @@ BBRpgHud = Hud:subclass
 
 	defaultproperties = {
 		playerSwitcher = nil,
-	}
+	};
 }

@@ -53,6 +53,17 @@ GuiTheme = Object:subclass
 		m_set_alpha(alpha)
 	end;
 	
+	drawLightBox = function(self, x, y, w, h)
+		local alpha = m_set_alpha(128)
+		self:drawBoxEx(
+			self.bg,
+			self.cornerUL, self.cornerUR, self.cornerLL, self.cornerLR,
+			self.borderU,  self.borderL,  self.borderR,  self.borderD,
+			x, y, w, h
+		)
+		m_set_alpha(alpha)
+	end;
+	
 	getTextColor = function(self)
 		return 170, 170, 170
 	end;

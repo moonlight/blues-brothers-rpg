@@ -1,5 +1,10 @@
+-- This class makes it possible to switch between multiple player hosts
+-- and displays their information on the screen.
+--
+-- By Bjorn Lindeijer
 
 import("Interaction.lua")
+
 
 PlayerSwitcher = Interaction:subclass
 {
@@ -142,10 +147,15 @@ PlayerSwitcher = Interaction:subclass
 			local experience_perc = player.experience / player.nextLevelExperience
 			local x = 16 + (self.hb_w + 16) * (i - 1)
 			local y = 16
+			local invHeight = 19
+
+			if (table.getn(player.inventory) == 0) then
+				invHeight = 0
+			end
 
 			-- Draw selection block
 			if (i == self.currentHost) then
-				guiTheme:drawBox(x - 3, y - 2, self.hb_w + 6, 14 + 5)
+				guiTheme:drawBox(x - 3, y - 2, self.hb_w + 6, 14 + 5 + invHeight)
 			end
 			
 			-- Draw the health bar
@@ -161,6 +171,20 @@ PlayerSwitcher = Interaction:subclass
 			canvas:setCursor(x, y + 11)
 			canvas:drawPattern(self.eb_full, self.eb_w * experience_perc, self.eb_h)
 			canvas:setAlpha(255)
+
+			-- Draw inventory
+			canvas:setCursor(x, y + 17)
+			for k,v in pairs(player.inventory) do
+				local x, y = m_get_cursor()
+				guiTheme:drawLightBox(x, y, 16, 16)
+				canvas:setCursor(x + 2, y + 2)
+				if (v.inventoryBitmap) then
+					canvas:drawRect(v.inventoryBitmap, 12, 12)
+					canvas:moveCursor(3,-2)
+				else
+					canvas:moveCursor(3 + 12, -2)
+				end
+			end
 		end
 
 	end;

@@ -23,44 +23,48 @@ Dustbin = Decoration:subclass
 	
 	setPosition = function(self, x, y)
 	    Decoration.setPosition(self, x, y)
-	    self.snowTop = self:spawn(SnowOnDustbin, x, y)
-	    self.snowTop.x = self.x
-	    self.snowTop.y = self.y
+		if (not self.snowTop) then self.snowTop = self:spawn(SnowOnDustbin, x, y) end
+		if (self.snowTop) then
+			self.snowTop.x = self.x
+			self.snowTop.y = self.y
+		end
 	end;
 
 	takeDamage = function(self, damage)
 		m_message("Dustbin hit!")
 
-		ActionController:addSequence{
-			ActionParallel {
-				ActionSequence {
-					ActionTweenVariable(
-						self, "offset_x", 20, 1 , self.offset_x,
-						function(from, to, perc)
-							return from+math.ceil(math.mod(perc * 6, 2) -0.5)
-						end
-					),
-					ActionSetVariable(self, "offset_x", self.offset_x),
-				},
-				ActionSequence {
-					ActionSetVariable(self.snowTop, "offset_y", 16),
-					ActionSetVariable(self.snowTop, "offset_x", -6),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.bmp")),
-					ActionTweenVariable(self.snowTop, "alpha", 8, 55),
-					ActionSetVariable(self.snowTop, "offset_y", 20),
-					ActionSetVariable(self.snowTop, "alpha", 255),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2b.bmp")),
-					ActionTweenVariable(self.snowTop, "alpha", 5, 55),
-					ActionSetVariable(self.snowTop, "offset_y", 20),
-					ActionSetVariable(self.snowTop, "offset_x", -7),
-					ActionSetVariable(self.snowTop, "alpha", 255),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
-					ActionTweenVariable(self.snowTop, "alpha", 300, 0),
-					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
-					ActionTweenVariable(self.snowTop, "alpha", 1000, 255),
-				},
+		if (self.snowTop) then
+			ActionController:addSequence{
+				ActionParallel {
+					ActionSequence {
+						ActionTweenVariable(
+							self, "offset_x", 20, 1 , self.offset_x,
+							function(from, to, perc)
+								return from+math.ceil(math.mod(perc * 6, 2) -0.5)
+							end
+						),
+						ActionSetVariable(self, "offset_x", self.offset_x),
+					},
+					ActionSequence {
+						ActionSetVariable(self.snowTop, "offset_y", 16),
+						ActionSetVariable(self.snowTop, "offset_x", -6),
+						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.bmp")),
+						ActionTweenVariable(self.snowTop, "alpha", 8, 55),
+						ActionSetVariable(self.snowTop, "offset_y", 20),
+						ActionSetVariable(self.snowTop, "alpha", 255),
+						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2b.bmp")),
+						ActionTweenVariable(self.snowTop, "alpha", 5, 55),
+						ActionSetVariable(self.snowTop, "offset_y", 20),
+						ActionSetVariable(self.snowTop, "offset_x", -7),
+						ActionSetVariable(self.snowTop, "alpha", 255),
+						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.bmp")),
+						ActionTweenVariable(self.snowTop, "alpha", 300, 0),
+						ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow1.bmp")),
+						ActionTweenVariable(self.snowTop, "alpha", 1000, 255),
+					},
+				}
 			}
-		}
+		end
 	end;
 	
 	defaultproperties = {
@@ -336,7 +340,7 @@ KeyFob = Decoration:subclass
 
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
-			ActionConversation(lang:getConv("FindKeyFob")),
+			--ActionConversation(lang:getConv("FindKeyFob")),
 			ActionCallFunction(obj.addToInventory, obj, self),
 		};
 	end;
@@ -351,6 +355,7 @@ KeyFob = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("keyfob.bmp"),
+		inventoryBitmap = m_get_bitmap("keyfob.bmp"),
 	}
 }
 
@@ -417,29 +422,29 @@ DoorJake = Decoration:subclass
 	end;
 
 	updateBitmap = function(self)
-		if (isClosed == false) then
-			self.bitmap = self.bitmaps[2]
+		if (not self.isClosed) then
+			self:setBitmap(self.bitmaps[2])
 			self.obstacle = 0
 		else
-			self.bitmap = self.bitmaps[1]
+			self:setBitmap(self.bitmaps[1])
 			self.obstacle = 1
 		end
 	end;
 
 	activatedBy = function(self, obj)
+		m_message("DoorJake activated!")
 		if (obj:hasObjectType(KeyFob)) then
-			if (isClosed == true) then
-				isClosed = false
+			if (self.isClosed) then
+				self.isClosed = false
 			else
-				isClosed = true
+				self.isClosed = true
 			end
+			self:updateBitmap()
 		else
 			ActionController:addSequence{
 				ActionConversation(lang:getConv("JakesDoorLocked")),
 			};
 		end;
-		
-		self:updateBitmap()
 	end;
 
 	defaultproperties = {
@@ -575,6 +580,7 @@ Crowbar = Decoration:subclass
 		bCanActivate = true,
 		obstacle = 1,
 		bitmap = m_get_bitmap("crowbar.bmp"),
+		inventoryBitmap = m_get_bitmap("crowbar.bmp"),
 	}
 }
 
