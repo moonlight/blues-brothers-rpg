@@ -58,14 +58,14 @@ AdvAIRandom = Controller:subclass
 		if (self.pawn:distanceTo(noiseMaker) < 8) then self.pawn.tick_time = 1; end;
 		if (self.pawn:distanceTo(noiseMaker) >= 8) then self.pawn.tick_time = 150; end;
 		if (noiseMaker and noiseMaker:instanceOf(Player)) then
-			if (self.nature ~= NEUTRAL) then
-				self:setTargetWithNature(self.nature, noiseMaker)
+			if (self.pawn.nature ~= NEUTRAL) then
+				self:setTargetWithNature(self.pawn.nature, noiseMaker)
 			end;
 		end;
 	end;
 	notifyTakeDamage = function(self, damage, instigator, damageType, momentum, location)
 		if (instigator and instigator:instanceOf(Player)) then
-			self:setTargetWithNature(self.nature, instigator);
+			self:setTargetWithNature(self.pawn.nature, instigator);
 		end;
 	end;
 	
@@ -82,11 +82,12 @@ AdvAIRandom = Controller:subclass
 			return v;
 		    end;
 		end;
-		return nil
+		return dir
 	end;
 
 	-- timebom
 	tick = function(self)
+		m_message("ns: " .. self.nature .. "," .. self.pawn.nature)
 		if (self.pawn.bDead) then return end
 
 		if (self.pawn.charging > 0) then self.pawn.charging = self.pawn.charging - 1 end
@@ -94,7 +95,7 @@ AdvAIRandom = Controller:subclass
 		if (self.waitTime > 0) then 
 			self.waitTime = self.waitTime - 1;
 
-			if (self.nature == MOODY) then
+			if (self.pawn.nature == MOODY) then
 				-- this one is shifting moods... do new mood, and state how long it has that mood
 				self.moodTime = self.moodTime -1
 				if (self.moodTime <= 0) then
@@ -116,7 +117,7 @@ AdvAIRandom = Controller:subclass
 				end;
 			
 				if (playerDist == 1 and self.target) then
-					self.pawn.dir = self:goingDirection(self.pawn:directionTo(self.target), nil)
+					self.pawn.dir = self.pawn:directionTo(self.target)
 					self.pawn:attack()
 					self.waitTime = self.pawn.attackTime + self.pawn.chargeTime + 10
 				end;
@@ -145,7 +146,7 @@ AdvAIRandom = Controller:subclass
 		tick_time = 0,
 		waitTime = 20,
 		distanceToWalk = 0,
-		nature = AGGRESSIVE,
+		nature = NEUTRAL,
 		nature_tmp = NEUTRAL,
 		moodTime = 500,
 		target = nil,
