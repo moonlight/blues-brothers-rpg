@@ -22,7 +22,7 @@ DATA_LUA := $(wildcard data/scripts/*.lua)
 DATA_BMP := $(wildcard data/bitmaps/*.bmp wildcard data/bitmaps/*.tga)
 DATA_FONT := $(wildcard data/bitmaps/font_*.*)
 DATA_MAP := $(wildcard data/maps/*.map)
-DATA_SAMPS := $(wildcard data/samples/*.ogg)
+DATA_SAMPS := $(wildcard data/samples/*.wav)
 
 .PHONY: default remake clean
 
@@ -67,4 +67,4 @@ data.dat: $(DATA_LUA) $(DATA_BMP) $(DATA_FONT) $(DATA_MAP) $(DATA_SAMPS)
 	if test -n "$$DEBMPS" ; then dat -a -k -t BMP data.dat $$DEBMPS; fi; \
 	if test -n "$$DEFONTS" ; then dat -a -k -t FONT data.dat $$DEFONTS; fi; \
 	if test -n "$$DEMAPS" ; then dat -a -k -t MAP data.dat $$DEMAPS; fi; \
-	if test -n "$$DESAMPS" ; then dat -a -k -t OGG data.dat $$DESAMPS; fi; \
+	if test -n "$$DESAMPS" ; then dat -a -k -t SAMP data.dat $$DESAMPS; fi; \
