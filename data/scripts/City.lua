@@ -26,8 +26,6 @@ City = Map:subclass
 
 		-- The doors in this area
 		self:spawn(DoorJake  ,  93,  72);
-		self:spawn(DoorLocked,  76,  72);
-		self:spawn(DoorLocked,  85,  72);
 
 		-- Spawn portals
 		self.jakePortal = self:spawn(Portal, 93, 72);
