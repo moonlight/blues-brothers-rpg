@@ -79,6 +79,13 @@ int l_make_noise(lua_State *L);
 int l_update_input(lua_State *L);
 int l_get_shift(lua_State *L);
 
+int l_get_bitmap(lua_State *L);
+int l_create_sub_bitmap(lua_State *L);
+int l_load_map(lua_State *L);
+int l_draw_viewport(lua_State *L);
+
+int l_quit_game(lua_State *L);
+
 
 //===================   Tag methods   ====================================================/
 

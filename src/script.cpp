@@ -12,7 +12,7 @@
 #include <allegro.h>
 #include <stdarg.h>
 #include "rpg.h"
-#include "engine.h"
+#include "shared/engine.h"
 #include "console.h"
 #include "sound.h"
 #include "script.h"
@@ -568,7 +568,25 @@ int l_import_tile_bmp(lua_State *L)
 	const char *filename;
 	int tile_w, tile_h, tile_spacing;
 	getLuaArguments(L, "siii", &filename, &tile_w, &tile_h, &tile_spacing);
-	import_tile_bmp(filename, tile_w, tile_h, tile_spacing);
+
+	console.log(CON_CONSOLE, CON_DEBUG, "Importing tile bitmap \"%s\"...", filename);
+
+	BITMAP* tileBitmap;
+	char tempFilename[256];
+	DATAFILE *found_object = find_datafile_object(bitmap_data, filename);
+
+	if (found_object) {
+		tileBitmap = (BITMAP*)found_object->dat;
+		if (tileBitmap) {
+			replace_extension(tempFilename, get_filename(filename), "", 256);
+			tileRepository->importBitmap(tileBitmap, tempFilename, tile_w, tile_h, tile_spacing);
+		} else {
+			console.log(CON_QUIT, CON_ALWAYS, "Error: failed loading tile bitmap: \"%s\"", filename);
+		}
+	} else {
+		console.log(CON_QUIT, CON_ALWAYS, "Error: file for tile bitmap not found: \"%s\"", filename);
+	}
+
 	return 0;
 }
 
@@ -776,6 +794,106 @@ int l_get_shift(lua_State *L)
 	lua_settop(L, 0);
 	lua_pushboolean(L, key[KEY_LSHIFT] | key[KEY_RSHIFT]);
 	return 1;
+}
+
+
+int l_get_bitmap(lua_State *L)
+{
+	const char *name;
+	BITMAP* found_bitmap = NULL;
+	getLuaArguments(L, "s", &name);
+
+	DATAFILE *found_object = find_datafile_object(bitmap_data, name);
+
+	if (found_object) {
+		found_bitmap = (BITMAP*)found_object->dat;
+		return putLuaArguments(L, "b", found_bitmap);
+	} else {
+		return luaL_error(L, "Error: Cannot find requested bitmap (%s)!", name);
+	}
+}
+
+int l_create_sub_bitmap(lua_State *L)
+{
+	BITMAP* parent;
+	BITMAP* sub_bitmap;
+	int x, y, w, h;
+	getLuaArguments(L, "biiii", &parent, &x, &y, &w, &h);
+
+	if (!parent) {
+		lua_pushstring(L, "Error: No bitmap passed to function!");
+		lua_error(L);
+	}
+	if (x < 0 || y < 0 || x >= parent->w || y >= parent->h) {
+		if (debug_mode) {
+			luaL_error(L, "Error: Creating subbitmap failed, invalid origin (%d, %d)", x, y);
+		}
+		else {
+			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Warning: Creating subbitmap failed, invalid origin (%d, %d)", x, y);
+		}
+		return 0;
+	}
+
+	sub_bitmap = create_sub_bitmap(parent, x, y, w, h);
+
+	return putLuaArguments(L, "b", sub_bitmap);
+}
+
+
+int l_load_map(lua_State *L)
+{
+	const char *map_name;
+	getLuaArguments(L, "s", &map_name);
+
+	if (exists(map_name)) {
+		console.log(CON_LOG, CON_ALWAYS, "Loading map \"%s\"...", map_name);
+		Map* map = new Map();
+		map->loadMap(map_name);
+		maps.push_front(map);
+		return putLuaArguments(L, "m", map);
+	}
+	else {
+		if (debug_mode) {
+			luaL_error(L, "Error: Attempt to load a non-existing map (%s)!", map_name);
+		}
+		else {
+			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Warning: Attempt to load a non-existing map (%s)!", map_name);
+		}
+	}
+
+	return 0;
+}
+
+
+int l_draw_viewport(lua_State *L)
+{
+	int x, y, w, h;
+	double tx, ty;
+	Map* map;
+	getLuaArguments(L, "iiiiddm", &x, &y, &w, &h, &tx, &ty, &map);
+
+	if (map) {
+		list<Object*>::iterator i;
+		// Iterate through all objects, calling the preRender function
+		for (i = map->objects.begin(); i != map->objects.end(); i++) {
+			callMemberFunction((*i)->tableRef, "preRender");
+			(*i)->update_entity();
+		}
+
+		canvas.drawViewport(x, y, w, h, (int)(tx * TILES_W), (int)(ty * TILES_H), map);
+	}
+	else {
+		console.log(CON_CONSOLE | CON_LOG, CON_DEBUG, "Warning: draw_viewport called without a map.");
+	}
+
+	return 0;
+}
+
+
+int l_quit_game(lua_State *L)
+{
+	game_end = true;
+	return 0;
 }
 
 

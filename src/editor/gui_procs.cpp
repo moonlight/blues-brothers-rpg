@@ -11,7 +11,7 @@
 #include "editor.h"
 #include "tiled_map.h"
 #include "script.h"
-#include "engine.h"
+#include "../shared/engine.h"
 #include "../common.h"
 
 

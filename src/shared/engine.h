@@ -12,10 +12,10 @@
 #ifndef _INCLUDED_ENGINE_H_
 #define _INCLUDED_ENGINE_H_
 
-#include "tiled_map.h"
-#include "script.h"
+#include "../tiled_map.h"
+#include "../script.h"
 #include <list>
-#include "../shared/map.h"
+#include "map.h"
 
 using namespace std;
 
@@ -56,15 +56,6 @@ public:
 	Object(int luaTableRef, Map* myMap);
 	~Object();
 
-	// Entity member variables
-	bool visible(BITMAP *dest, Point screenCoords);
-	void draw(BITMAP *dest, Point topLeft);
-
-	Point pos;
-	int drawMode;
-	int alpha;
-	bool selected;
-
 	// Methods
 	void walk(int dir, bool col);
 	void set_dir(int dir);
@@ -87,12 +78,6 @@ private:
 
 void update_objects();
 
-
-//===================   Script functions   ===========================================
-
-int l_get_bitmap(lua_State *L);
-int l_create_sub_bitmap(lua_State *L);
-int l_load_map(lua_State *L);
 
 //===================   Variables   ==================================================
 

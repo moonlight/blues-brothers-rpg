@@ -13,7 +13,7 @@
 #define _INCLUDED_RPG_H_
 
 #include "tiled_map.h"
-#include "engine.h"
+#include "shared/engine.h"
 #include "console.h"
 #include <map>
 #include <allegro.h>
@@ -46,6 +46,4 @@ void update_screen();
 void draw_screen();
 void exit_program();
 
-
 #endif
-

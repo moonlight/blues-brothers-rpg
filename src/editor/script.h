@@ -55,6 +55,9 @@ int l_bitmap_size(lua_State *L);
 
 int l_register_class(lua_State *L);
 
+int l_get_bitmap(lua_State *L);
+int l_create_sub_bitmap(lua_State *L);
+int l_load_map(lua_State *L);
 
 
 //===================   Tag methods   ====================================================/
