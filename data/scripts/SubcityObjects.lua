@@ -166,6 +166,7 @@ TV = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("tv.bmp"),
+		convTableKeyword = "TV",
 	}
 }
 
@@ -242,6 +243,7 @@ Couch = Decoration:subclass
 		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("bank.bmp"),
+		convTableKeyword = "Couch",
 	}
 }
 
@@ -269,6 +271,7 @@ CopCar = Decoration:subclass
 		w = 5,
 		draw_mode = DM_MASKED,
 		animSeq =  extr_array(m_get_bitmap("car_cop.bmp"),108,50),
+		convTableKeyword = "CopCar",
 	}
 }
 
@@ -563,29 +566,35 @@ DoorInside = Decoration:subclass
 	}
 }
 
-LamppostLeft = Actor:subclass
+LamppostLeft = Decoration:subclass
 {
 	name = "LamppostLeft";
 	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("lamppost_snow_w.bmp"),
+		bCenterBitmap = false,
+		bCenterOnTile = false,
 		offset_y = -15,
 		offset_x = -12,
 		obstacle = 1,
+		convTableKeyword = "Lamppost",
 	};
 }
 
-LamppostRight = Actor:subclass
+LamppostRight = Decoration:subclass
 {
 	name = "LamppostRight";
 	bPlaceable = true;
 	
 	defaultproperties = {
 		bitmap = m_get_bitmap("lamppost_snow_e.bmp"),
+		bCenterBitmap = false,
+		bCenterOnTile = false,
 		offset_y = -15,
 		offset_x = 9,
 		obstacle = 1,
+		convTableKeyword = "Lamppost",
 	};
 }
 
@@ -642,8 +651,8 @@ Putdeksel = Actor:subclass
 	defaultproperties = {
 		bCanActivate = true,
 		offset_x = -1,
-		offset_y = -11,
-		offset_z = -6,
+		offset_y = -35,
+		offset_z = -30,
 		bitmap = m_get_bitmap("putdeksel.bmp"),
 		obstacle = 1,
 	}

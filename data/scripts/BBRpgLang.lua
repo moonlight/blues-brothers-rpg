@@ -361,6 +361,18 @@ BBRpgLang = Lang:subclass
 		ChristmasTree = {
 			{{"{PLAYER}", "That's one huge Christmas tree!"}},
 		},
+		CopCar = {
+			{{"{PLAYER}", "So now we're driving in a policecar. How low can you go..."}},
+		},
+		Couch = {
+			{{"{PLAYER}", "It's a dirty old couch."}},
+		},
+		TV = {
+			{{"{PLAYER}", "This television doesn't work."}},
+		},
+		Lamppost = {
+			{{"{PLAYER}", "Het is een lantaarnpaal."}},
+		},
 	};
 
 	defaultproperties = {

@@ -109,7 +109,7 @@ BBRpgLangDutch = Lang:subclass
 			{"Jake", "It's better than the hellhole you lived in the past couple of years."},
 		},
 		FindKeyFob = {
-			{"{PLAYER}", "Daar ligt ie! I zie de sleutelbos!"},
+			{"{PLAYER}", "Daar ligt ie! Ik zie de sleutelbos!"},
 			{"Jake", "We hebben mijn gelukssleutelbos!"},
 			{"Elwood", "Dus je probeert me duidelijk te maken dat dit allemaal was om jouw tentakelsleutelbos te vinden?"},
 			{"Jake", "Ja! Hij is speciaal voor mij! Hij brengt me geluk!"},
@@ -347,6 +347,18 @@ BBRpgLangDutch = Lang:subclass
 		},
 		ChristmasTree = {
 			{{"{PLAYER}", "Dat is een grote kerstboom!"}},
+		},
+		CopCar = {
+			{{"{PLAYER}", "Dus nu rijden we in een politieauto. Hoe diep kan je zinken..."}},
+		},
+		Couch = {
+			{{"{PLAYER}", "Het is een oude vieze bank."}},
+		},
+		TV = {
+			{{"{PLAYER}", "Deze televisie werkt niet."}},
+		},
+		Lamppost = {
+			{{"{PLAYER}", "It's a lamppost."}},
 		},
 	};
 
