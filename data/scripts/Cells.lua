@@ -161,6 +161,10 @@ Cells = Map:subclass
 		self:spawn(PrisonBed, 30,  92)
 		self:spawn(PrisonBed, 30,  99)
 
+		self:spawn(PrisonBed, 30,  27)
+		self:spawn(PrisonBed, 30,  34)
+		self:spawn(PrisonBed, 30,  41)
+
 		obj = self:spawn(PrisonBed, 14,  20); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 14,  27); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 14,  34); obj.offset_x = 7
@@ -178,7 +182,10 @@ Cells = Map:subclass
 		obj = self:spawn(PrisonBed, 35,  85); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 35,  92); obj.offset_x = 7
 		obj = self:spawn(PrisonBed, 35,  99); obj.offset_x = 7
-		
+
+		obj = self:spawn(PrisonBed, 35,  27); obj.offset_x = 7
+		obj = self:spawn(PrisonBed, 35,  34); obj.offset_x = 7
+		obj = self:spawn(PrisonBed, 35,  41); obj.offset_x = 7
 
 		-- Other decoration
 		obj = self:spawn(AlmostPi, 49, 75); obj.offset_x = 6; obj.offset_y = 6; obj.alpha = 90

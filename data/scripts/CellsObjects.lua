@@ -200,3 +200,40 @@ SewageDrain = Decoration:subclass
 		bitmap = m_get_bitmap("sewagedrain.bmp"),		
 	}	
 }
+
+Shower = Decoration:subclass
+{
+	name = "Shower";
+	bPlaceable = true;
+	
+	defaultproperties = {
+		bCenterOnTile = true,
+		obstacle = 0,
+		offset_y = -4,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("shower.bmp"),
+	}
+}
+
+Soap = Decoration:subclass
+{
+	name = "Soap";
+	bPlaceable = true;
+
+	defaultproperties = {
+		bCenterOnTile = true,
+		obstacle = 0,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("soap.bmp"),
+		convTableKeyword = "Soap",
+	}
+}
+
+
+
+
+
+
+
+
+

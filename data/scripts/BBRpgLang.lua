@@ -17,6 +17,7 @@ BBRpgLang = Lang:subclass
 	};
 
 	convs = {
+				-- Conversations. Used in sequences.
 		Intro1 = {
 			{"Mr. ??", "Standard parole 3 out of 5. Good behavior."},
 			{"Mr. ??", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
@@ -214,6 +215,23 @@ BBRpgLang = Lang:subclass
 		WallAndTube2 = {
 			{"{PLAYER}", "Finally, the exit."},
 		},
+		TooDangerous = {
+			{"{PLAYER}", "I need some kind of a weapon to pass these guys..."},
+		},
+		RemovePutdeksel = {
+			{"{PLAYER}", "Ah yes, it's moving..."},
+		},
+		CantRemovePutdeksel = {
+			{"{PLAYER}", "It won't move. I need a tool to remove it."},
+		},
+		Crowbar = {
+			{"{PLAYER}", "Hey, a crowbar. That might come in handy."},
+		},
+		JakesDoorLocked = {
+			{"{PLAYER}", "This door is locked. I need to find the key first."},
+		},
+		
+		-- Conversation tables. Used for random events.
 		Guitar = {
 			{{"{PLAYER}", "It's a guitar!"}},
 			{{"{PLAYER}", "If we weren't trying to prevent the Fourth World War, I would play it right now, right here. Whatever, I'll try it anyway."}},
@@ -273,20 +291,10 @@ BBRpgLang = Lang:subclass
 		MessPile = {
 			{{"{PLAYER}", "Wow, here's a pile that's hard to clean up."}},
 		},
-		TooDangerous = {
-			{"{PLAYER}", "I need some kind of a weapon to pass these guys..."},
+		Soap = {
+			{{"{PLAYER}", "There is a soapbar lying at the floor."}},
+			{{"{PLAYER}", "Oh, no. This one is a classic. You don't fool me."}},
+			{{"{PLAYER}", "It's a soapbar."}},
 		},
-		RemovePutdeksel = {
-			{"{PLAYER}", "Ah yes, it's moving..."},
-		},
-		CantRemovePutdeksel = {
-			{"{PLAYER}", "It won't move. I need a tool to remove it."},
-		},
-		Crowbar = {
-			{"{PLAYER}", "Hey, a crowbar. That might come in handy."},
-		},
-		JakesDoorLocked = {
-			{"{PLAYER}", "This door is locked. I need to find the key first."},
-		}
 	};
 }
