@@ -36,8 +36,6 @@ Hud = Interaction:subclass
 
 	-- A chance to put something on the screen (requires bVisible)
 	postRender = function(self, canvas)
-		canvas:drawIcon(self.game_over)
-
 		--[[
 		local player = m_get_player()
 		local health_perc = player.health / player.maxHealth
