@@ -110,10 +110,10 @@ void Object::walk(int dir, bool col)
 				Object *obj = (*i);
 				if ((obstacle) &&
 					(obj->obstacle) &&
-					(((obj->x + obj->w > next_x && obj->x  <= next_x) &&
-					(obj->y   - obj->h < next_y && obj->y  >= next_y)) ||
-					((obj->nx + obj->w > next_x && obj->nx <= next_x) && obj->walking > 0 &&
-					(obj->ny  - obj->h < next_y && obj->ny >= next_y))))
+					(((obj->x  + obj->w > next_x && obj->x  <= next_x) && obj->walking == 0 &&
+					  (obj->y  - obj->h < next_y && obj->y  >= next_y)) ||
+					 ((obj->nx + obj->w > next_x && obj->nx <= next_x) && obj->walking > 0 &&
+					  (obj->ny - obj->h < next_y && obj->ny >= next_y))))
 				{
 					callMemberFunction(tableRef, "event_bump_into", "o", obj);
 					callMemberFunction(obj->tableRef, "event_bumped_into", "o", this);
