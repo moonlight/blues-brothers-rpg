@@ -11,6 +11,8 @@ City = Map:subclass
 	init = function(self)
 		Map.init(self, "data/maps/city1.map")
 
+		-- No go areas.
+		self:spawn(TooDangerous, 63, 80)
 		-- Litter the city with stuff
 		self:spawn(MessPile , 119, 161);
 		self:spawn(Dustbin  , 102,  73);
@@ -23,9 +25,9 @@ City = Map:subclass
 		-- Spawn the removable `putdeksel'
 		self:spawn(Putdeksel, 119, 63);
 		
-		-- Spawn two enemies
-		self:spawn(Junk, 83, 73);
-		self:spawn(Punk, 82, 73);
+		-- Spawn the enemies
+		self:spawn(Punk, 56, 74);
+		self:spawn(Punk, 56, 77);
 
 		-- The doors in this area
 		self:spawn(DoorJake, 93, 72);

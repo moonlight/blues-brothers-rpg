@@ -450,3 +450,36 @@ Putdeksel = Actor:subclass
 		obstacle = 0,
 	}
 }
+
+Crowbar = Decoration:subclass
+{
+	name = "Crowbar";
+	bPlaceable = true;
+	
+	defaultproperties = {
+		bCanActivate = true,
+		obstacle = 0,
+		bitmap = m_get_bitmap("crowbar.bmp"),
+	}
+}
+
+TooDangerous = Actor:subclass
+{
+	name = "TooDangerous";
+
+	event_stand_on = function(self, obj)
+		ActionController:addSequence{
+			ActionExModeOn(),	
+			ActionConversation(lang:getConv("TooDangerous")),
+			ActionWalkPath(obj,"R1"),
+			ActionExModeOff(),
+		}
+	end;
+
+	defaultproperties = {
+		bCanActivate = true,	
+		obstacle = 0,
+		w = 1,
+		h = 8,
+	}	
+}

@@ -273,6 +273,8 @@ BBRpgLang = Lang:subclass
 		MessPile = {
 			{{"{PLAYER}", "Wow, here's a pile that's hard to clean up."}},
 		},
-		
+		TooDangerous = {
+			{"{PLAYER}", "I need some kind of a weapon to pass these guys..."},
+		},		
 	};
 }
