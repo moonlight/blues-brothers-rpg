@@ -77,11 +77,11 @@ CaveAdventure = Game:subclass
 		if (show_main_menu) then
 			m_set_cursor(0,0)
 			m_set_alpha(main_menu_bg.alpha)
-			draw_icon(main_menu_bg.bm)
-			m_set_alpha(255)
+			self.canvas:drawIcon(main_menu_bg.bm)
+			self.canvas:setAlpha(255)
 			m_set_drawmode(DM_ALPHA)
-			m_set_cursor(10, main_title.y); draw_icon(main_title.bm)
-			m_set_cursor(82, main_start.y); draw_icon(main_start.bm)
+			self.canvas:setCursor(10, main_title.y); self.canvas:drawIcon(main_title.bm)
+			self.canvas:setCursor(82, main_start.y); self.canvas:drawIcon(main_start.bm)
 			m_set_drawmode(DM_MASKED)
 		end
 

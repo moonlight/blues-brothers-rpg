@@ -418,3 +418,27 @@ DoorLocked = Decoration:subclass
 		bitmaps = extr_array(m_get_bitmap("door2.bmp"), 28, 50),
 	}
 }
+
+LamppostLeft = Actor:subclass
+{
+	name = "LamppostLeft";
+	
+	defaultproperties = {
+		bitmap = m_get_bitmap("lamppost_w.bmp"),
+		offset_y = -15,
+		offset_x = -12,
+		obstacle = 1,
+	}
+}
+
+LamppostRight = Actor:subclass
+{
+	name = "LamppostRight";
+	
+	defaultproperties = {
+		bitmap = m_get_bitmap("lamppost_e.bmp"),
+		offset_y = -15,
+		offset_x = 12,
+		obstacle = 1,
+	}
+}

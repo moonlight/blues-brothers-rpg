@@ -106,7 +106,9 @@ Game = Object:subclass
 		end
 
 		-- Set HUD to invisible while main menu is shown
-		self.hud.bVisible = not show_main_menu
+		if (self.hud) then
+			self.hud.bVisible = not show_main_menu
+		end
 
 		self.interactionMaster:processPostRender(self.canvas)
 	end;
