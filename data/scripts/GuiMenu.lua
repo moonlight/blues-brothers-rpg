@@ -65,13 +65,16 @@ GuiMenu = Interaction:subclass
 		if (key == "up") then
 			self.selected = self.selected - 1
 			if (self.selected == 0) then self.selected = table.getn(self.menuItems) end
+			m_play_sample("bbsfx_door1.wav")
 			return true
 		elseif (key == "down") then
 			self.selected = self.selected + 1
 			if (self.selected > table.getn(self.menuItems)) then self.selected = 1 end
+			m_play_sample("bbsfx_door1.wav")
 			return true
 		elseif (key == "action") then
 			self.menuItems[self.selected].func()
+			m_play_sample("bbsfx_door1.wav")
 			return true
 		end
 	end;

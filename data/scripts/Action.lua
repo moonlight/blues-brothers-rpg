@@ -24,6 +24,7 @@
 --   ActionExModeOn()
 --   ActionExModeOff()
 --   ActionPlaySong(filename, fadeTime [, wait])
+--   ActionPlaySample(filename)
 --   ActionFadeOutMusic(fadeTime [, wait])
 --   ActionFadeInMusic(filename, fadeTime [, wait])
 --   ActionFadeInMap(time)
@@ -435,6 +436,18 @@ ActionPlaySong = Action:subclass
 			self.playingStarted = true
 		end
 		return (MusicControl.state == MC_NORMAL or (not self.wait))
+	end;
+}
+
+ActionPlaySample = ActionCallFunction:subclass
+{
+	name = "ActionPlaySample";
+
+	init = function(self, filename)
+		if (not filename) then
+			error("Error: ActionPlaySample created without a filename")
+		end
+		ActionCallFunction.init(self, m_play_sample, filename)
 	end;
 }
 
