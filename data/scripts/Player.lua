@@ -51,7 +51,7 @@ Player = Character:subclass
 			for index, object in attacked_objs do
 				if (object:instanceOf(Actor)) then
 					local damage = (self.attack_min_dam + math.random(self.attack_max_dam - self.attack_min_dam))*(self.strength/95 + 18/19)
-					object:takeDamage(damage)
+					object:takeDamage(damage, self)
 				end
 			end
 
