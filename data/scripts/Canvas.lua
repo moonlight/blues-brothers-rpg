@@ -36,7 +36,19 @@ Canvas = Object:subclass
 	end;
 
 	moveCursor = function(self, dx, dy)
-		local x, y = m_get_cursor()
-		m_set_cursor(x + dx, y + dy)
+		local x, y = self:getCursor()
+		self:setCursor(x + dx, y + dy)
+	end;
+
+	setCursor = function(self, x, y)
+		m_set_cursor(x, y)
+	end;
+
+	getCursor = function(self)
+		return m_get_cursor()
+	end;
+
+	setAlpha = function(self, alpha)
+		m_set_alpha(alpha)
 	end;
 }

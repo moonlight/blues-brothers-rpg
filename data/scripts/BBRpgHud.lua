@@ -11,7 +11,7 @@ BBRpgHud = Hud:subclass
 
 	postRender = function(self, canvas)
 		Hud.postRender(self, canvas)
-		
+
 		-- What do I plan to do here?
 	end;
 

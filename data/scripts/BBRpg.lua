@@ -45,15 +45,15 @@ BBRpg = Game:subclass
 		Game.init(self)
 
 		gameCameraTarget = CameraTarget() -- GLOBAL!?
-		local playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
+		self.playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
 		self.viewPort.target = gameCameraTarget
 
-		playerSwitcher:addPlayerHost(elwood)
-		playerSwitcher:addPlayerHost(jake)
-		playerSwitcher:addPlayerHost(brian)
+		self.playerSwitcher:addPlayerHost(elwood)
+		self.playerSwitcher:addPlayerHost(jake)
+		self.playerSwitcher:addPlayerHost(brian)
 
 		-- Tell the HUD about the playerSwitcher
-		self.hud:setPlayerSwitcher(playerSwitcher)
+		self.hud:setPlayerSwitcher(self.playerSwitcher)
 
 
 		-- Show startup screen
@@ -66,7 +66,7 @@ BBRpg = Game:subclass
 		ActionController:addSequence{
 			ActionExModeOn(),
 			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
-			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, playerSwitcher),
+			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
 		}
 	end;
 
@@ -74,10 +74,13 @@ BBRpg = Game:subclass
 		local width, height = m_screen_size()
 
 		if (show_main_menu) then
-			m_set_cursor(0,0)
-			m_set_alpha(main_menu_bg.alpha)
+			self.canvas:setCursor(0,0)
+			self.canvas:setAlpha(main_menu_bg.alpha)
 			self.canvas:drawIcon(main_menu_bg.bm)
 		end
+
+		-- Set HUD to invisible while main menu is shown
+		self.playerSwitcher.bVisible = not show_main_menu
 
 		Game.event_render(self)
 	end;

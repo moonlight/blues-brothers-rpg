@@ -149,18 +149,18 @@ PlayerSwitcher = Interaction:subclass
 			end
 			
 			-- Draw the health bar
-			m_set_alpha(128)
-			m_set_cursor(x, y)
+			canvas:setAlpha(128)
+			canvas:setCursor(x, y)
 			canvas:drawIcon(self.hb_empty)
-			m_set_cursor(x, y)
+			canvas:setCursor(x, y)
 			canvas:drawPattern(self.hb_full, self.hb_w * health_perc, self.hb_h)
 			
 			-- Draw the experience bar
-			m_set_cursor(x, y + 11)
+			canvas:setCursor(x, y + 11)
 			canvas:drawIcon(self.eb_empty)
-			m_set_cursor(x, y + 11)
+			canvas:setCursor(x, y + 11)
 			canvas:drawPattern(self.eb_full, self.eb_w * experience_perc, self.eb_h)
-			m_set_alpha(255)
+			canvas:setAlpha(255)
 		end
 
 	end;

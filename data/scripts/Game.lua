@@ -60,7 +60,6 @@ Game = Object:subclass
 	-- updated.
 	--
 	event_logic_update = function(self)
-		--HUD:logic_update()
 		ActionController:update()
 		MusicControl:update()
 
@@ -106,9 +105,8 @@ Game = Object:subclass
 			m_set_alpha(255)
 		end
 
-		if (not show_main_menu) then
-			--HUD:draw()
-		end
+		-- Set HUD to invisible while main menu is shown
+		self.hud.bVisible = not show_main_menu
 
 		self.interactionMaster:processPostRender(self.canvas)
 	end;
