@@ -5,7 +5,7 @@ import("Decoration.lua")
 MessPile = Decoration:subclass
 {
 	name = "MessPile";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		offset_x = -6,
 		offset_y = 6,
@@ -27,6 +27,7 @@ MessPile2 = Decoration:subclass
 	activatedBy = function(self, obj)
 		if self.containsEngines then
 			ActionController:addSequence{
+				ActionExModeOn(),
 				ActionSetVariable(obj, "bWalkieTalkie", true),
 				ActionConversation(lang:getConv("FindMiniRocketEngines")),
 				ActionSetVariable(obj, "bWalkieTalkie", false),
@@ -34,12 +35,9 @@ MessPile2 = Decoration:subclass
 				ActionSetVariable(self, "containsEngines", false),
 				ActionWait(100),
 				ActionFadeOutMap(100),
-				ActionCallFunction(elwood.setMap, elwood, leesMap),
-				ActionCallFunction(jake.setMap  ,   jake, leesMap),
-				ActionCallFunction(brian.setMap ,  brian, leesMap),
-				ActionSetPosition(brian, 30, 19, DIR_RIGHT),
-				ActionSetPosition(jake, 31, 20, DIR_UP),
-				ActionSetPosition(elwood, 32, 20, DIR_UP),
+				ActionSetPosition(brian, 30, 19, DIR_RIGHT, leesMap),
+				ActionSetPosition(jake, 31, 20, DIR_UP, leesMap),
+				ActionSetPosition(elwood, 32, 20, DIR_UP, leesMap),
 				ActionSetVariable(jake, "bSleeping", false),
 				ActionSetVariable(elwood, "bSleeping", false),
 				ActionSetVariable(brian, "bSleeping", false),
@@ -49,7 +47,13 @@ MessPile2 = Decoration:subclass
 				ActionConversation(lang:getConv("Ending1")),
 				ActionCallFunction(obj.removeFromInventory, obj, cityMap.engines),
 				ActionConversation(lang:getConv("Ending2")),
-				ActionFadeOutMap(250),
+				ActionWait(100),
+				ActionFadeOutMusic(200),
+				ActionFadeOutMap(200),
+				ActionSetVariable(_G, "show_main_menu", true),
+				ActionSetVariable(main_menu_bg, "drawMode", DM_ALPHA),
+				ActionSetVariable(main_menu_bg, "bm", m_get_bitmap("theend.tga")),
+				ActionPlaySong("data/music/6.ogg", 10),
 			}
 		else
 			ActionController:addSequence{

@@ -13,6 +13,7 @@ their third brother who is still held in prison.
 Have fun playing our game, we had great fun in making it!
 
 The game can be found on: http://www.rpgdx.net
+Or on source forge:       http://www.sf.net/projects/moeng
 
 
 -------------------------
@@ -62,6 +63,9 @@ current specifications are:
 - Comes with its own map/tile editor
 - Allows use of multiple tile bitmaps per map, and the other way around
 
+All the game content except for the music is released as GPL too. Feel free to
+use it in your own game as long as you GPL any added graphics.
+
 
 -------------------
 Config file options
@@ -75,9 +79,21 @@ doesn't support 320x240 high/truecolor modes.
 
 If the game runs choppy, try reducing the colordepth to 16 or 15 bit.
 
+The sound section in the config file allows you to specify the volume of music
+and sound effects seperately, or turn either off completely.
+
 
 -------
 History
 -------
 
-January, 2nd 8:00 (First public release)
+1.1.0 - January, 4th (First post-compo release)
+
+* Added the Blues music, the biggest thing missing in our previous version
+* Added some more sounds
+* Added Dutch translation
+* Added Quickstart option which skips intro
+* Fixed a few bugs
+
+
+1.0.0 - January, 2nd (First public release)

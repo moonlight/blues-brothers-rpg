@@ -188,8 +188,8 @@ BBRpgLangDutch = Lang:subclass
 			{"Brian", "Lee!"},
 			{"Lee", "Hallo daar."},
 			{"Elwood", "Dit is Lee?"},
-			{"Jake", "Aannemende dat Brian de man kent, en dat Brian hem Lee noemt zit het er dik in dat het Lee is."},
-			{"Lee", "Inderdaad, Ik ben degene die Lee genoemd wordt."},
+			{"Jake", "Aangezien Brian de man kent, en dat Brian hem Lee noemt zit het er dik in dat het Lee is."},
+			{"Lee", "Inderdaad, ik ben degene die Lee genoemd wordt."},
 			{"Brian", "We hebben de mini-raket motoren voor de miniversie van de Columbia ruimteveer die een miniaanval gaat uitvoeren en daarmee de Vierde Wereld Oorlog gaat voorkomen! Alstjeblieft!"},
 		},
 		Ending2 = {

@@ -82,6 +82,7 @@ BBRpg = Game:subclass
 		main_menu_bg = {
 			bm = m_get_bitmap("bb_startup.bmp"),
 			alpha = 0,
+			drawMode = DM_TRANS,
 		}
 
 		ActionController:addSequence{
@@ -94,16 +95,18 @@ BBRpg = Game:subclass
 	end;
 
 	event_render = function(self)
-		local width, height = m_screen_size()
+		-- Set HUD to invisible while main menu is shown
+		self.playerSwitcher.bVisible = not show_main_menu
 
 		if (show_main_menu) then
-			self.canvas:setCursor(0,0)
+			local width, height = m_screen_size()
+			local w, h = m_bitmap_size(main_menu_bg.bm)
+
+			self.canvas:setDrawMode(main_menu_bg.drawMode)
+			self.canvas:setCursor((width - w) / 2, (height - h) / 2)
 			self.canvas:setAlpha(main_menu_bg.alpha)
 			self.canvas:drawIcon(main_menu_bg.bm)
 		end
-
-		-- Set HUD to invisible while main menu is shown
-		self.playerSwitcher.bVisible = not show_main_menu
 
 		Game.event_render(self)
 	end;
