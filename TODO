@@ -5,6 +5,7 @@ Legenda:
 
 
 Niet ingedeeld:
+- Zijmuren in 2e layer stoppen zodat ze boven de brede lijken zitten
 - Experience fijn tunen
 - Animated tiles in the sewer
 - Sounds effects
@@ -34,7 +35,6 @@ Georg:
 Frode:
 ! Electronica voor in de `control room'
 ! Walkie talkie inventory picture
-! Jake, Brian en Elwood naar vooren kijkend met walkie talkie
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
 - Sneeuw op de autos
