@@ -27,6 +27,8 @@ GuiTheme = Object:subclass
 		self.shadowUR = m_create_sub_bitmap(self.bitmap, 7, 0, 2, 2)
 		self.shadowLL = m_create_sub_bitmap(self.bitmap, 5, 2, 2, 2)
 		self.shadowLR = m_create_sub_bitmap(self.bitmap, 7, 2, 2, 2)
+
+		self.canvas   = Canvas()
 	end;
 
 	drawBox = function(self, x, y, w, h)
@@ -57,19 +59,19 @@ GuiTheme = Object:subclass
 
 	drawBoxEx = function(self, bg, ul, ur, ll, lr, bu, bl, br, bd, x, y, w, h)
 		m_set_cursor(x, y)
-		draw_icon(ul)
-		draw_rect(bu, w - (self.borderWidth * 2), self.borderWidth)
-		draw_icon(ur)
+		self.canvas:drawIcon(ul)
+		self.canvas:drawRect(bu, w - (self.borderWidth * 2), self.borderWidth)
+		self.canvas:drawIcon(ur)
 
 		m_set_cursor(x, y + self.borderWidth)
-		draw_rect(bl, self.borderWidth,           h - (self.borderWidth * 2))
-		draw_rect(bg, w - (self.borderWidth * 2), h - (self.borderWidth * 2))
-		draw_rect(br, self.borderWidth,           h - (self.borderWidth * 2))
+		self.canvas:drawRect(bl, self.borderWidth,           h - (self.borderWidth * 2))
+		self.canvas:drawRect(bg, w - (self.borderWidth * 2), h - (self.borderWidth * 2))
+		self.canvas:drawRect(br, self.borderWidth,           h - (self.borderWidth * 2))
 
 		m_set_cursor(x, y + h - self.borderWidth)
-		draw_icon(ll)
-		draw_rect(bd, w - (self.borderWidth * 2), self.borderWidth)
-		draw_icon(lr)
+		self.canvas:drawIcon(ll)
+		self.canvas:drawRect(bd, w - (self.borderWidth * 2), self.borderWidth)
+		self.canvas:drawIcon(lr)
 	end;
 
 
@@ -78,5 +80,6 @@ GuiTheme = Object:subclass
 		bitmap = m_get_bitmap("gui_green.bmp"),
 		font = "font_sansserif8.pcx",
 		borderWidth = 2,
+		canvas = nil,
 	};
 }

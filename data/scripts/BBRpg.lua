@@ -33,22 +33,25 @@ BBRpg = Game:subclass
 		playerController = PlayerController()
 
 		elwood = jailMap:spawn(Elwood, 36, 17)
+		jake = cityMap:spawn(Jake, 111, 119)
+		brian = cityMap:spawn(Brian, 85, 75)
 		elwood.dir = DIR_UP
-		jake   = cityMap:spawn(Jake,   111, 119)
 		jake.dir = DIR_UP
-		brian  = cityMap:spawn(Brian,  85, 75)
 
 
 		-- Call superfunction
 		Game.init(self)
 
-		gameCameraTarget = CameraTarget()
+		gameCameraTarget = CameraTarget() -- GLOBAL!?
 		local playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
 		self.viewPort.target = gameCameraTarget
 
 		playerSwitcher:addPlayerHost(elwood)
 		playerSwitcher:addPlayerHost(jake)
 		playerSwitcher:addPlayerHost(brian)
+
+		-- Tell the HUD about the playerSwitcher
+		self.hud:setPlayerSwitcher(playerSwitcher)
 
 
 		-- Show startup screen
@@ -57,10 +60,11 @@ BBRpg = Game:subclass
 			bm = m_get_bitmap("bb_startup.bmp"),
 			alpha = 0,
 		}
+
 		ActionController:addSequence{
 			ActionExModeOn(),
 			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
-			ActionCallFunction(interactionMaster.addInteraction, interactionMaster, playerSwitcher),
+			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, playerSwitcher),
 		}
 	end;
 
@@ -70,7 +74,7 @@ BBRpg = Game:subclass
 		if (show_main_menu) then
 			m_set_cursor(0,0)
 			m_set_alpha(main_menu_bg.alpha)
-			draw_icon(main_menu_bg.bm)
+			self.canvas:drawIcon(main_menu_bg.bm)
 		end
 
 		Game.event_render(self)

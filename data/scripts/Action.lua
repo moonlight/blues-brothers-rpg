@@ -575,10 +575,10 @@ ActionShowMapName = Action:subclass
 		-- Start a new
 		show_map_seq = ActionController:addSequence{
 			ActionWait(50),
-			ActionSetVariable(HUD, "map_name", self.bitmap),
-			ActionTweenVariable(HUD, "map_name_alpha", 100, 255, 0),
+			ActionSetVariable(Hud, "map_name", self.bitmap),
+			ActionTweenVariable(Hud, "map_name_alpha", 100, 255, 0),
 			ActionWait(200),
-			ActionTweenVariable(HUD, "map_name_alpha", 100, 0, 255),
+			ActionTweenVariable(Hud, "map_name_alpha", 100, 0, 255),
 		}
 
 		return true

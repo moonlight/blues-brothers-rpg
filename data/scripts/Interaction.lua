@@ -33,7 +33,7 @@ Interaction = Object:subclass
 	end;
 
 	-- A chance to put something on the screen (requires bVisible)
-	postRender = function(self)
+	postRender = function(self, canvas)
 	end;
 
 	-- Sets the focus on this interaction

@@ -68,7 +68,7 @@ MainMenu = GuiMenu:subclass
 			ActionSetVariable(jake, "dir", DIR_RIGHT),
 			ActionWalkPath(elwood, "D"),
 			ActionSetVariable(elwood, "dir", DIR_LEFT),
-			ActionConversation(lang:getConv("Intro5")),
+			--ActionConversation(lang:getConv("Intro5")),
 			ActionAddSequence{
 				ActionWalkPath(elwood, "D5L5"),
 				ActionSetVariable(elwood, "dir", DIR_RIGHT),
@@ -82,7 +82,7 @@ MainMenu = GuiMenu:subclass
 			ActionWait(15),
 			ActionSetPosition(jake, 114, 108, DIR_DOWN),
 			ActionWait(180),
-			ActionConversation(lang:getConv("Intro6")),
+			--ActionConversation(lang:getConv("Intro6")),
 			ActionTweenVariable(copcar, "x", 250, 118, function(from, to, perc)
 				perc = 1 - math.sin(perc * 0.5 * math.pi + 0.5 * math.pi)
 				return from + (to - from) * perc

@@ -108,12 +108,12 @@ InteractionMaster = Object:subclass
 		end
 	end;
 
-	processPostRender = function(self)
+	processPostRender = function(self, canvas)
 		local ia = self.globalInteractions
 
 		for i = table.getn(ia), 1, -1 do
 			if (ia[i].bVisible) then
-				ia[i]:postRender()
+				ia[i]:postRender(canvas)
 			end
 		end
 	end;

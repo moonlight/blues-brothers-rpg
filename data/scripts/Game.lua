@@ -13,11 +13,10 @@ Game = Object:subclass
 
 	init = function(self)
 		-- Initialize stuff
-		HUD:initialize()
 		MusicControl:init()
 		guiTheme = self.guiThemeClass()          -- WARNING: Bad design, introducing a global variable!
-		interactionMaster = InteractionMaster()  -- WARNING: I'm doing it again!
 		convBox = self.conversationWindowClass() -- WARNING: I have no shame!
+
 
 		if (self.textProviderClass ~= nil) then
 			self.textProvider = self.textProviderClass()
@@ -30,11 +29,22 @@ Game = Object:subclass
 			320, 240
 		)
 
+		self.canvas = Canvas()
+		self.interactionMaster = InteractionMaster()
 
-		interactionMaster:addInteraction(convBox)
+		-- Create HUD if a HUD class was given
+		if (self.hudClass) then
+			self.hud = self.hudClass()
+			self.interactionMaster:addInteraction(self.hud)
+		end
+
+		-- Add the conversation box
+		self.interactionMaster:addInteraction(convBox)
+
+		-- Create menu if a menu class was given
 		if (self.mainMenuClass) then
 			self.mainMenu = self.mainMenuClass()
-			interactionMaster:addInteraction(self.mainMenu)
+			self.interactionMaster:addInteraction(self.mainMenu)
 		end
 	end;
 
@@ -50,11 +60,11 @@ Game = Object:subclass
 	-- updated.
 	--
 	event_logic_update = function(self)
-		HUD:logic_update()
+		--HUD:logic_update()
 		ActionController:update()
 		MusicControl:update()
 
-		interactionMaster:processTick()
+		self.interactionMaster:processTick()
 
 		if (playerController and m_get_ex_mode() == 0) then
 			m_update_input(playerController)
@@ -82,7 +92,7 @@ Game = Object:subclass
 	--   function m_draw_viewport(x, y, w, h, target)
 	--
 	event_render = function(self)
-		interactionMaster:processPreRender()
+		self.interactionMaster:processPreRender()
 
 		if (not show_main_menu and self.viewPort) then
 			self.viewPort:render()
@@ -92,25 +102,25 @@ Game = Object:subclass
 			local w,h = m_screen_size()
 			m_set_alpha(map_fade.alpha)
 			m_set_cursor(0,0)
-			draw_rect(m_get_bitmap("pixel_black.bmp"), w, h)
+			self.canvas:drawRect(m_get_bitmap("pixel_black.bmp"), w, h)
 			m_set_alpha(255)
 		end
 
 		if (not show_main_menu) then
-			HUD:draw()
+			--HUD:draw()
 		end
 
-		interactionMaster:processPostRender()
+		self.interactionMaster:processPostRender(self.canvas)
 	end;
 
 	event_keypress = function(self, key)
 		--m_message(key.." key has been pressed!")
 
-		if (interactionMaster:processKeyType(key)) then return true end
+		if (self.interactionMaster:processKeyType(key)) then return true end
 
 		if (key == "esc") then
 			if (self.ingameMenuClass) then
-				interactionMaster:addInteraction(self.ingameMenuClass())
+				self.interactionMaster:addInteraction(self.ingameMenuClass())
 			else
 				m_quit_game()
 			end
@@ -123,6 +133,7 @@ Game = Object:subclass
 		startupSequence = {},
 		conversationWindowClass = ConversationWindow,
 		guiThemeClass = GuiTheme,
+		hudClass = nil,
 		playerClass = nil,
 		mainMenuClass = nil,
 		ingameMenuClass = nil,
