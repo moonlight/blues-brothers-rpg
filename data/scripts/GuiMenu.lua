@@ -21,7 +21,7 @@ GuiMenu = Interaction:subclass
 		menuItem.menu = self
 
 		-- Adjust menu size
-		self.h = self.h + menuItem:getHeight()
+		self.h = self.h + menuItem:getHeight() + 1
 		self.w = math.max(self.w, menuItem:getWidth())
 	end;
 
@@ -44,7 +44,7 @@ GuiMenu = Interaction:subclass
 			curr = curr + self.menuItems[i]:getHeight() + 1
 		end
 
-		guiTheme:drawBox(self.x - 2, self.y - 2, self.w + 4, self.h + 6)
+		guiTheme:drawBox(self.x - 2, self.y - 2, self.w + 4, self.h + 3)
 
 		local curr = 0
 		for i = 1, table.getn(self.menuItems) do

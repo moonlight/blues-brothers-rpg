@@ -4,17 +4,18 @@ LanguageMenu = GuiMenu:subclass
 {
 	name = "LanguageMenu";
 
-	init = function(self)
+	init = function(self, parentMenu)
 		GuiMenu.init(self)
+		self.parentMenu = parentMenu
 
 		self:addMenuItem(GuiMenuItem(BBRpgLang.defaultproperties.languageName, function()
 			lang = BBRpgLang()
-			self.master:addInteraction(MainMenu())
+			self.master:addInteraction(_G[parentMenu.name]())
 			self.master:removeInteraction(self)
 		end))
 		self:addMenuItem(GuiMenuItem(BBRpgLangDutch.defaultproperties.languageName, function()
 			lang = BBRpgLangDutch()
-			self.master:addInteraction(MainMenu())
+			self.master:addInteraction(_G[parentMenu.name]())
 			self.master:removeInteraction(self)
 		end))
 	end;
@@ -25,7 +26,7 @@ LanguageMenu = GuiMenu:subclass
 
 		if (key == "esc") then
 			-- Return without switching language
-			self.master:addInteraction(MainMenu())
+			self.master:addInteraction(self.parentMenu)
 			self.master:removeInteraction(self)
 			return true
 		end

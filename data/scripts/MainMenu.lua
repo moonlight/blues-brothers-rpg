@@ -153,7 +153,7 @@ MainMenu = GuiMenu:subclass
 			ActionController:addSequence(quickStartSequence);
 		end))
 		self:addMenuItem(GuiMenuItem(lang:getVar("LANGUAGE"), function()
-			self.master:addInteraction(LanguageMenu());
+			self.master:addInteraction(LanguageMenu(self));
 			self.master:removeInteraction(self);
 		end))
 		self:addMenuItem(GuiMenuItem(lang:getVar("QUIT"), function()

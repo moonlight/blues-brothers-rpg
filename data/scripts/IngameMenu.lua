@@ -12,6 +12,10 @@ IngameMenu = GuiMenu:subclass
 		GuiMenu.init(self)
 
 		self:addMenuItem(GuiMenuItem(lang:getVar("CONTINUE"), function() self.master:removeInteraction(self); end))
+		self:addMenuItem(GuiMenuItem(lang:getVar("LANGUAGE"), function()
+			self.master:addInteraction(LanguageMenu(self));
+			self.master:removeInteraction(self);
+		end))
 		self:addMenuItem(GuiMenuItem(lang:getVar("QUIT"),     function() self.master:removeInteraction(self); m_quit_game() end))
 	end;
 
