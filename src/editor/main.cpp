@@ -8,7 +8,7 @@
 #include "agup.h"
 #include "aphoton.h"
 #include "editor.h"
-#include "tiled_map.h"
+#include "../shared/tiled_map.h"
 #include "script.h"
 #include "../common.h"
 

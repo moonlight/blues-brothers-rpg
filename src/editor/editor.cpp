@@ -10,7 +10,7 @@
 #include "aphoton.h"
 #include "editor.h"
 #include "gui_procs.h"
-#include "tiled_map.h"
+#include "../shared/tiled_map.h"
 #include "../shared/engine.h"
 
 

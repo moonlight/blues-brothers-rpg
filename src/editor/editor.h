@@ -13,7 +13,7 @@
 
 #include <allegro.h>
 #include <vector>
-#include "tiled_map.h"
+#include "../shared/tiled_map.h"
 #include "../shared/console.h"
 #include "../shared/map.h"
 

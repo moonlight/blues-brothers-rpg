@@ -10,7 +10,7 @@
 */
 
 #include "tiled_map.h"
-#include "common.h"
+#include "../common.h"
 #include <stdio.h>
 #include <allegro.h>
 #include <map>
@@ -256,6 +256,50 @@ void TileRepository::importBitmap(BITMAP* tileBitmap, const char* group_name, in
 	}
 }
 
+void TileRepository::importBitmap(const char *filename, int tile_w, int tile_h, int tile_spacing)
+{
+	BITMAP *tileBitmap;
+	BITMAP *tempBitmap;
+	TileType *tempTileType;
+	char tempTilename[256];
+	char tempFilename[256];
+	PALETTE pal;
+	int x, y;
+
+	tileBitmap = load_bitmap(filename, pal);
+	if (!tileBitmap) {
+		allegro_message("Warning, %s is not a valid tile bitmap!\n", filename);
+		return;
+	}
+
+	set_palette(pal);
+	replace_extension(tempFilename, get_filename(filename), "", 256);
+
+	ASSERT(tileBitmap);
+
+	for (y = 0; y < (tileBitmap->h / (tile_h + tile_spacing)); y++)
+	{
+		for (x = 0; x < (tileBitmap->w / (tile_w + tile_spacing)); x++)
+		{
+			// Create a new tile type and add it to the hash_map
+			tempBitmap = create_bitmap(tile_w, tile_h);
+			blit(
+				tileBitmap, tempBitmap,
+				x * (tile_w + tile_spacing),
+				y * (tile_h + tile_spacing),
+				0, 0, tile_w, tile_h
+			);
+
+			sprintf(tempTilename, "%s%03d", tempFilename, y * (tileBitmap->w / tile_w) + x);
+
+			tempTileType = new TileType(tempBitmap, tempTilename);
+			tileTypes.insert(make_pair(tempTileType->getName(), tempTileType));
+		}
+	}
+
+	destroy_bitmap(tileBitmap);
+}
+
 void TileRepository::exportBitmap(const char *filename, int tile_w, int tile_h, int tile_spacing, int tiles_in_row)
 {
 	list<TileType*> tiles_to_save;
@@ -379,6 +423,7 @@ void TiledMapLayer::resizeTo(int w, int h, int dx, int dy)
 			if (xn >= 0 && yn >= 0 && xn < w && yn < h)
 			{
 				newTileMap[xn + yn * w]->setType(tileMap[x + y * mapWidth]->getType());
+				newTileMap[xn + yn * w]->obstacle = tileMap[x + y * mapWidth]->obstacle;
 			}
 		}
 	}
@@ -525,9 +570,16 @@ void TiledMap::loadFromOld(PACKFILE *file, TileRepository *tileRepository)
 {
 	ASSERT(file);
 
+	// Load the map header
+	/*int version = 1;*/
+	int layers = 1;
+
 	// Load the tile data
-	mapLayers[0]->loadFrom(file, tileRepository);
-	
+	//allegro_message("Loading %d layers from map version %d", layers, version);
+	for (int i = 0; i < layers; i++) {
+		mapLayers[i]->loadFrom(file, tileRepository);
+	}
+
 	mapWidth = mapLayers[0]->getWidth();
 	mapHeight = mapLayers[0]->getHeight();
 

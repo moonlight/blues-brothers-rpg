@@ -13,7 +13,7 @@
 #include <time.h>
 #include <list>
 #include "console.h"
-#include "../tiled_map.h"
+#include "tiled_map.h"
 #include "engine.h"
 #include "../script.h"
 #include "../common.h"

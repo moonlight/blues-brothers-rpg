@@ -12,7 +12,7 @@
 #include "rpg.h"
 #include "shared/console.h"
 #include "sound.h"
-#include "tiled_map.h"
+#include "shared/tiled_map.h"
 #include "shared/engine.h"
 #include "script.h"
 #include "canvas.h"

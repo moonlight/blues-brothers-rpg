@@ -13,7 +13,7 @@
 #ifndef _INCLUDED_MAP_H_
 #define _INCLUDED_MAP_H_
 
-#include "../tiled_map.h"
+#include "tiled_map.h"
 #include <list>
 
 class Object;

@@ -14,7 +14,7 @@
 
 #include <allegro.h>
 #include "shared/console.h"
-#include "tiled_map.h"
+#include "shared/tiled_map.h"
 
 extern int debug_mode;						// Show debug info
 

@@ -12,7 +12,7 @@
 #ifndef _INCLUDED_ENGINE_H_
 #define _INCLUDED_ENGINE_H_
 
-#include "../tiled_map.h"
+#include "tiled_map.h"
 #include "../script.h"
 #include <list>
 #include "map.h"

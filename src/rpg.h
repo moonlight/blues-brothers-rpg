@@ -12,7 +12,7 @@
 #ifndef _INCLUDED_RPG_H_
 #define _INCLUDED_RPG_H_
 
-#include "tiled_map.h"
+#include "shared/tiled_map.h"
 #include "shared/engine.h"
 #include "shared/console.h"
 #include <map>

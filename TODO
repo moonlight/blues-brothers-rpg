@@ -8,9 +8,9 @@ Niet ingedeeld:
 - Schaduw onder de auto
 
 Bjorn:
-! Gedeelde modules tussen editor en engine samenvoegen
-  * tiled_map
-- Objecten plaatsen in editor afmaken (en module "map" weghalen)
+- Objecten plaatsen in editor afmaken
+  * Module "map" weghalen
+  * Module "script" delen tussen rpg en rpgedit?
 - Sneeuwval
 - Sneeuw op prullenbak, dat eraf valt als je ertegenaan slaat
 - Voetsporen achterlaten in de sneeuw op de stoep
