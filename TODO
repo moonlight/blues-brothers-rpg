@@ -16,8 +16,6 @@ Niet ingedeeld:
 Bjorn:
 ! Fix bug with two policemen
 ! Experience/levelup afmaken
-- Implement following
-- Schaduw onder de auto scripten
 - Naam van area weergeven bij naartoe gaan
 - Add map to HUD in sewers when found
 
@@ -27,11 +25,10 @@ Georg:
 ? Witte lijntjes in Jake's optrekje wegwerken
 
 Frode:
-! Electronica voor in de `control room'
-! Walkie talkie inventory picture
+- Walkie talkie inventory picture
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
-- Sneeuw op de autos
+? Sneeuw op de autos
 - Draw map item + inventory graphic
 
 Hedde:
