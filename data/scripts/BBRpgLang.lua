@@ -9,16 +9,15 @@ BBRpgLang = Lang:subclass
 	name = "BBRpgLang";
 
 	vars = {
+		PLAYER   = "Elwood",
 		PLAY     = "Play",
 		CREDITS  = "Credits",
 		QUIT     = "Quit",
 		CONTINUE = "Continue",
-		OPTIONS  = "Options",
-		LANGUAGE = "Language",
 	};
 
 	convs = {
-		-- Conversations. Used in sequences.
+				-- Conversations. Used in sequences.
 		Intro1 = {
 			{"Mr. Prosser", "Standard parole 3 out of 5. Good behavior."},
 			{"Mr. Prosser", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
@@ -77,7 +76,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "I can't believe mom and dad never told YOU."},
 			{"Elwood", "You mean you knew it all the time?"},
 			{"Jake", "Yes, but will you please shut up and let me speak!?"},
-			{"Jake", "Now, our Brother Brian, alias The Brain, was arrested 2 weeks ago while trying to buy mini-rocket motors in a hobby shop for his 1/100th scale version of the Columbia Spaceshuttle made entirely from mini-rocket engines, ducktape, used walkmans, old wooden popstickles, bicycles and a front-left-car-tire with a stolen creditcard."},
+			{"Jake", "Now, our Brother Brian, alias The Brain, was arrested 2 weeks ago while trying to buy mini-rocket motors in a hobby shop for his 1/100th scale version of the Columbia Spaceshuttle made entirely from mini-rocket engines, ducktape, used walkmans, old wooden popsicle sticks, bicycles and a front-left-car-tire with a stolen creditcard."},
 			{"Elwood", "1/100th? That's quite big."},
 			{"Jake", "Yes I know, it took him three years just to make a solidrocketbooster suspension handle for the external fueltank."},
 			{"Elwood", "Right..."},
@@ -89,10 +88,7 @@ BBRpgLang = Lang:subclass
 			{"Jake", "You see, Brian, alias The Brain, is a member of the International Chess Club (..)."},
 			{"Elwood", "Ah, I see."},
 			{"Jake", "No, ICC."},
-			{"Jake", "A friend of Brian, also member of ICC, and owner of a Wall Mart discount plus deluxe card, had asked Brian to get him a 1/100th scale version of the Columbia Spaceshuttle (..)."},
-			{"Elwood", "Wait a minute, what does Wall Mart have to do with this?"},
-			{"Jake", "Nothing, I just remembered that we need to do some shopping later."},
-			{"Jake", "Let me continue. With this 1/100th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Attack-Satelite-Aimed-At-Washington thus preventing the Fourth World War!"},
+			{"Jake", "A friend of Brian, also member of ICC, had asked Brian to get him a 1/100th scale version of the Columbia Spaceshuttle (..). With this 1/100th scale version of the Columbia spaceshuttle, Brian's friend will launch a miniature attack satelite to attack the China-Attack-Satelite-Aimed-At-Washington thus preventing the Fourth World War!"},
 			{"Elwood", "Third. Third World War. There've been only two Jake."},
 			{"Jake", "What about all the barfights we used to be in? Nothing but foreigners there."},
 			{"Elwood", "True..."},
@@ -120,11 +116,12 @@ BBRpgLang = Lang:subclass
 			{"Jake", "Does it? Never noticed it."},
 		},
 		AtJakesPlace2 = {
-			{"Jake", "This place is a dumb."},
-			{"Elwood", "It's better than the hellhole you lived in the past couple of years."},
+			{"Elwood", "This place is a dumb."},
+			{"Jake", "It's better than the hellhole you lived in the past couple of years."},
 		},
 		FindKeyFob = {
-			{"Jake", "There it is! My lucky key fob!"},
+			{"{PLAYER}", "There it is! I see the key fob!"},
+			{"Jake", "We have my lucky key fob!"},
 			{"Elwood", "You're telling me we went through all this trouble just to get your tentacle key fob?"},
 			{"Jake", "Yes! It's very special to me! It brought me luck!"},
 			{"Elwood", "You call this luck?"},
@@ -183,7 +180,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "But how?"},
 			{"Brian", "Al I need are my mini-rocket engines, and give them to Lee!"},
 			{"Jake", "Who's Lee?"},
-			{"Brian", "He's the one with the Wall Mart Discount Plus Deluxe Card."},
+			{"Brian", "He's the one who is going to launch the mini attack satelite."},
 			{"Elwood", "Ofcourse, Lee!"},
 			{"Jake", "And where are the mini-rocket engines?"},
 			{"Brian", "Err, well, that may be a problem. I hid them in a mess pile just before I was arrested..."},
@@ -322,7 +319,7 @@ BBRpgLang = Lang:subclass
 			{{"{PLAYER}", "Nice car."}},
 		},
 		Car2 = {
-			{{"{PLAYER}", "This car is trashed. Oh no, now I have to think of our old caddy again..."}},
+			{{"{PLAYER}", "This car is trashed. Oh no, now I have to think of our old Caddy again..."}},
 		},
 		DoorLocked = {
 			{{"{PLAYER}", "This door is locked."}},
