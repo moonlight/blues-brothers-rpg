@@ -14,7 +14,7 @@
 #include <allegro.h>
 #include <list>
 #include "console.h"
-#include "rpg.h"
+#include "editor.h"
 #include <math.h>
 
 #ifndef M_PI

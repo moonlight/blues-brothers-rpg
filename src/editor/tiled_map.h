@@ -99,7 +99,7 @@ public:
 	~TileRepository();
 
 	void importDatafile(DATAFILE *dataFile);
-	void importBitmap(BITMAP *tileBitmap, const char* group_name, int tile_w, int tile_h, int tile_spacing);
+	void importBitmap(const char *filename, int tile_w, int tile_h, int tile_spacing);
 	void exportBitmap(const char *filename, int tile_w, int tile_h, int tile_spacing, int tiles_in_row);
 
 	TileType* getTileType(const char *tileName);
@@ -253,7 +253,7 @@ public:
 
 	// Draw the map
 	virtual void draw(BITMAP *dest, bool drawObstacle = false);
-	virtual void drawLayer(BITMAP *dest, bool drawObstacle, TiledMapLayer *layer, int opacity = 255);
+	virtual void drawLayer(BITMAP *dest, bool drawObstacle, TiledMapLayer *layer, int opacity = 0);
 
 	// Coordinate space converters
 	virtual Point screenToMap(Point screenCoords);
