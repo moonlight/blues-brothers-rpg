@@ -38,7 +38,9 @@ Actor = Object:subclass
 		subclass = Object.subclass(self, t)
 
 		-- Register the new class with the engine
-		m_register_class(subclass.name)
+		local placeable
+		if (t.bPlaceable) then placeable = 1 else placeable = 0 end
+		m_register_class(subclass.name, placeable)
 
 		return subclass
 	end;

@@ -428,7 +428,9 @@ LamppostLeft = Actor:subclass
 		offset_y = -15,
 		offset_x = -12,
 		obstacle = 1,
-	}
+	};
+
+	bPlaceable = true;
 }
 
 LamppostRight = Actor:subclass
@@ -440,5 +442,7 @@ LamppostRight = Actor:subclass
 		offset_y = -15,
 		offset_x = 12,
 		obstacle = 1,
-	}
+	};
+
+	bPlaceable = true;
 }

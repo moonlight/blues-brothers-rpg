@@ -23,11 +23,12 @@ Game = Object:subclass
 		end
 
 		local width, height = m_screen_size()
-		self.viewPort = Viewport(
-			(width  - 320) * 0.5,
-			(height - 240) * 0.5,
-			320, 240
-		)
+		--self.viewPort = Viewport(
+		--	(width  - 320) * 0.5,
+		--	(height - 240) * 0.5,
+		--	320, 240
+		--)
+		self.viewPort = Viewport(0, 0, width, height)
 
 		self.canvas = Canvas()
 		self.interactionMaster = InteractionMaster()

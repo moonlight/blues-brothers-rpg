@@ -434,19 +434,14 @@ int l_add_object(lua_State *L)
 int l_register_class(lua_State *L)
 {
 	char* typeName;
-	getLuaArguments(L, "s", &typeName);
+	int placeable;
+	getLuaArguments(L, "si", &typeName, &placeable);
 
-	/*
-	lua_pushstring(L, typeName);
-	lua_gettable(L, LUA_GLOBALSINDEX);
-	lua_pushstring(L, "bPlaceable");
-	lua_gettable(L, -2);
-	if (lua_toboolean(L, -1)) {
-	*/
-	objectTypes.push_back(typeName);
-	/*
+	if (placeable) {
+		if (lua_toboolean(L, -1)) {
+			objectTypes.push_back(typeName);
+		}
 	}
-	*/
 
 	lua_settop(L, 0);
 	return 0;
