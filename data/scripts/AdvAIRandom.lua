@@ -28,7 +28,7 @@ AdvAIRandom = Controller:subclass
 		elseif (nature == MOODY) then
 			self:setTargetWithNature(self.nature_tmp, target)
 		else
-			m_message("what am i? who am i? how did i get here? what's that i'm hearing? hmmm lets call it wind...")
+			self:log("What am i? Who am i? How did i get here? What's that i'm hearing? Hmmm lets call it wind...")
 		end;
 	end;
 

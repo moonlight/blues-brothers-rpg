@@ -8,10 +8,6 @@ Shadow = Actor:subclass
 {
 	name = "Shadow";
 
-	setOwner = function(self, owner)
-		Actor.setOwner(self, owner)
-	end;
-
 	preRender = function(self)
 		if (self.owner) then
 			-- Keep along with my owner

@@ -28,4 +28,3 @@ JakesPlace = Map:subclass
 		self:spawn(Crowbar, 17, 19)
 	end;
 }
-

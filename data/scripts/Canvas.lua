@@ -9,6 +9,10 @@ Canvas = Object:subclass
 {
 	name = "Canvas";
 
+	drawBitmap = function(self, bitmap, dest_w, dest_h, src_x, src_y, src_w, src_h)
+		m_draw_bitmap(bitmap, dest_w, dest_h, src_x, src_y, src_w, src_h)
+	end;
+
 	drawPattern = function(self, bitmap, dest_w, dest_h, org_x, org_y, scale)
 		if (scale) then
 			local cur_x, cur_y = m_get_cursor()
@@ -49,6 +53,6 @@ Canvas = Object:subclass
 	end;
 
 	setAlpha = function(self, alpha)
-		m_set_alpha(alpha)
+		return m_set_alpha(alpha)
 	end;
 }

@@ -7,6 +7,17 @@ import("Player.lua")
 import("AdvAIRandom.lua")
 import("Shadow.lua")
 
+
+RatShadow = Shadow:subclass
+{
+	name = "RatShadow";
+
+	defaultproperties = {
+		offset_z = -3,
+		bitmap = m_get_bitmap("rat_s.tga"),
+	};
+}
+
 Rat = Enemy:subclass
 {
 	name = "Rat";
@@ -24,14 +35,5 @@ Rat = Enemy:subclass
 		shadowClass = RatShadow,
 		
 		hitEffectHeight = 0,
-	};
-}
-
-RatShadow = Shadow:subclass
-{
-	name = "RatShadow";
-
-	defaultproperties = {
-		bitmap = m_get_bitmap("rat_s.tga");
 	};
 }
