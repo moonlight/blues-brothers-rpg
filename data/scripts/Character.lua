@@ -116,6 +116,14 @@ Character = Pawn:subclass
 		obj.bCarried = true
 	end;
 
+	removeFromInventory = function(self, obj)
+		for i,v in ipairs(self.inventory) do
+			if (v == obj) then
+				table.remove(self.inventory, i)
+			end
+		end
+	end;
+
 	hasObject = function(self, obj)
 		for k,v in pairs(self.inventory) do
 			if (v == obj) then return true end
@@ -128,9 +136,6 @@ Character = Pawn:subclass
 		end
 	end;
 
-
-
-	-- To be implemented: removeFromInventory = function(self, obj)
 
 	defaultproperties = {
 		snowTiles = {
