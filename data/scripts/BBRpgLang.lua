@@ -122,7 +122,7 @@ BBRpgLang = Lang:subclass
 		},
 		FindKeyFob = {
 			{"Jake", "There it is! My lucky key fob!"},
-			{"Elwood", "You're telling me we went through all this trouble just to get you're 2.95 Southpark key fob?"},
+			{"Elwood", "You're telling me we went through all this trouble just to get your tentacle key fob?"},
 			{"Jake", "yes! It's very special to me! It brought me luck!"},
 			{"Elwood", "You call this luck?"},
 			{"Jake", "Shut up."},
@@ -285,5 +285,8 @@ BBRpgLang = Lang:subclass
 		Crowbar = {
 			{"{PLAYER}", "Hey, a crowbar. That might come in handy."},
 		},
+		JakesDoorLocked = {
+			{"{PLAYER}", "This door is locked. I need to find the key first."},
+		}
 	};
 }

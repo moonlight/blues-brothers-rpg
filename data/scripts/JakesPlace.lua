@@ -25,7 +25,7 @@ JakesPlace = Map:subclass
 		self:spawn(Clock, 15, 15);
 		self:spawn(TV, 15, 21);
 		self:spawn(Bed, 5, 17);
-		self:spawn(KeyFob, 17, 19)
+		self:spawn(Crowbar, 17, 19)
 	end;
 }
 

@@ -12,7 +12,7 @@ City = Map:subclass
 		Map.init(self, "data/maps/city1.map")
 
 		-- Spawn the crowbar needed to remove the putdeksel.
-		self:spawn(Crowbar, 66, 42)
+		self:spawn(KeyFob, 66, 42)		
 
 		-- No go areas.
 		self:spawn(TooDangerous,  63, 80)
@@ -31,10 +31,10 @@ City = Map:subclass
 		self:spawn(Putdeksel, 119, 63);
 		
 		-- Spawn the enemies
-		self:spawn(Punk, 57, 74);
-		self:spawn(Punk, 57, 77);
-		self:spawn(Punk, 94, 31);
-		self:spawn(Punk, 97, 31);
+		obj = self:spawn(Punk, 57, 75); obj.dir = DIR_DOWN
+		obj = self:spawn(Punk, 57, 77); obj.dir = DIR_UP
+		obj = self:spawn(Punk, 95, 31); obj.dir = DIR_RIGHT
+		obj = self:spawn(Punk, 97, 31); obj.dir = DIR_LEFT
 
 		-- The doors in this area
 		self:spawn(DoorJake, 93, 72);

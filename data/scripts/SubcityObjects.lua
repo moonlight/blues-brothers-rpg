@@ -245,10 +245,12 @@ Nitrofuel = Decoration:subclass
 KeyFob = Decoration:subclass
 {
 	name = "KeyFob";
+	bPlaceable = true;
 
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("FindKeyFob")),
+			ActionCallFunction(obj.addToInventory, obj, self),
 		};
 	end;
 
@@ -259,7 +261,7 @@ KeyFob = Decoration:subclass
 		offset_x = 8,
 		offset_y = -20,
 		offset_z = -20,
-		obstacle = 0,
+		obstacle = 1,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("keyfob.bmp"),
 	}
@@ -338,12 +340,18 @@ DoorJake = Decoration:subclass
 	end;
 
 	activatedBy = function(self, obj)
-		if (isClosed == true) then
-			isClosed = false
+		if (obj:hasObjectType(KeyFob)) then
+			if (isClosed == true) then
+				isClosed = false
+			else
+				isClosed = true
+			end
 		else
-			isClosed = true			
-		end
-
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("JakesDoorLocked")),
+			};
+		end;
+		
 		self:updateBitmap()
 	end;
 
@@ -386,7 +394,7 @@ LamppostLeft = Actor:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
-		bitmap = m_get_bitmap("lamppost_snow_w.bmp"),
+		bitmap = m_get_bitmap("lamppost_w.bmp"),
 		offset_y = -15,
 		offset_x = -12,
 		obstacle = 1,
@@ -399,7 +407,7 @@ LamppostRight = Actor:subclass
 	bPlaceable = true;
 	
 	defaultproperties = {
-		bitmap = m_get_bitmap("lamppost_snow_e.bmp"),
+		bitmap = m_get_bitmap("lamppost_e.bmp"),
 		offset_y = -15,
 		offset_x = 9,
 		obstacle = 1,
@@ -440,10 +448,11 @@ Putdeksel = Actor:subclass
 	activatedBy = function(self, obj)
 		if (obj:hasObjectType(Crowbar)) then
 			ActionController:addSequence{
-				ActionConversation(lang:getConv("RemovePutdeksel")),
+				ActionParallel{
+					ActionConversation(lang:getConv("RemovePutdeksel")),
+					ActionTweenVariable(self, "offset_x", 50, -15),
+				}
 			}
-			self.offset_x = -15
-			self.offset_y = -15
 			self.bCanActivate = false
 			self.obstacle = 0
 		else
@@ -471,8 +480,8 @@ Crowbar = Decoration:subclass
 	activatedBy = function(self, obj)
 		ActionController:addSequence{
 			ActionConversation(lang:getConv("Crowbar")),
+			ActionCallFunction(obj.addToInventory, obj, self),
 		}
-		obj:addToInventory(self)
 	end;
 	
 	defaultproperties = {
