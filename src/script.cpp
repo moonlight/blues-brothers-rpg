@@ -173,11 +173,13 @@ void initScripting()
 	lua_register(L, "m_stop_music",     l_stop_music);
 	lua_register(L, "m_adjust_channel", l_adjust_channel);
 	lua_register(L, "m_get_number_of_channels", l_get_number_of_channels);
+	lua_register(L, "m_play_sample",    l_play_sample);
 	#else
 	lua_register(L, "m_play_music",     l_dummy);
 	lua_register(L, "m_stop_music",     l_dummy);
 	lua_register(L, "m_adjust_channel", l_dummy);
 	lua_register(L, "m_get_number_of_channels", l_dummy);
+	lua_register(L, "m_play_sample",    l_dummy);
 	#endif
 
 	lua_register(L, "m_quit_game",      l_quit_game);

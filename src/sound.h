@@ -27,12 +27,12 @@ extern int sound_enabled;
 
 void init_sound();
 void poll_sound();
-void play_sample(const char *filename);
 void play_music(const char *filename);
 void stop_music(int channel);
 void exit_sound();
 
 
+int l_play_sample(lua_State *L);
 int l_play_music(lua_State *L);
 int l_stop_music(lua_State *L);
 int l_adjust_channel(lua_State *L);

@@ -158,8 +158,25 @@ int l_get_number_of_channels(lua_State *L)
 
 /* play_sample(filename)
  */
-void play_sample(char *filename)
+int l_play_sample(lua_State *L)
 {
+	char* name;
+	getLuaArguments(L, "s", &name);
+
+	if (sound_enabled) {
+		console.log(CON_LOG, CON_ALWAYS, "Trying to play sample: %s", name);
+
+		DATAFILE *found_object = find_datafile_object(bitmap_data, name);
+
+		if (found_object) {
+			//int play_sample(const SAMPLE *spl, int vol, int pan, int freq, int loop);
+			play_sample((SAMPLE*)found_object->dat, 255, 128, 1000, 0);
+		} else {
+			return luaL_error(L, "Error: Cannot find requested sample (%s)!", name);
+		}
+	}
+
+	return 0;
 }
 
 
