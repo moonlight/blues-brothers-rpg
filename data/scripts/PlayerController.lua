@@ -21,7 +21,7 @@ PlayerController = Controller:subclass
 			if (self.bDown  and self.pawn.walking == 0) then self.pawn:walk(DIR_DOWN)  end
 
 			if (self.pawn.walking == 0) then
-				if (self.bActivate) then                         -- Try activating an object
+				if (self.bActivate and not self.bActivatePrev) then                         -- Try activating an object
 					local ax, ay = self.pawn.x, self.pawn.y
 
 					if (self.pawn.dir == DIR_LEFT)  then ax = ax - 1 end
@@ -45,6 +45,8 @@ PlayerController = Controller:subclass
 					self.pawn:attack(self.pawn.dir)
 				end
 			end
+
+			self.bActivatePrev = self.bActivate
 		end
 	end;
 
