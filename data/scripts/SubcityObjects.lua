@@ -21,11 +21,11 @@ Dustbin = Decoration:subclass
 	name = "Dustbin";
 	bPlaceable = true;
 	
-	init = function(self)
-		Decoration.init(self)
-	    self.snowTop = self:spawn(SnowOnDustbin, self.x, self.y)
-		self.snowTop.x = self.x
-		self.snowTop.y = self.y
+	setPosition = function(self, x, y)
+	    Decoration.setPosition(self, x, y)
+	    self.snowTop = self:spawn(SnowOnDustbin, x, y)
+	    self.snowTop.x = self.x
+	    self.snowTop.y = self.y
 	end;
 
 	takeDamage = function(self, damage)
@@ -43,10 +43,12 @@ Dustbin = Decoration:subclass
 					ActionSetVariable(self, "offset_x", self.offset_x),
 				},
 				ActionSequence {
-					ActionSetVariable(self.snowTop, "offset_y", 3),
+					ActionSetVariable(self.snowTop, "offset_y", 16),
+					ActionSetVariable(self.snowTop, "offset_x", -6),
 					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow2.tga")),
-					ActionTweenVariable(self.snowTop, "alpha", 25, 0),
-					ActionSetVariable(self.snowTop, "offset_y", 4),
+					ActionTweenVariable(self.snowTop, "alpha", 15, 0),
+					ActionSetVariable(self.snowTop, "offset_y", 20),
+					ActionSetVariable(self.snowTop, "offset_x", -7),
 					ActionChangeBitmap(self.snowTop, m_get_bitmap("dustbin_snow3.tga")),
 					ActionTweenVariable(self.snowTop, "alpha", 100, 0),
 				},
@@ -59,6 +61,7 @@ Dustbin = Decoration:subclass
 		draw_mode = DM_ALPHA,
 		bitmap = m_get_bitmap("dustbin.tga"),
 		convTableKeyword = "Dustbin",
+		snowTop = SnowOnDustbin,
 	}
 }
 
@@ -69,8 +72,8 @@ SnowOnDustbin = Actor:subclass
 	
 	defaultproperties = {
 	    offset_z = 24,
-	    offset_y = 0,
-	    offset_x = 3,
+	    offset_y = 20,
+	    offset_x = -7,
 	    alpha = 255,
 	    draw_mode = DM_ALPHA,
 	    bitmap = m_get_bitmap("dustbin_snow1.tga"),
