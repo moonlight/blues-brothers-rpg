@@ -14,32 +14,36 @@
 #define ALOGG_DLL
 
 #include <allegro.h>
-#include <alogg.h>
-#include "console.h"
+#include <alogg/alogg.h>
+#include "shared/console.h"
 #include "sound.h"
 #include "rpg.h"
 #include "script.h"
+#include "common.h"
 
 int sound_enabled = 1;
 
 
 // Currently playing OGG file
-OGGFILE *ogg[CHANNELS];
+struct {
+	SAMPLE *sample;
+	int voice;
+} channels[CHANNELS];
 
-char* error = "";
-
-int ChunkSize;  /* (default = 32768) amount of data to read from disk each time */
-int BufferSize; /* (default = 65536) size of audiostream buffer */
+char *error;
 
 
 
 void init_sound() {
 	// Read config variables
-	ChunkSize = (get_config_int("Sound", "StreamChunkSize", 1<<15));
-	BufferSize = (get_config_int("Sound", "BufferSize", 1<<16));
+	//ChunkSize = (get_config_int("Sound", "StreamChunkSize", 1<<15));
+	//BufferSize = (get_config_int("Sound", "BufferSize", 1<<16));
 
 	// To achieve the max possible volume
 	set_volume_per_voice(0);
+
+	// Initialize alogg
+	alogg_init();
 
 	// Install sound driver
 	if (install_sound(DIGI_AUTODETECT, MIDI_NONE, NULL) != 0) {
@@ -49,67 +53,22 @@ void init_sound() {
 
 	// Initialize channels to NULL
 	for (int i = 0; i < CHANNELS; i++) {
-		ogg[i] = NULL;
+		channels[i].voice = 0;
+		channels[i].sample = NULL;
 	}
 }
 
-int poll_ogg_file(OGGFILE *ogg)
+SAMPLE *open_ogg_file(char *filename)
 {
-	char *data;
-	long len;
-	
-	data = (char *)alogg_get_oggstream_buffer(ogg->s);
-	if (data) {
-		len = pack_fread(data, DATASZ, ogg->f);
-		if (len < DATASZ)
-			alogg_free_oggstream_buffer(ogg->s, len);
-		else
-			alogg_free_oggstream_buffer(ogg->s, -1);
-	}
-	
-	return alogg_poll_oggstream(ogg->s);
-}
-
-OGGFILE *open_ogg_file(char *filename)
-{
-	OGGFILE *p = NULL;
-	PACKFILE *f = NULL;
-	ALOGG_OGGSTREAM *s = NULL;
-	char data[DATASZ];
-	int len;
-	
-	if (!(p = (OGGFILE *)malloc(sizeof(OGGFILE)))) {
-		error = "not enough memory";
-		goto error;
-	}
-	if (!(f = pack_fopen(filename, F_READ))) {
-		error = "not able to open file";
-		goto error;
-	}
-	if ((len = pack_fread(data, DATASZ, f)) <= 0) {
-		error = "error reading data from file";
-		goto error;
-	}
-	if (len < DATASZ) {
-		if (!(s = alogg_create_oggstream(data, len, TRUE))) {
-			error = "error creating stream";
-			goto error;
-		}
+	SAMPLE *sample = alogg_load_ogg(filename);
+	if (!sample) {
+		fprintf(stderr,"Error loading %s (%d)\n", filename, alogg_error_code);
+		alogg_exit();
+		exit(1);
 	}
 	else {
-		if (!(s = alogg_create_oggstream(data, ChunkSize, FALSE))) {
-			error = "error creating stream";
-			goto error;
-		}
+		return sample;
 	}
-	p->f = f;
-	p->s = s;
-	return p;
-
-error:
-	pack_fclose(f);
-	free(p);
-	return NULL;
 }
 
 
@@ -126,18 +85,23 @@ int l_play_music(lua_State *L)
 
 	if (sound_enabled) {
 		// Stop currently playing music
-		stop_music(ogg[channel]);
-		ogg[channel] = NULL;
+		stop_music(channel);
 
 		if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
 		else if (!exists(filename)) {error = "file does not exist";}
 		
 		if (error == NULL) {
-			ogg[channel] = open_ogg_file(filename);
+			channels[channel].sample = open_ogg_file(filename);
 		}
 
-		if (error == NULL && ogg[channel]) {
-			alogg_play_oggstream(ogg[channel]->s, BufferSize, 255, 128);
+		channels[channel].voice = allocate_voice(channels[channel].sample);
+		if (channels[channel].voice == -1) {
+			error = "unable to allocate a voice";
+		}
+
+		if (error == NULL && channels[channel].sample) {
+			voice_start(channels[channel].voice);
+			release_voice(channels[channel].voice);
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Playing OGG file (%s)", filename);
 		}
 		else {
@@ -159,13 +123,14 @@ int l_adjust_channel(lua_State *L)
 
 	if (sound_enabled) {
 		if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
-		else if (!ogg[channel]) {error = "no music on this channel to adjust";}
+		else if (channels[channel].sample) {error = "no music on this channel to adjust";}
 		else if (vol < 0 || vol > 255) {error = "illegal volume value";}
 		else if (pan < 0 || pan > 255) {error = "illegal panning value";}
 		else if (speed < 0) {error = "illegal speed value";}
 
 		if (error == NULL) {
-			alogg_adjust_oggstream(ogg[channel]->s, vol, pan, speed);
+			voice_set_volume(channels[channel].voice, vol);
+			//alogg_adjust_oggstream(ogg[channel]->s, vol, pan, speed);
 			//console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Adjusted channel parameters (%d, %d, %d, %d)", channel, vol, pan, speed);
 		} else {
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error adjusting channel parameters (%s)", error);
@@ -190,13 +155,13 @@ void play_sample(char *filename)
 }
 
 
-void stop_music(OGGFILE *ogg)
+void stop_music(int channel)
 {
-	if (ogg) {
-		pack_fclose(ogg->f);
-		alogg_destroy_oggstream(ogg->s);
-		free(ogg);
-		ogg = NULL;
+	if (channels[channel].voice) {
+		deallocate_voice(channels[channel].voice);
+		destroy_sample(channels[channel].sample);
+		channels[channel].voice = 0;
+		channels[channel].sample = NULL;
 	}
 }
 
@@ -212,8 +177,7 @@ int l_stop_music(lua_State *L)
 	if (channel < 0 || channel >= CHANNELS) {error = "invalid channel";}
 
 	if (error == NULL) {
-		stop_music(ogg[channel]);
-		ogg[channel] = NULL;
+		stop_music(channel);
 	} else {
 		console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error stopping music (%s)", error);
 	}
@@ -223,19 +187,16 @@ int l_stop_music(lua_State *L)
 void poll_sound()
 {
 	for (int i = 0; i < CHANNELS; i++) {
-		if (ogg[i]) {
-			poll_ogg_file(ogg[i]);
-		}
 	}
 }
 
 void exit_sound()
 {
 	for (int i = 0; i < CHANNELS; i++) {
-		stop_music(ogg[i]);
-		ogg[i] = NULL;
+		stop_music(i);
 	}
+
+	alogg_exit();
 }
 
 #endif // #ifdef ENABLE_SOUND
-
