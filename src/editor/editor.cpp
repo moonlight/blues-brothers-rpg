@@ -269,6 +269,7 @@ MENU menu_file[] =
    { "Load &old map...",      menu_item_load_old_map,   NULL,      0,          NULL },
    { "&Save map",             menu_item_save_map,       NULL,      0,          NULL },
    { "Save map &as...",       menu_item_save_map_as,    NULL,      0,          NULL },
+   { "Save map image",        menu_item_save_map_image, NULL,      0,          NULL },
    { "",                      NULL,                     NULL,      0,          NULL },
    { "&Import tileset...",    menu_item_import_tileset, NULL,      0,          NULL },
    { "&Export tileset as...", menu_item_export_tileset, NULL,      0,          NULL },
@@ -696,6 +697,29 @@ int menu_item_toggle_debug()
 	return D_O_K;
 }
 
+int menu_item_save_map_image()
+{
+	// Create bitmap the size of the map
+	BITMAP* temp_bitmap = create_bitmap(currentMap->getWidth(), currentMap->getHeight());
+
+	if (currentMap->getWidth() > 0 && currentMap->getHeight() > 0 && temp_bitmap) {
+		int x, y;
+		
+		// Paint current map to temporary bitmap
+		for (x = 0; x < temp_bitmap->w; x++) {
+			for (y = 0; y < temp_bitmap->h; y++) {
+				TileType* tileType = currentMap->getLayer(0)->getTile(Point(x, y))->getType();
+				putpixel(temp_bitmap, x, y, tileType->getColor());
+			}
+		}
+
+		// Save the bitmap to a file
+		save_bitmap("map.bmp", temp_bitmap, NULL);
+	}
+	
+	if (temp_bitmap) destroy_bitmap(temp_bitmap);
+	return D_O_K;
+}
 
 
 // Double buffer, screen update function

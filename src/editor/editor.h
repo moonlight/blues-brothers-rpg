@@ -138,6 +138,7 @@ int menu_item_edit_obs();
 int menu_item_edit_objects();
 int menu_item_about();
 int menu_item_toggle_debug();
+int menu_item_save_map_image();
 
 
 void update_screen(int x, int y, int w, int h);

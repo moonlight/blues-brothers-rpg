@@ -59,6 +59,21 @@ TileType::TileType(BITMAP *tileBitmap, const char *tileName)
 	bitmap = tileBitmap;
 	name = (char*)malloc(ustrsizez(tileName));
 	ustrcpy(name, tileName);
+	int x, y;
+	unsigned long r = 0, g = 0, b = 0;
+	unsigned long pixels = tileBitmap->w * tileBitmap->h;
+
+	// Calculate average color
+	for (x = 0; x < tileBitmap->w; x++) {
+		for (y = 0; y < tileBitmap->h; y++) {
+			int c = getpixel(tileBitmap, x, y);
+			r += getr(c);
+			g += getg(c);
+			b += getb(c);
+		}
+	}
+
+	color = makecol(r / pixels, g / pixels, b / pixels);
 }
 
 TileType::~TileType()

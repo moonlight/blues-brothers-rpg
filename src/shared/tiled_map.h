@@ -78,10 +78,12 @@ public:
 
 	BITMAP* getBitmap() {return bitmap;}
 	char*   getName()   {return name;}
+	int     getColor()  {return color;}
 
 protected:
 	BITMAP* bitmap;
 	char*   name;
+	int     color;
 };
 
 
