@@ -42,69 +42,71 @@ SnowyWeather = Interaction:subclass
 		end
 
 		if (myMap == viewedMap) then
+			-- Remove or update the snow particles
+			for i,p in ipairs(self.particles) do
+				-- Update the position
+				p.y = p.y + p.fallspeed / 24
+				--p.x = p.x + 0.01 + math.sin(0.5*((1 / p.fallspeed)^2)*(p.y + p.phase)) / 100
+				p.x = p.x + 0.01 + (math.sin((p.y + p.phase)) / 100) * p.fallspeed
+			end
+		end
+	end;
+
+	preRender = function(self)
+		local viewport = self.master.viewport
+		local viewedMap = nil
+		local myMap = self.map.map
+		if (viewport and viewport.target) then
+			viewedMap = viewport.target.map
+		end
+
+		if (myMap == viewedMap) then
+			-- Calculate viewport on the map
+			local minx = viewport.target.x - 0.5 * (viewport.w / 24) - 0.5
+			local miny = viewport.target.y - 0.5 * (viewport.h / 24)
+			local maxx = minx + (viewport.w / 24) + 0.5
+			local maxy = miny + (viewport.h / 24) + 0.5
+
 			-- Add snow particles to reach density
 			while (table.getn(self.particles) < self.density) do
 				local p = self.map:spawn(SnowParticle, 0, 0, self)
-				p.x = math.random(viewport.w) / 24;
-				p.y = math.random(viewport.h * 2) / 24;
-				p.real_z = math.random(viewport.h);
-				p.fallspeed = math.random() + 0.5;
+				p.x = math.random(minx * 24, maxx * 24) / 24;
+				p.y = math.random(viewport.h) / 24 + miny;
+				p.fallspeed = (math.random() + 0.5) * 0.75;
+				p.phase = math.random() * math.pi * 2
 				if (p.bitmap == m_get_bitmap("snowflake2.tga")) then
 					p.fallspeed = p.fallspeed * 0.5;
 				end
 				table.insert(self.particles, p)
 			end
 
-			-- Calculate viewport on the map
-			local minx = viewport.target.x - 0.5 * (viewport.w / 24)
-			local miny = viewport.target.y - 0.5 * (viewport.h / 24)
-			local maxx = minx + (viewport.w / 24)
-			local maxy = miny + ((viewport.h * 2) / 24)
-
 			-- Remove or update the snow particles
-			for i,v in ipairs(self.particles) do
-				if (v.real_z < 0) then
-					-- Snow hit the floor, time to warp it back up
-					v.real_z = math.random(viewport.h);
-					v.x = math.random(viewport.w) / 24;
-					v.y = math.random(viewport.h * 2) / 24;
+			for i,p in ipairs(self.particles) do
+				if (p.y > maxy) then
+					-- Warp snow back up
+					p.y = p.y - viewport.h / 24 - 0.5;
+					p.x = math.random(minx * 24, maxx * 24) / 24;
 				end
 
 				-- Put particles that moved out of the screen back into it
-				if (v.x < minx or v.x > maxx) then
-					local newx = math.mod((v.x - minx) * 24, viewport.w) / 24
-					if (newx < 0) then newx = newx + (viewport.w / 24) end
-					v.x = newx + minx
-				elseif (v.y < miny or v.y > maxy) then
-					local newy = math.mod((v.y - miny) * 24, viewport.h * 2) / 24
-					if (newy < 0) then newy = newy + ((viewport.h * 2) / 24) end
-					v.y = newy + miny
+				if (p.x < minx or p.x > maxx) then
+					local newx = math.mod(p.x - minx, maxx - minx)
+					if (newx < 0) then newx = newx + (viewport.w / 24) + 0.5 end
+					p.x = newx + minx
+				elseif (p.y < miny or p.y > maxy) then
+					local newy = math.mod(p.y - miny, maxy - miny)
+					if (newy < 0) then newy = newy + (viewport.h / 24) + 0.5 end
+					p.y = newy + miny
 				end
-
-				-- Update the position
-				v.real_z = v.real_z - v.fallspeed
-				v.offset_z = v.real_z
 			end
 		end
 	end;
 
-	postRender = function(self, canvas)
-		--[[
-		local viewport = self.master.viewport
-
-		for i,v in ipairs(self.particles) do
-			local x, y = viewport:mapToScreen(v.offset_x, v.offset_y)
-			canvas:setCursor(x, y)
-			canvas:drawIcon(v.bitmap2)
-		end
-		]]
-	end;
-
 	defaultproperties = {
 		particles = {},
-		density = 200,
+		density = 150,
 		tick_time = 1,
-		bVisible = false,
+		bVisible = true,
 		bRequiresTick = true,
 		bActive = false,
 		map = nil,
