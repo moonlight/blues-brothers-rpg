@@ -25,21 +25,22 @@ extern "C" {
 extern lua_State* L;
 
 
-//===================   The engine to script interface   ============================/
+//============   The engine to script interface   ============================/
 
 void initScripting();
 void exitScripting();
 
 void handleLuaError(int err, const char *string);
 
-int callMemberFunction(int tableRef, const char *function, const char *argfmt = NULL, ...);
+int callMemberFunction(
+        int tableRef, const char *function, const char *argfmt = NULL, ...);
 int callFunction(const char *function, const char *argfmt = NULL, ...);
 
 int  putLuaArguments(lua_State *L, const char *argfmt, ...);
 void getLuaArguments(lua_State *L, const char *argfmt, ...);
 
 
-//===================   The script to engine interface   ============================/
+//============   The script to engine interface   ============================/
 
 int l_alert(lua_State *L);
 int l_dummy(lua_State *L);
@@ -74,6 +75,7 @@ int l_get_alpha(lua_State *L);
 int l_draw_viewport(lua_State *L);
 int l_map_to_screen(lua_State *L);
 int l_get_tile_at(lua_State *L);
+int l_set_tile_at(lua_State *L);
 
 int l_walk_obj(lua_State *L);
 int l_walk_obj_nocol(lua_State *L);
@@ -90,7 +92,7 @@ int l_load_map(lua_State *L);
 int l_quit_game(lua_State *L);
 
 
-//===================   Tag methods   ====================================================/
+//=======   Tag methods   ====================================================/
 
 int object_gettable(lua_State *L);
 int object_settable(lua_State *L);

@@ -44,7 +44,7 @@ GuiTheme = Object:subclass
 		)
 
 		-- The actual box
-		m_set_alpha(128)
+		m_set_alpha(192)
 		self:drawBoxEx(
 			self.bg,
 			self.cornerUL, self.cornerUR, self.cornerLL, self.cornerLR,
@@ -58,7 +58,7 @@ GuiTheme = Object:subclass
 	drawLightBox = function(self, x, y, w, h)
 		self.canvas:setDrawMode(DM_TRANS)
 
-		local alpha = m_set_alpha(128)
+		local alpha = m_set_alpha(192)
 		self:drawBoxEx(
 			self.bg,
 			self.cornerUL, self.cornerUR, self.cornerLL, self.cornerLR,

@@ -28,7 +28,7 @@ extern lua_State* L;
 extern vector<char*> objectTypes;
 
 
-//===================   The engine to script interface   ============================/
+//============   The engine to script interface   ============================/
 
 void initScripting();
 void exitScripting();
@@ -42,7 +42,7 @@ int  putLuaArguments(lua_State *L, const char *argfmt, ...);
 void getLuaArguments(lua_State *L, const char *argfmt, ...);
 
 
-//===================   The script to engine interface   ============================/
+//============   The script to engine interface   ============================/
 
 int l_alert(lua_State *L);
 int l_console_message(lua_State *L);
@@ -60,7 +60,7 @@ int l_create_sub_bitmap(lua_State *L);
 int l_load_map(lua_State *L);
 
 
-//===================   Tag methods   ====================================================/
+//============   Tag methods   ===============================================/
 
 int object_gettable(lua_State *L);
 int object_settable(lua_State *L);

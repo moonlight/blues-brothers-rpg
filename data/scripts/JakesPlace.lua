@@ -9,7 +9,7 @@ JakesPlace = Map:subclass
 	name = "JakesPlace";
 
 	init = function(self)
-		Map.init(self, "data/maps/jakesplace.map")
+		Map.init(self, "jakesplace.map")
 
 		-- Spawn portals
 		self.doorPortal = self:spawn(Portal, 10, 25)

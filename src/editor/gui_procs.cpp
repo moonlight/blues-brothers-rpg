@@ -309,7 +309,9 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 		}
 
 		if (debug_mode) {
-			textprintf(buffer, font, d->x+10, d->y+30, makecol(255,255,255), "%d selected entities", selectedObjects.size());
+			textprintf_ex(
+                    buffer, font, d->x+10, d->y+30, makecol(255,255,255), -1,
+                    "%d selected entities", selectedObjects.size());
 		}
 
 		update_screen(d->x, d->y, d->w, d->h);
@@ -1210,9 +1212,7 @@ int d_bjorn_autotext_proc(int msg, DIALOG *d, int c)
 	case MSG_DRAW:
 		rectfill(buffer, d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, d->bg);
 		if (d->dp) {
-			int ptm = text_mode(-1);
-			textout(buffer, font, (char*)d->dp, d->x, d->y, d->fg);
-			text_mode(ptm);
+			textout_ex(buffer, font, (char*)d->dp, d->x, d->y, d->fg, -1);
 		}
 		update_screen(d->x, d->y, d->w, d->h);
 		break;

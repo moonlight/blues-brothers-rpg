@@ -11,7 +11,7 @@ City = Map:subclass
 	init = function(self)
 		local obj;
 
-		Map.init(self, "data/maps/city1.map")
+		Map.init(self, "city1.map")
 
 		-- Spawn the walkie talkie. Needed by the addToInventory function.
 		self.walkieTalkie = self:spawn(WalkieTalkie, 1, 126)

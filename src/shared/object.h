@@ -17,54 +17,56 @@
 #include "object.h"
 
 
-//====================================================================================
+//=============================================================================
 
 class Object
 {
-public:
-	static int id_counter;
-	Point mapPos;						// The position on the map
+    public:
+        static int id_counter;
+        Point mapPos;           // The position on the map
 
-	int _destroy;						// Object will be destroyed during next update.
-	double walking, speed;
-	int dir, prev_dir;
-	int count, tick;
-	BITMAP* bitmap;
-	double x, y, px, py, nx, ny;
-	int w, h;
-	int obstacle;						// Object is an obstacle to other objects.
-	int offset_x, offset_y, offset_z;
-	int id;
-	int tableRef;						// A reference to the associated Lua table
-	char *className;
+        int _destroy;           // Object will be destroyed during next update.
+        double walking, speed;
+        int dir, prev_dir;
+        int count, tick;
+        BITMAP* bitmap;
+        double x, y, px, py, nx, ny;
+        int w, h;
+        int obstacle;           // Object is an obstacle to other objects.
+        int offset_x, offset_y, offset_z;
+        int id;
+        int tableRef;           // A reference to the associated Lua table
+        char *className;
 
-	Object(int luaTableRef, TiledMap* myMap);
-	~Object();
+        Object(int luaTableRef, TiledMap* myMap);
+        ~Object();
 
-	// Entity member variables/methods
-	bool visible(BITMAP *dest, Point screenCoords);
-	void draw(BITMAP *dest, Point topLeft);
+        // Entity member variables/methods
+        bool visible(BITMAP *dest, Point screenCoords);
+        void draw(BITMAP *dest, Point topLeft);
 
-	Point pos;
-	int drawMode;
-	int alpha;
-	bool selected;
-	int in_air;
+        Point pos;
+        int drawMode;
+        int alpha;
+        bool selected;
+        int in_air;
 
-	// Methods
-	void walk(int dir, bool col);
-	void set_dir(int dir);
+        // Methods
+        void walk(int dir, bool col);
+        void set_dir(int dir);
+        void setX(double x);
+        void setY(double y);
 
-	void initialize();
-	void check_stand_on();
-	void update();
-	void update_entity();
+        void initialize();
+        void check_stand_on();
+        void update();
+        void update_entity();
 
-	TiledMap* getMap() {return map;}
-	void setMap(TiledMap *newMap);
+        TiledMap* getMap() {return map;}
+        void setMap(TiledMap *newMap);
 
-private:
-	TiledMap* map;
+    private:
+        TiledMap* map;
 };
 
 #endif

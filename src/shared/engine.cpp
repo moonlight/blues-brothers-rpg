@@ -15,6 +15,7 @@
 #include "console.h"
 #include "tiled_map.h"
 #include "engine.h"
+#include "module.h"
 #include "../script.h"
 #include "../common.h"
 
@@ -26,11 +27,11 @@ bool exclusive_mode = false;
 
 
 
-//===================   Engine functions   ===========================================
+//============   Engine functions   ===========================================
 
 void update_objects()
 {
-	// Iterate through all maps
-	for (list<TiledMap*>::iterator i = maps.begin(); i != maps.end(); i++)
-		(*i)->updateObjects();
+    // Iterate through all maps
+    for (list<TiledMap*>::iterator i = maps.begin(); i != maps.end(); i++)
+        (*i)->updateObjects();
 }

@@ -16,14 +16,15 @@
 #include "../shared/tiled_map.h"
 #include "../shared/console.h"
 #include "../shared/object.h"
+#include "../shared/module.h"
 
 
-#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.0"
+#define PROGRAM_VERSION_STRING	"RPG Edit III 0.9.2"
 
 
 // Global variables
 
-extern DATAFILE *data;
+extern Module *module;
 extern int debug_mode;
 extern FONT* engine_font;
 extern Console console;
@@ -72,60 +73,59 @@ extern MENU menu_help[];
 
 // Slider types (R, G, B, and H, S, V)
 
-#define S_R					0
-#define S_G					1
-#define S_B					2
-#define S_H					3
-#define S_S					4
-#define S_V					5
+#define S_R                     0
+#define S_G                     1
+#define S_B                     2
+#define S_H                     3
+#define S_S                     4
+#define S_V                     5
 
-#define S_C					6
+#define S_C                     6
 
 
 // Map edit modes
 
-#define EM_TILE				0
-#define EM_OBSTACLE			1
-#define EM_OBJECTS			2
+#define EM_TILE                 0
+#define EM_OBSTACLE             1
+#define EM_OBJECTS              2
 
 
 // Dialogs
 
-#define MAIN_START_OF_NULL	12
-#define NEWMAP_OK			9
-#define IMPORT_TILESET_OK	7
-#define EXPORT_TILESET_OK	5
-#define RESIZEMAP_OK		13
+#define MAIN_START_OF_NULL      12
+#define NEWMAP_OK               9
+#define IMPORT_TILESET_OK       7
+#define EXPORT_TILESET_OK       5
+#define RESIZEMAP_OK            13
 
-#define D_MAP				main_dlg[3]
-#define D_SCROLL_VER		main_dlg[4]
-#define D_SCROLL_HOR		main_dlg[5]
-#define D_AUTOTEXT_STATUS	main_dlg[8]
-#define D_AUTOTEXT_MAPINFO	main_dlg[9]
-#define D_TILE				main_dlg[ 1 + MAIN_START_OF_NULL]
-#define D_CHECK_GRID		main_dlg[ 2 + MAIN_START_OF_NULL]
-#define D_CHECK_SNAP		main_dlg[ 2 + MAIN_START_OF_NULL]
-#define D_TILESET_LIST		main_dlg[16 + MAIN_START_OF_NULL]
-#define D_TILESET			main_dlg[18 + MAIN_START_OF_NULL]
-#define D_TILESET_SCROLL	main_dlg[19 + MAIN_START_OF_NULL]
+#define D_MAP                   main_dlg[3]
+#define D_SCROLL_VER            main_dlg[4]
+#define D_SCROLL_HOR            main_dlg[5]
+#define D_AUTOTEXT_STATUS       main_dlg[8]
+#define D_AUTOTEXT_MAPINFO      main_dlg[9]
+#define D_TILE                  main_dlg[ 1 + MAIN_START_OF_NULL]
+#define D_CHECK_GRID            main_dlg[ 2 + MAIN_START_OF_NULL]
+#define D_CHECK_SNAP            main_dlg[ 2 + MAIN_START_OF_NULL]
+#define D_TILESET_LIST          main_dlg[16 + MAIN_START_OF_NULL]
+#define D_TILESET               main_dlg[18 + MAIN_START_OF_NULL]
+#define D_TILESET_SCROLL        main_dlg[19 + MAIN_START_OF_NULL]
 
 
 // Messages
 
-#define MSG_NEW_MAP			MSG_USER
-#define MSG_NEW_TILESET		MSG_USER
+#define MSG_NEW_MAP             MSG_USER
+#define MSG_NEW_TILESET         MSG_USER
 
 
 // Flags
 
-#define SCROLL_VER			D_USER
+#define SCROLL_VER              D_USER
 
 
 // Menu item functions
 
 int menu_item_new_map();
 int menu_item_load_map();
-int menu_item_load_old_map();
 int menu_item_save_map();
 int menu_item_save_map_as();
 int menu_item_import_tileset();
@@ -139,6 +139,7 @@ int menu_item_edit_objects();
 int menu_item_about();
 int menu_item_toggle_debug();
 int menu_item_save_map_image();
+int menu_item_save_map_as_xml();
 
 
 void update_screen(int x, int y, int w, int h);
@@ -148,8 +149,9 @@ void select_object(Object* obj);
 void select_objects(list<Object*> objs);
 void delete_objects(list<Object*> objs);
 
-void import_tile_bitmap(const char* filename, int tile_w, int tile_h, int spacing);
-//char* get_tileset_name(const char* name);
+void import_tile_bitmap(
+        const char* filename,
+        int tile_w, int tile_h, int spacing);
 
 void set_map_changed(bool value);
 bool close_current_map();

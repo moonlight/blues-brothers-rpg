@@ -11,7 +11,7 @@ Jail = Map:subclass
 	init = function(self)
 		local obj
 
-		Map.init(self, "data/maps/jail.map")
+		Map.init(self, "jail.map")
 
 		self:spawn(Table,    22, 16);
 		self:spawn(Table,    35, 16);

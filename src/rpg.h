@@ -15,6 +15,7 @@
 #include "shared/tiled_map.h"
 #include "shared/engine.h"
 #include "shared/console.h"
+#include "shared/module.h"
 #include <map>
 #include <allegro.h>
 
@@ -29,7 +30,7 @@ extern volatile int fps, fps_counter;
 extern int inkey;							// Last pressed key
 
 extern DATAFILE *interface_graphics;
-extern DATAFILE *bitmap_data;
+extern Module *module;
 extern int gameClassInstance;
 
 extern TileType *selectedTile;

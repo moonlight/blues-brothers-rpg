@@ -12,7 +12,7 @@ Sewers = Map:subclass
 		local fence1;
 		local obj;
 
-		Map.init(self, "data/maps/sewers1.map")
+		Map.init(self, "sewers1.map")
 
 		self:spawn(WallAndTube, 54, 47);
 		self:spawn(WallAndTube2, 54, 25);

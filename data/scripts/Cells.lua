@@ -11,7 +11,7 @@ Cells = Map:subclass
 	init = function(self)
 		local obj
 
-		Map.init(self, "data/maps/cells.map")
+		Map.init(self, "cells.map")
 
 		-- Dummy used for the cameratarget in the arena.
 		local dummy = self:spawn(Dummy, 0, 0)

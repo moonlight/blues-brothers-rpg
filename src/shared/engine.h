@@ -20,21 +20,21 @@ using namespace std;
 
 extern list<TiledMap*> maps;
 
-#define DIR_NONE		-1
-#define DIR_UP			0
-#define DIR_LEFT		1
-#define DIR_RIGHT		2
-#define DIR_DOWN		3
+#define DIR_NONE         -1
+#define DIR_UP           0
+#define DIR_LEFT         1
+#define DIR_RIGHT        2
+#define DIR_DOWN         3
 
 
 
 
-//===================   Engine functions   ===========================================
+//============   Engine functions   ===========================================
 
 void update_objects();
 
 
-//===================   Variables   ==================================================
+//============   Variables   ==================================================
 
 extern bool exclusive_mode;
 

@@ -147,14 +147,13 @@ static void photon_box(BITMAP *bmp, int x, int y, int w, int h, int color)
 static void photon_textout(BITMAP *bmp, AL_CONST char *text, int x, int y,
 						   int flags, int centre)
 {
-    int rtm, height, len;
-	
-    rtm = text_mode(-1);
+    int height, len;
 	
     if (flags & D_DISABLED)
-        gui_textout(bmp, text, x+1, y+1, white, centre);
+        gui_textout_ex(bmp, text, x+1, y+1, white, -1, centre);
 	
-    gui_textout(bmp, text, x, y, (flags & D_DISABLED? shadow : black), centre);
+    gui_textout_ex(
+            bmp, text, x, y, (flags & D_DISABLED? shadow : black), -1, centre);
 	
     if (flags & D_GOTFOCUS) {
 		height = text_height(font);
@@ -165,8 +164,6 @@ static void photon_textout(BITMAP *bmp, AL_CONST char *text, int x, int y,
         else
             hline(bmp, x, y+height, x+len-1, highlight);
     }
-	
-    text_mode(rtm);
 }
 
 void photon_scrollbar(BITMAP *bmp, int x, int y, int w, int h, int vert, int pos, int len)
@@ -427,7 +424,7 @@ int d_aphoton_icon_proc(int msg, DIALOG *d, int c)
 int d_aphoton_edit_proc(int msg, DIALOG *d, int c)
 {
     if (msg == MSG_DRAW) {
-		int l, x, b, f, p, w, rtm;
+		int l, x, b, f, p, w;
 		int fg = (d->flags & D_DISABLED) ? shadow : black;
 		char *s = (char *)d->dp;
 		char buf[16];
@@ -475,9 +472,7 @@ int d_aphoton_edit_proc(int msg, DIALOG *d, int c)
 			usetc(buf+usetc(buf, (f) ? f : ' '), 0);
 			w = text_length(font, buf);
 			f = ((p == d->d2) && (d->flags & D_GOTFOCUS));
-			rtm = text_mode(edit_white);
-			textout(screen, font, buf, d->x+x, d->y+4, fg);
-			text_mode(rtm);
+			textout_ex(screen, font, buf, d->x+x, d->y+4, fg, edit_white);
 			if (f)
 				vline(screen, d->x+x-1, d->y+3, d->y+fonth+5, black);
 			if ((x += w) + w > d->w - 4)
@@ -528,7 +523,6 @@ int d_aphoton_list_proc(int msg, DIALOG *d, int c)
 		int fg, bg;
 		char *sel = (char *)d->dp2;
 		char s[1024];
-		int rtm;
 		
 		(*(getfuncptr)d->dp)(-1, &listsize);
 		char_height = text_height(font);
@@ -557,7 +551,6 @@ int d_aphoton_list_proc(int msg, DIALOG *d, int c)
 				x = d->x + 2;
 				y = d->y + 2 + i*char_height;
 				
-				rtm = text_mode(bg);
 				rectfill(screen, x, y, x+7, y+char_height-1, bg);
 				x += 8;
 				
@@ -567,8 +560,7 @@ int d_aphoton_list_proc(int msg, DIALOG *d, int c)
 					usetat(s, len, 0);
 				}
 				
-				textout(screen, font, s, x, y, fg);
-				text_mode(rtm);
+				textout_ex(screen, font, s, x, y, fg, bg);
 				
 				x += text_length(font, s);
 				if (x <= d->x+w)
@@ -774,7 +766,6 @@ static void photon_draw_menu_item(MENU *m, int x, int y, int w, int h, int bar, 
 {
     int i, j, height;
     char buf[256], *tok;
-    int rtm;
 	
     if (!menu_done) {
 		photon_do_draw_menu(last_x, last_y, last_w, last_h, bar);
@@ -807,8 +798,6 @@ static void photon_draw_menu_item(MENU *m, int x, int y, int w, int h, int bar, 
 			}
 		}
 		
-		rtm = text_mode(-1);
-		
 		i = 0;
 		j = ugetc(m->text);
 		
@@ -828,8 +817,6 @@ static void photon_draw_menu_item(MENU *m, int x, int y, int w, int h, int bar, 
 			tok = m->text+i + uwidth(m->text+i);
 			photon_textout(screen, tok, x+w-gui_strlen(tok)-15, y+1, m->flags, FALSE);
 		}
-		
-		text_mode(rtm);
 		
 		if ((m->child) && (!bar))
 			draw_sprite(screen, menu_arrow_bmp, x+w-12, y+(h-menu_arrow_bmp->h-1)/2);
@@ -862,7 +849,7 @@ int d_aphoton_menu_proc(int msg, DIALOG *d, int c)
 
 int d_aphoton_window_proc(int msg, DIALOG *d, int c)
 {
-    int rtm, cl, ct, cr, cb;
+    int cl, ct, cr, cb;
     (void)c;
 	
     if (msg == MSG_DRAW) {
@@ -898,18 +885,18 @@ int d_aphoton_window_proc(int msg, DIALOG *d, int c)
 		rectfill(screen, d->x+5, d->y+21, d->x+d->w-6, d->y+d->h-6, normal);
 		
 		if (d->dp) {
-			rtm = text_mode(-1);
 			cl = screen->cl;
 			ct = screen->ct;
 			cr = screen->cr;
 			cb = screen->cb;
 			
-			set_clip(screen, d->x, d->y, d->x+d->w-1, d->y+d->h-1);
+			set_clip_rect(screen, d->x, d->y, d->x+d->w-1, d->y+d->h-1);
 			
-			textout_centre(screen, font, (char *)d->dp, d->x+d->w/2, d->y+8, black);
+			textout_centre_ex(
+                    screen, font, (char *)d->dp,
+                    d->x+d->w/2, d->y+8, black, -1);
 			
-			set_clip(screen, cl, ct, cr, cb);
-			text_mode(rtm);
+			set_clip_rect(screen, cl, ct, cr, cb);
 		}
     }
 	

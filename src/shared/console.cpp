@@ -76,7 +76,7 @@ void Console::draw(BITMAP *dest)
 		list<char*>::iterator i = logMessages.begin();
 		while (i != logMessages.end() && posY > - text_height(font))
 		{
-			textprintf(dest, font, 2, posY, makecol(200,200,200), (*i));
+			textprintf_ex(dest, font, 2, posY, makecol(200,200,200), -1, (*i));
 			posY -= text_height(font) + 1;
 			i++;
 		}
@@ -132,6 +132,7 @@ void Console::log(int where, int when, const char *what, ...)
 				fclose(logFile);
 				set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
 				allegro_message(buf);
+                printf("\n");
 				exit(1);
 			}
 		}

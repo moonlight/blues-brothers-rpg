@@ -156,6 +156,10 @@ ConversationWindow = Interaction:subclass
 			local current_string = self.lines[table.getn(self.lines)]
 			local length = string.len(current_string)
 
+			if (self.quickFinish) then
+				self.curr_char = length
+			end
+
 			if (self.curr_char < length) then
 				self.curr_char = self.curr_char + 0.5
 			else
@@ -164,6 +168,7 @@ ConversationWindow = Interaction:subclass
 				if (self.continue) then
 					self.state = CB_READY
 				else
+					self.quickFinish = self.defaultproperties.quickFinish
 					self:set_state(CB_WAITING)
 				end
 			end
@@ -187,14 +192,19 @@ ConversationWindow = Interaction:subclass
 	end;
 
 	keyType = function(self, key)
-		if (key == "action" and self.state == CB_WAITING) then
-			if (self.continue) then
-				-- Scroll up
-				self.state = CB_SCROLLING
-			else
-				self.state = CB_READY
+		if (key == "action") then
+			if (self.state == CB_WAITING) then
+				if (self.continue) then
+					-- Scroll up
+					self.state = CB_SCROLLING
+				else
+					self.state = CB_READY
+				end
+				return true
 			end
-			return true
+			if (self.state == CB_WRITING) then
+				self.quickFinish = true
+			end
 		end
 		return false
 	end;
@@ -281,5 +291,6 @@ ConversationWindow = Interaction:subclass
 		width = 0,
 		height = 0,
 		appear_time = 15,
+		quickFinish = true,
 	};
 }
