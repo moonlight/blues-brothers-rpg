@@ -57,6 +57,7 @@ BBRpg = Game:subclass
 
 		gameCameraTarget = CameraTarget() -- GLOBAL!?
 		self.playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
+		playerSwitcher = self.playerSwitcher -- Can't do without this global var for the moment
 		self.viewPort.target = gameCameraTarget
 
 		self.playerSwitcher:addPlayerHost(elwood)
@@ -76,7 +77,7 @@ BBRpg = Game:subclass
 
 		ActionController:addSequence{
 			ActionExModeOn(),
-			ActionPlaySong("data/music/bb1.ogg", 200),
+			--ActionPlaySong("data/music/bb1.ogg", 200),
 			ActionTweenVariable(main_menu_bg, "alpha", 200, 255),
 			ActionPlaySample("bbsfx_hit1.wav"),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),

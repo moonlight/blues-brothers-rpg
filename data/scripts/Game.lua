@@ -171,7 +171,17 @@ function write_conversation(data)
 	local conversation = {}
 
 	for index, value in pairs(data) do
-		table.insert(conversation, value[1]..": \""..value[2].."\"")
+		local name = value[1]
+
+		-- WARNING: Only works for BBRpg!
+		if (name == "{PLAYER}") then
+			player = playerSwitcher:getCurrentHost()
+			if (player) then
+				name = player.name
+			end
+		end
+
+		table.insert(conversation, name..": \""..value[2].."\"")
 	end
 
 	local n = table.getn(conversation)
