@@ -17,10 +17,10 @@ MainMenu = GuiMenu:subclass
 		local startSequence = {
 			ActionFadeOutMusic(50),
 			ActionFadeOutMap(50),
-			ActionWait(100),
+			ActionWait(50),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionSetVariable(_G, "show_main_menu", nil),
-			ActionPlaySong("data/music/2.ogg", 100),
+--[[			ActionPlaySong("data/music/2.ogg", 100),
 			ActionFadeInMap(100),
 			ActionShowMapName(m_get_bitmap("prison.tga")),
 			ActionWait(300),
@@ -124,6 +124,10 @@ MainMenu = GuiMenu:subclass
 			ActionSetCameraTarget(dummy, false),
 			ActionTweenVariable(dummy, "x", 50, 94.5),
 			ActionSetCameraTarget(elwood, false),
+	]]
+	
+	ActionFadeInMap(100),
+	ActionSetPosition(elwood, 93, 75, DIR_UP, cityMap),
 			ActionExModeOff(),
 		}
 

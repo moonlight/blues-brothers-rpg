@@ -72,6 +72,7 @@ function MusicControl:play_song(filename)
 
 	-- play this song on the first channel
 	self.currentChannel = 0
+	self.currentSong = filename
 	m_play_music(filename, self.currentChannel)
 	m_adjust_channel(self.currentChannel, 255, 128, 1000)
 end
@@ -102,6 +103,7 @@ function MusicControl:fade_to_song(filename, time)
 	if (self.fadeInChannel == self.channels) then self.fadeInChannel = 0 end
 
 	-- Start playing music and set volume to 0
+	self.currentSong = filename
 	m_play_music(filename, self.fadeInChannel)
 	self:update()
 end

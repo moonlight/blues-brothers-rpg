@@ -103,7 +103,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Let's get to work."},
 		},
 		WhereKeys = {
-			{"Jake", "Elwood, did I give my keys of my appartement to you?"},
+			{"Jake", "Elwood, did I give the keys of my appartement to you?"},
 			{"Elwood", "Didn't you?"},
 			{"Jake", "Did I?"},
 			{"Elwood", "No."},

@@ -95,7 +95,7 @@ ActionParallel = Action:subclass
 		-- Add all actions to the list of actions to execute.
 		local i
 		for i = 1, table.getn(actions) do
-			if (actions[i]:instanceOf(Action)) then
+			if (actions[i] and actions[i]:instanceOf(Action)) then
 				-- Create an action execution environment for this action
 				local execEnv = {}
 				setmetatable(execEnv, {__index = actions[i]})

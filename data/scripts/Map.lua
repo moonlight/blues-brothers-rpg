@@ -31,5 +31,6 @@ Map = Object:subclass
 	defaultproperties = {
 		map = nil,
 		mapNameBitmap = nil,
+		musicFilename = "",
 	}
 }

@@ -18,15 +18,25 @@ Portal = Actor:subclass
 
 			actor:walk(actor.dir, true)
 
+			local musicOut = ActionFadeOutMusic(100 / actor.speed)
+			local musicIn = ActionPlaySong(self.linkedPortal.myMap.musicFilename, 100 / actor.speed)
+
+			if (self.linkedPortal.myMap.musicFilename == MusicControl.currentSong) then
+				musicOut = ActionWait(0)
+				musicIn = ActionWait(0)
+			end
+
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionParallel{
 					ActionWalk(actor, actor.dir, 1, false),
+					musicOut,
 					ActionFadeOutMap(100 / actor.speed),
 				},
 				ActionCallFunction(actor.setMap, actor, self.linkedPortal.myMap),
 				ActionSetPosition(actor, self.linkedPortal.x, self.linkedPortal.y),
 				ActionParallel{
+					musicIn,
 					ActionFadeInMap(100 / actor.speed),
 					ActionSequence{
 						ActionCallFunction(actor.walk, actor, self.linkedPortal.outDir),

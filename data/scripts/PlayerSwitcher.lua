@@ -117,8 +117,10 @@ PlayerSwitcher = Interaction:subclass
 				-- Switch player after fading out and fade in afterwards
 				ActionController:addSequence{
 					ActionSetVariable(self, "bActive", false),
+					ActionFadeOutMusic(50),
 					ActionFadeOutMap(50),
 					ActionCallFunction(self.selectPlayerHost, self, self.playerHosts[self.currentHost]),
+					ActionPlaySong(self.playerHosts[self.currentHost].myMap.musicFilename, 50),
 					ActionFadeInMap(50),
 					ActionSetVariable(self, "bActive", true),
 				}

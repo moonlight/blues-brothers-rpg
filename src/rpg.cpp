@@ -81,6 +81,7 @@ void init_engine()
 	install_keyboard();
 	install_timer();
 	three_finger_flag = 0;
+	set_display_switch_mode(SWITCH_BACKAMNESIA);
 
 	//register_datafile_object(DAT_MAPDATA, load_tiledmapdata, destroy_tiledmapdata);
 
