@@ -52,6 +52,7 @@ int l_register_class(lua_State *L);
 int l_register_object(lua_State *L);
 int l_destroy_object(lua_State *L);
 int l_get_objects_at(lua_State *L);
+int l_get_objects_on_map(lua_State *L);
 
 int l_get_ex_mode(lua_State *L);
 int l_set_ex_mode(lua_State *L);

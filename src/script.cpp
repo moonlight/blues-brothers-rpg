@@ -139,6 +139,7 @@ void initScripting()
 	lua_register(L, "m_register_object", l_register_object);
 	lua_register(L, "m_destroy_object", l_destroy_object);
 	lua_register(L, "m_get_objects_at", l_get_objects_at);
+	lua_register(L, "m_get_objects_on_map", l_get_objects_on_map);
 
 	lua_register(L, "m_set_ex_mode",    l_set_ex_mode);
 	lua_register(L, "m_get_ex_mode",    l_get_ex_mode);
@@ -552,6 +553,27 @@ int l_get_objects_at(lua_State *L)
 
 	return 1;
 }
+
+int l_get_objects_on_map(lua_State *L)
+{
+	TiledMap* map;
+	int c = 1;
+
+	getLuaArguments(L, "m", &map);
+
+	lua_newtable(L);
+
+	list<Object*>::iterator i;
+	for (i = map->objects.begin(); i != map->objects.end(); i++) {
+		Object *obj = (*i);
+		lua_getref(L, obj->tableRef);
+		lua_rawseti(L, -2, c);
+		c++;
+	}
+
+	return 1;
+}
+
 
 int l_set_ex_mode(lua_State *L)
 {
