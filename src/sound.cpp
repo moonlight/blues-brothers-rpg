@@ -28,6 +28,7 @@ int sound_enabled = 1;
 struct {
 	SAMPLE *sample;
 	int voice;
+	struct alogg_stream *stream;
 } channels[CHANNELS];
 
 char *error;
@@ -55,22 +56,9 @@ void init_sound() {
 	for (int i = 0; i < CHANNELS; i++) {
 		channels[i].voice = 0;
 		channels[i].sample = NULL;
+		channels[i].stream = NULL;
 	}
 }
-
-SAMPLE *open_ogg_file(char *filename)
-{
-	SAMPLE *sample = alogg_load_ogg(filename);
-	if (!sample) {
-		fprintf(stderr,"Error loading %s (%d)\n", filename, alogg_error_code);
-		alogg_exit();
-		exit(1);
-	}
-	else {
-		return sample;
-	}
-}
-
 
 
 /* play_music(filename, channel)
@@ -91,17 +79,36 @@ int l_play_music(lua_State *L)
 		else if (!exists(filename)) {error = "file does not exist";}
 		
 		if (error == NULL) {
-			channels[channel].sample = open_ogg_file(filename);
+			/*
+			channels[channel].sample = alogg_load_ogg(filename);
+			if (!channels[channel].sample) {
+				fprintf(stderr,"Error loading %s (%d)\n", filename, alogg_error_code);
+				alogg_exit();
+				exit(1);
+			}
+			*/
+			channels[channel].stream = alogg_start_streaming(filename, BLOCK_SIZE);
+			if (!channels[channel].stream) {
+				fprintf(stderr,"Error opening %s\n", filename);
+				alogg_exit();
+				exit(1);
+			}
 		}
 
+		/*
 		channels[channel].voice = allocate_voice(channels[channel].sample);
 		if (channels[channel].voice == -1) {
 			error = "unable to allocate a voice";
 		}
+		*/
 
-		if (error == NULL && channels[channel].sample) {
+		if (error == NULL) {
+			/*
 			voice_start(channels[channel].voice);
 			release_voice(channels[channel].voice);
+			channels[channel].voice = 0;
+			channels[channel].sample = NULL;
+			*/
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Playing OGG file (%s)", filename);
 		}
 		else {
@@ -116,6 +123,7 @@ int l_play_music(lua_State *L)
  */
 int l_adjust_channel(lua_State *L)
 {
+	/*
 	int channel, vol, pan, speed;
 	getLuaArguments(L, "iiii", &channel, &vol, &pan, &speed);
 
@@ -136,7 +144,7 @@ int l_adjust_channel(lua_State *L)
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error adjusting channel parameters (%s)", error);
 		}
 	}
-
+	*/
 	return 0;
 }
 
@@ -157,11 +165,17 @@ void play_sample(char *filename)
 
 void stop_music(int channel)
 {
+	/*
 	if (channels[channel].voice) {
 		deallocate_voice(channels[channel].voice);
 		destroy_sample(channels[channel].sample);
 		channels[channel].voice = 0;
 		channels[channel].sample = NULL;
+	}
+	*/
+	if (channels[channel].stream) {
+		alogg_stop_streaming(channels[channel].stream);
+		channels[channel].stream = NULL;
 	}
 }
 
@@ -187,6 +201,13 @@ int l_stop_music(lua_State *L)
 void poll_sound()
 {
 	for (int i = 0; i < CHANNELS; i++) {
+		if (channels[i].stream) {
+			int ret = alogg_update_streaming(channels[i].stream);
+			if (ret == 0) {
+				channels[i].stream = NULL; // end of stream
+				break;
+			}
+		}
 	}
 }
 

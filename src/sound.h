@@ -23,6 +23,7 @@ extern int sound_enabled;
 //#define DATASZ   (1 << 15) /* (32768) amount of data to read from disk each time */
 //#define BUFSZ    (1 << 16) /* (65536) size of audiostream buffer */
 #define CHANNELS (1 << 1)  /* (2)     number of channels */
+#define BLOCK_SIZE 40960
 
 void init_sound();
 void poll_sound();
