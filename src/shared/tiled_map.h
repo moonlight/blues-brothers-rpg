@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ using namespace std;
 
 class Object;
 
-#define DAT_MAPDATA  DAT_ID('M','A','P',' ')
 
 #define TILES_W                 24
 #define TILES_H                 24
@@ -41,12 +40,6 @@ class Object;
 #define OB_LEFT                 8
 
 
-// Allegro DATAFILE map routines   ===========================================
-
-void *load_tiledmapdata(PACKFILE *f, long size);
-void destroy_tiledmapdata(void *data);
-
-
 // Point class ===============================================================
 
 class Point {
@@ -58,14 +51,30 @@ class Point {
 };
 
 
+// Vector class ==============================================================
+
+struct Vector
+{
+    Vector();
+    Vector(double x, double y, double z);
+    Vector(const Vector &v);
+    Vector operator*(double c);
+    Vector operator/(double c);
+    Vector operator+(const Vector &v);
+    Vector operator-(const Vector &v);
+    double x, y, z;
+};
+
+
 // Rectangle class ===========================================================
 
 class Rectangle {
     public:
         Rectangle() {x = y = w = h = 0;}
-        Rectangle(int X, int Y, int W, int H) {x = X; y = Y; w = W; h = H;}
+        Rectangle(int x, int y, int w, int h);
         void rectToClip(BITMAP *dest);
         void clipToRect(BITMAP *src);
+        bool collides(const Rectangle &r);
         int x, y, w, h;
 };
 
@@ -165,14 +174,20 @@ class TiledMapLayer {
         void loadFrom(PACKFILE* file, TileRepository *tileRepository);
         void loadFrom(xmlNodePtr reader, TileRepository *tileRepository);
 
-        int getWidth()  {return mapWidth;}
-        int getHeight() {return mapHeight;}
+        int getWidth()  { return width; }
+        int getHeight() { return height; }
+
+        void setName(const char* newName);
+        void setOpacity(float opacity);
+        const char* getName();
+        float getOpacity();
 
         Tile* getTile(Point tileCoords);
 
     private:
-        int mapWidth;
-        int mapHeight;
+        int width, height;
+        char *name;
+        float opacity;
         Tile** tileMap;
 };
 
@@ -194,23 +209,24 @@ class TiledMap {
         void loadFrom(PACKFILE* file, TileRepository *tileRepository);
         void loadFrom(xmlNodePtr reader, TileRepository *tileRepository);
 
-        int getWidth()  {return mapWidth;}
-        int getHeight() {return mapHeight;}
+        int getWidth()  {return width;}
+        int getHeight() {return height;}
 
         // Tile and entity methods
         //Tile* getTile(Point tileCoords);
         TiledMapLayer* getLayer(int i);
 
-        // Draw the map
+        // Drawing the map
         virtual void setCamera(Point cameraCoords, Rectangle screenRect,
                 bool centerCamera = false, bool modify = true);
-        virtual void draw(BITMAP *dest, bool drawObstacle = false) = 0;
+        virtual void draw(BITMAP *dest, bool drawObstacle) = 0;
         virtual void drawLayer(BITMAP *dest, bool drawObstacle,
                 TiledMapLayer *layer, int opacity = 255) = 0;
 
         void drawEntities(BITMAP *dest);
         void drawAirborneEntities(BITMAP *dest);
 
+        // Entity methods
         Object* addObject(double x, double y, const char* type);
         Object* registerObject(int tableRef);
         void updateObjects();
@@ -236,10 +252,8 @@ class TiledMap {
         list<Object*> objects;
 
 
+        int width, height;
     protected:
-        //Tile** tileMap;
-        int mapWidth, mapHeight;
-
         // Camera properties
         Point cameraCoords;
         Rectangle cameraScreenRect;
@@ -282,6 +296,8 @@ class IsometricMap : public TiledMap
 
         // Draw the map
         virtual void draw(BITMAP *dest, bool drawObstacle = false);
+        virtual void drawLayer(BITMAP *dest, bool drawObstacle,
+                TiledMapLayer *layer, int opacity = 255);
 
         // Coordinate space converters
         virtual Point screenToMap(Point screenCoords);

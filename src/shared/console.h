@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,23 +29,23 @@ using namespace std;
 
 class Console
 {
-public:
-	Console(const char* filename);
-	~Console();
+    public:
+        Console(const char* filename);
+        ~Console();
 
-	void update();
-	void draw(BITMAP *dest);
-	bool handleInput(int key);
-	void log(int where, int when, const char* what, ...);
+        void update();
+        void draw(BITMAP *dest);
+        bool handleInput(int key);
+        void log(int where, int when, const char* what, ...);
 
-	bool enableLogfile;
+        bool enableLogfile;
 
-private:
-	FILE* logFile;
-	char* logFilename;
-	list<char*> logMessages;
-	bool active;
-	int progress;
+    private:
+        FILE* logFile;
+        char* logFilename;
+        list<char*> logMessages;
+        bool active;
+        int progress;
 };
 
 

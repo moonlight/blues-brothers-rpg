@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,15 +28,15 @@ class Module
         Module(const char *name);
         ~Module();
 
-        void loadScript(std::string name);
+        void loadScript(const std::string name);
         void loadScripts();
-        TiledMap* loadMap(std::string name);
+        TiledMap* loadMap(const std::string name);
 
-        BITMAP* findBitmap(std::string name);
-        MIDI* findMidi(std::string name);
-        SAMPLE* findSample(std::string name);
-        FONT* findFont(std::string name);
-        char* findScript(std::string name);
+        BITMAP* findBitmap(const std::string name);
+        MIDI* findMidi(const std::string name);
+        SAMPLE* findSample(const std::string name);
+        FONT* findFont(const std::string name);
+        char* findScript(const std::string name);
 
     private:
         char* makeFilename(const char *name, const char *subdir);

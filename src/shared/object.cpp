@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 #include <list>
 #include "console.h"
 #include "tiled_map.h"
-#include "engine.h"
 #include "../script.h"
 #include "../common.h"
 #include "object.h"
@@ -87,7 +86,7 @@ void Object::walk(int dir, bool col)
             case DIR_LEFT:  next_x -= 1.0; break;
             case DIR_RIGHT: next_x += 1.0; break;
         }
-        set_dir(dir);
+        setDir(dir);
     }
     else {
         // Support for turning 180 degrees anywhere.
@@ -105,7 +104,7 @@ void Object::walk(int dir, bool col)
             nx = next_x;
             ny = next_y;
             walking = 100 - walking;
-            set_dir(dir);
+            setDir(dir);
         }
         return;
     }
@@ -157,7 +156,7 @@ void Object::walk(int dir, bool col)
 }
 
 
-void Object::set_dir(int dir)
+void Object::setDir(int dir)
 {
     if (dir == DIR_NONE) return;
 

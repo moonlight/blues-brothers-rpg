@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -190,5 +190,5 @@ void Canvas::drawViewport(int x, int y, int w, int h, int tx, int ty, TiledMap* 
             true, true
             );
 
-    map->draw(buffer);
+    map->draw(buffer, debug_mode);
 }

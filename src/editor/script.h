@@ -25,7 +25,7 @@ using std::vector;
 #define DAT_LUA  DAT_ID('L','U','A',' ')
 
 extern lua_State* L;
-extern vector<char*> objectTypes;
+extern vector<std::string> objectTypes;
 
 
 //============   The engine to script interface   ============================/
@@ -35,7 +35,8 @@ void exitScripting();
 
 void handleLuaError(int err, const char *string);
 
-int callMemberFunction(int tableRef, const char *function, const char *argfmt = NULL, ...);
+int callMemberFunction(int tableRef, const char *function,
+        const char *argfmt = NULL, ...);
 int callFunction(const char *function, const char *argfmt = NULL, ...);
 
 int  putLuaArguments(lua_State *L, const char *argfmt, ...);

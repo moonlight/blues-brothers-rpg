@@ -9,34 +9,26 @@
     (at your option) any later version.
 */
 
-#ifndef _INCLUDED_ENGINE_H_
-#define _INCLUDED_ENGINE_H_
-
-#include "tiled_map.h"
-#include "../script.h"
+#include <allegro.h>
+#include <time.h>
 #include <list>
+#include "shared/console.h"
+#include "shared/tiled_map.h"
+#include "engine.h"
+#include "shared/module.h"
+#include "script.h"
+#include "common.h"
+#include "rpg.h"
 
 using namespace std;
-
-extern list<TiledMap*> maps;
-
-#define DIR_NONE         -1
-#define DIR_UP           0
-#define DIR_LEFT         1
-#define DIR_RIGHT        2
-#define DIR_DOWN         3
-
 
 
 
 //============   Engine functions   ===========================================
 
-void update_objects();
-
-
-//============   Variables   ==================================================
-
-extern bool exclusive_mode;
-
-
-#endif
+void update_objects()
+{
+    // Iterate through all maps
+    for (list<TiledMap*>::iterator i = maps.begin(); i != maps.end(); i++)
+        (*i)->updateObjects();
+}

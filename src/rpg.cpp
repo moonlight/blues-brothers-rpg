@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 #include "shared/console.h"
 #include "sound.h"
 #include "shared/tiled_map.h"
-#include "shared/engine.h"
 #include "shared/module.h"
+#include "engine.h"
 #include "script.h"
 #include "canvas.h"
 #include <allegro.h>
@@ -35,6 +35,7 @@ int inkey;							// Last pressed key
 int debug_mode = 1;					// Show debug info
 
 bool game_end = false;
+bool exclusive_mode = false;
 bool bVSync = false;
 bool bDoubleSize = false;
 char filename[256];
@@ -42,6 +43,7 @@ DATAFILE *engine_data = NULL;
 Module *module = NULL;
 FONT* engine_font = NULL;
 int gameClassInstance = 0;
+list<TiledMap*> maps;
 
 int lps = 100;
 
@@ -52,7 +54,7 @@ TileType *selectedTile = NULL;
 
 BITMAP *buffer;
 
-void main()
+int main()
 {
     init_engine();
 
@@ -69,6 +71,8 @@ void main()
     } while (!game_end);
 
     exit_program();
+
+    return 0;
 }
 END_OF_MAIN();
 
@@ -82,9 +86,6 @@ void init_engine()
     install_timer();
     three_finger_flag = 0;
     set_display_switch_mode(SWITCH_BACKAMNESIA);
-
-    //register_datafile_object(
-    //  DAT_MAPDATA, load_tiledmapdata, destroy_tiledmapdata);
 
     set_config_file("rpg.cfg");
 

@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -12,7 +12,6 @@
 #include <allegro.h>
 #include <stdarg.h>
 #include "rpg.h"
-#include "shared/engine.h"
 #include "shared/object.h"
 #include "shared/console.h"
 #include "shared/tiled_map.h"
@@ -69,6 +68,7 @@ void initScripting()
     luaopen_string(L);
     luaopen_math(L);
     luaopen_table(L);
+    luaopen_io(L);
 
     // Add the Object type to Lua
     //Lunar<Object>::Register(L);
@@ -126,6 +126,7 @@ void initScripting()
     lua_register(L, "m_screen_to_map",  l_dummy);
     lua_register(L, "m_get_tile_at",    l_get_tile_at);
     lua_register(L, "m_set_tile_at",    l_set_tile_at);
+    lua_register(L, "m_create_map",     l_create_map);
 
     lua_register(L, "m_walk_obj",       l_walk_obj);
     lua_register(L, "m_walk_obj_nocol", l_walk_obj_nocol);
@@ -171,12 +172,18 @@ int pushLuaValues(const char* desc, va_list vals)
         while (*desc != '\0')
         {
             switch (*desc) {
-                case 'i': lua_pushnumber       (L,  va_arg(vals, int   ));             break; // Integer
-                case 'd': lua_pushnumber       (L,  va_arg(vals, double));             break; // Double
-                case 's': lua_pushstring       (L,  va_arg(vals, char* ));             break; // String
-                case 'b': lua_pushlightuserdata(L,  va_arg(vals, BITMAP*));            break; // Bitmap
-                case 'o': lua_getref           (L, (va_arg(vals, Object*))->tableRef); break; // Object
-                case 'm': lua_pushlightuserdata(L,  va_arg(vals, TiledMap*));          break; // TiledMap
+                case 'i': // Integer
+                    lua_pushnumber(L, va_arg(vals, int)); break;
+                case 'd': //Double
+                    lua_pushnumber(L, va_arg(vals, double)); break;
+                case 's': // String
+                    lua_pushstring(L, va_arg(vals, char*)); break;
+                case 'b': // Bitmap
+                    lua_pushlightuserdata(L, va_arg(vals, BITMAP*)); break;
+                case 'o': // Object
+                    lua_getref(L, (va_arg(vals, Object*))->tableRef); break;
+                case 'm': // TiledMap
+                    lua_pushlightuserdata(L, va_arg(vals, TiledMap*)); break;
                 default: valc--;
             }
 
@@ -216,7 +223,9 @@ int callMemberFunction(int tableRef, const char *function, const char* args, ...
                 va_end(ap);
             }
 
-            //console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG, "Lua: calling function %s with %d arguments.", function, argc);
+            //console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG,
+            //        "Lua: calling function %s with %d arguments.", function,
+            //        argc);
             lua_call(L, argc + 1, 1);
 
             if (lua_isnumber(L, -1)) ret = int(lua_tonumber(L, -1));
@@ -251,7 +260,8 @@ int callFunction(const char *function, const char* args, ...)
             va_end(ap);
         }
 
-        //console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG, "Lua: calling function %s with %d arguments.", function, argc);
+        //console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG,
+        //      "Lua: calling function %s with %d arguments.", function, argc);
         //handleLuaError(lua_call(L, argc, 1), function);
         lua_call(L, argc, 1);
 
@@ -259,7 +269,8 @@ int callFunction(const char *function, const char* args, ...)
         lua_pop(L, 1);	// Pop return value
     }
     else {
-        console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG, "Warning: called function undefined (%s).", function);
+        console.log(CON_CONSOLE | CON_LOG, CON_VDEBUG,
+                "Warning: called function undefined (%s).", function);
         lua_pop(L, 1);	// Pop function
     }
 
@@ -269,11 +280,28 @@ int callFunction(const char *function, const char* args, ...)
 void handleLuaError(int err, const char *string)
 {
     switch (err) {
-        case LUA_ERRRUN:    console.log(CON_QUIT, CON_ALWAYS, "Lua error: Error while running script (\"%s\")", string); break;
-        case LUA_ERRSYNTAX: console.log(CON_QUIT, CON_ALWAYS, "Lua error: Syntax error while precompiling script (\"%s\")", string); break;
-        case LUA_ERRMEM:    console.log(CON_QUIT, CON_ALWAYS, "Lua error: Out of memory in script (\"%s\")", string); break;
-        case LUA_ERRERR:    console.log(CON_QUIT, CON_ALWAYS, "Lua error: Error while running _ERRORMESSAGE in script (\"%s\")", string); break;
-        case LUA_ERRFILE:   console.log(CON_QUIT, CON_ALWAYS, "Lua error: Error while opening script file (\"%s\")", string); break;
+        case LUA_ERRRUN:
+            console.log(CON_QUIT, CON_ALWAYS,
+                    "Lua error: Error while running script (\"%s\")", string);
+            break;
+        case LUA_ERRSYNTAX:
+            console.log(CON_QUIT, CON_ALWAYS, "Lua error: Syntax error while "
+                    "precompiling script (\"%s\")", string);
+            break;
+        case LUA_ERRMEM:
+            console.log(CON_QUIT, CON_ALWAYS,
+                    "Lua error: Out of memory in script (\"%s\")", string);
+            break;
+        case LUA_ERRERR:
+            console.log(CON_QUIT, CON_ALWAYS,
+                    "Lua error: Error while running _ERRORMESSAGE in script "
+                    "(\"%s\")", string);
+            break;
+        case LUA_ERRFILE:
+            console.log(CON_QUIT, CON_ALWAYS,
+                    "Lua error: Error while opening script file (\"%s\")",
+                    string);
+            break;
     }
 }
 
@@ -296,14 +324,14 @@ void getLuaArguments(lua_State *L, const char *args, ...)
 {
     int n = lua_gettop(L);    // Number of arguments
     int argc = 0;
-
     va_list ap;
+
     va_start(ap, args);
 
     while (*args != '\0')
     {
         if (argc == n) {
-            lua_pushfstring(L, "This function does not take %d parameters.", n);
+            lua_pushfstring(L, "Wrong number of arguments (%d)", n);
             lua_error(L);
         }
 
@@ -311,24 +339,36 @@ void getLuaArguments(lua_State *L, const char *args, ...)
             case 'i':
                 {
                     int *a = va_arg(ap, int*);
-                    if (lua_isnumber(L, -n + argc)) *a = (int)(lua_tonumber(L, -n + argc) + 0.5);
-                    else luaL_typerror(L, argc+1, lua_typename(L, LUA_TNUMBER));
+                    if (lua_isnumber(L, -n + argc)) {
+                        *a = (int)(lua_tonumber(L, -n + argc) + 0.5);
+                    } else {
+                        const char *type = lua_typename(L, LUA_TNUMBER);
+                        luaL_typerror(L, argc + 1, type);
+                    }
                 }
                 break;
 
             case 'd':
                 {
                     double *a = va_arg(ap, double*);
-                    if (lua_isnumber(L, -n + argc)) *a = lua_tonumber(L, -n + argc);
-                    else luaL_typerror(L, argc+1, lua_typename(L, LUA_TNUMBER));
+                    if (lua_isnumber(L, -n + argc)) {
+                        *a = lua_tonumber(L, -n + argc);
+                    } else {
+                        const char *type = lua_typename(L, LUA_TNUMBER);
+                        luaL_typerror(L, argc + 1, type);
+                    }
                 }
                 break;
 
             case 's':
                 {
                     const char **a = va_arg(ap, const char**);
-                    if (lua_isstring(L, -n + argc)) *a = lua_tostring(L, -n + argc);
-                    else luaL_typerror(L, argc+1, lua_typename(L, LUA_TSTRING));
+                    if (lua_isstring(L, -n + argc)) {
+                        *a = lua_tostring(L, -n + argc);
+                    } else {
+                        const char *type = lua_typename(L, LUA_TSTRING);
+                        luaL_typerror(L, argc + 1, type);
+                    }
                 }
                 break;
 
@@ -340,8 +380,10 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         lua_gettable(L, -n + argc - 1);
                         *a = (Object*)lua_touserdata(L, -1);
                         lua_pop(L, 1);
+                    } else {
+                        const char *type = lua_typename(L, LUA_TTABLE);
+                        luaL_typerror(L, argc + 1, type);
                     }
-                    else luaL_typerror(L, argc+1, lua_typename(L, LUA_TTABLE));
                 }
                 break;
 
@@ -351,30 +393,34 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                     if (lua_istable(L, -n + argc)) {
                         lua_pushvalue(L, -n + argc);
                         *a = lua_ref(L, -1);
+                    } else {
+                        const char *type = lua_typename(L, LUA_TTABLE);
+                        luaL_typerror(L, argc + 1, type);
                     }
-                    else luaL_typerror(L, argc+1, lua_typename(L, LUA_TTABLE));
                 }
                 break;
 
             case 'b':
                 {
                     BITMAP **a = va_arg(ap, BITMAP**);
-                    if (lua_islightuserdata(L, -n + argc))
+                    if (lua_islightuserdata(L, -n + argc)) {
                         *a = (BITMAP*)lua_touserdata(L, -n + argc);
-                    else
-                        luaL_typerror(L, argc+1,
-                                lua_typename(L, LUA_TLIGHTUSERDATA));
+                    } else {
+                        const char *type = lua_typename(L, LUA_TLIGHTUSERDATA);
+                        luaL_typerror(L, argc + 1, type);
+                    }
                 }
                 break;
 
             case 'm':
                 {
                     TiledMap **a = va_arg(ap, TiledMap**);
-                    if (lua_islightuserdata(L, -n + argc))
+                    if (lua_islightuserdata(L, -n + argc)) {
                         *a = (TiledMap*)lua_touserdata(L, -n + argc);
-                    else
-                        luaL_typerror(L, argc+1,
-                                lua_typename(L, LUA_TLIGHTUSERDATA));
+                    } else {
+                        const char *type = lua_typename(L, LUA_TLIGHTUSERDATA);
+                        luaL_typerror(L, argc + 1, type);
+                    }
                 }
                 break;
 
@@ -387,7 +433,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
     }
 
     if (argc != n) {
-        lua_pushfstring(L, "This function does not take %d parameters.", n);
+        lua_pushfstring(L, "Wrong number of arguments (%d)", n);
         lua_error(L);
     }
 
@@ -890,7 +936,8 @@ int l_map_to_screen(lua_State *L)
         return putLuaArguments(L, "ii", screenCoords.x, screenCoords.y);
     }
     else {
-        console.log(CON_CONSOLE | CON_LOG, CON_DEBUG, "Warning: map_to_screen called without a map.");
+        console.log(CON_CONSOLE | CON_LOG, CON_DEBUG,
+                "Warning: map_to_screen called without a map.");
     }
 
     return 0;
@@ -940,6 +987,22 @@ int l_set_tile_at(lua_State *L)
     return 0;
 }
 
+int l_create_map(lua_State *L)
+{
+    int w, h, tw, th;
+    getLuaArguments(L, "iiii", &w, &h, &tw, &th);
+
+    if (w > 0 && h > 0 && tw > 0 && th > 0) {
+        TiledMap *map = new SquareMap(tw, th);
+        map->resizeTo(w, h);
+        return putLuaArguments(L, "m", map);
+    } else {
+        console.log(CON_CONSOLE | CON_LOG, CON_ALWAYS,
+                "Warning: illegal arguments to m_create_map.");
+        return 0;
+    }
+}
+
 
 int l_quit_game(lua_State *L)
 {
@@ -970,24 +1033,42 @@ int object_gettable(lua_State *L)
             return 0;
         }
 
-        if (strcmp(index, "speed"    ) == 0) {return putLuaArguments(L, "d", obj->speed    );}
-        if (strcmp(index, "walking"  ) == 0) {return putLuaArguments(L, "d", obj->walking  );}
-        if (strcmp(index, "x"        ) == 0) {return putLuaArguments(L, "d", obj->x        );}
-        if (strcmp(index, "y"        ) == 0) {return putLuaArguments(L, "d", obj->y        );}
-        if (strcmp(index, "w"        ) == 0) {return putLuaArguments(L, "i", obj->w        );}
-        if (strcmp(index, "h"        ) == 0) {return putLuaArguments(L, "i", obj->h        );}
-        if (strcmp(index, "offset_x" ) == 0) {return putLuaArguments(L, "i", obj->offset_x );}
-        if (strcmp(index, "offset_y" ) == 0) {return putLuaArguments(L, "i", obj->offset_y );}
-        if (strcmp(index, "offset_z" ) == 0) {return putLuaArguments(L, "i", obj->offset_z );}
-        if (strcmp(index, "draw_mode") == 0) {return putLuaArguments(L, "i", obj->drawMode );}
-        if (strcmp(index, "alpha"    ) == 0) {return putLuaArguments(L, "i", obj->alpha    );}
-        if (strcmp(index, "dir"      ) == 0) {return putLuaArguments(L, "i", obj->dir      );}
-        if (strcmp(index, "tick_time") == 0) {return putLuaArguments(L, "i", obj->tick     );}
-        if (strcmp(index, "obstacle" ) == 0) {return putLuaArguments(L, "i", obj->obstacle );}
-        if (strcmp(index, "bitmap"   ) == 0) {return putLuaArguments(L, "b", obj->bitmap   );}
-        if (strcmp(index, "map"      ) == 0) {return putLuaArguments(L, "m", obj->getMap() );}
-        if (strcmp(index, "id"       ) == 0) {return putLuaArguments(L, "i", obj->id       );}
-        if (strcmp(index, "in_air"   ) == 0) {return putLuaArguments(L, "i", obj->in_air   );}
+        if (strcmp(index, "speed") == 0) {
+            return putLuaArguments(L, "d", obj->speed);}
+        if (strcmp(index, "walking") == 0) {
+            return putLuaArguments(L, "d", obj->walking);}
+        if (strcmp(index, "x") == 0) {
+            return putLuaArguments(L, "d", obj->x);}
+        if (strcmp(index, "y") == 0) {
+            return putLuaArguments(L, "d", obj->y);}
+        if (strcmp(index, "w") == 0) {
+            return putLuaArguments(L, "d", obj->w);}
+        if (strcmp(index, "h") == 0) {
+            return putLuaArguments(L, "d", obj->h);}
+        if (strcmp(index, "offset_x") == 0) {
+            return putLuaArguments(L, "i", obj->offset_x);}
+        if (strcmp(index, "offset_y") == 0) {
+            return putLuaArguments(L, "i", obj->offset_y);}
+        if (strcmp(index, "offset_z") == 0) {
+            return putLuaArguments(L, "i", obj->offset_z);}
+        if (strcmp(index, "draw_mode") == 0) {
+            return putLuaArguments(L, "i", obj->drawMode);}
+        if (strcmp(index, "alpha") == 0) {
+            return putLuaArguments(L, "i", obj->alpha);}
+        if (strcmp(index, "dir") == 0) {
+            return putLuaArguments(L, "i", obj->dir);}
+        if (strcmp(index, "tick_time") == 0) {
+            return putLuaArguments(L, "i", obj->tick);}
+        if (strcmp(index, "obstacle") == 0) {
+            return putLuaArguments(L, "i", obj->obstacle);}
+        if (strcmp(index, "bitmap") == 0) {
+            return putLuaArguments(L, "b", obj->bitmap);}
+        if (strcmp(index, "map") == 0) {
+            return putLuaArguments(L, "m", obj->getMap());}
+        if (strcmp(index, "id") == 0) {
+            return putLuaArguments(L, "i", obj->id);}
+        if (strcmp(index, "in_air") == 0) {
+            return putLuaArguments(L, "i", obj->in_air);}
 
         // None of the above, so deal with the value normally
         /*
@@ -1080,7 +1161,7 @@ int object_settable(lua_State *L)
                 ((obj->drawMode == DM_MASKED) ? DM_TRANS : obj->drawMode);
         }
         else if (strcmp(index, "dir") == 0) {
-            obj->dir = (int)lua_tonumber(L, -1);
+            obj->setDir((int)lua_tonumber(L, -1));
         }
         else if (strcmp(index, "tick_time") == 0) {
             obj->tick = (int)lua_tonumber(L, -1);

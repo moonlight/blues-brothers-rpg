@@ -24,7 +24,6 @@
 
 // Global variables
 
-extern Module *module;
 extern int debug_mode;
 extern FONT* engine_font;
 extern Console console;

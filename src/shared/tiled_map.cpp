@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,22 +22,73 @@
 
 
 
-// Allegro DATAFILE map routines   ===========================================
+// Vector class ==============================================================
 
-void *load_tiledmapdata(PACKFILE *f, long size)
+Vector::Vector()
 {
-    void *map_data = malloc(size);
-    memcpy(map_data, f, size);
-    return map_data;
+    x = y = z = 0.0f;
 }
 
-void destroy_tiledmapdata(void *data)
+Vector::Vector(double x, double y, double z)
 {
-    if (data) free(data);
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
+Vector::Vector(const Vector &v)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+}
+
+Vector Vector::operator*(double c)
+{
+    Vector result;
+    result.x = x * c;
+    result.y = y * c;
+    result.z = z * c;
+    return result;
+}
+
+Vector Vector::operator/(double c)
+{
+    Vector result;
+    result.x = x / c;
+    result.y = y / c;
+    result.z = z / c;
+    return result;
+}
+
+Vector Vector::operator+(const Vector &v)
+{
+    Vector result;
+    result.x = x + v.x;
+    result.y = y + v.y;
+    result.z = z + v.z;
+    return result;
+}
+   
+Vector Vector::operator-(const Vector &v)
+{
+    Vector result;
+    result.x = x - v.x;
+    result.y = y - v.y;
+    result.z = z - v.z;
+    return result;
 }
 
 
 // Rectangle class ===========================================================
+
+Rectangle::Rectangle(int x, int y, int w, int h)
+{
+    this->x = x;
+    this->y = y;
+    this->w = w;
+    this->h = h;
+}
 
 void Rectangle::rectToClip(BITMAP *dest)
 {
@@ -50,6 +101,16 @@ void Rectangle::clipToRect(BITMAP *src)
     y = src->ct;
     w = src->cr - src->cl + 1;
     h = src->cb - src->ct + 1;
+}
+
+bool Rectangle::collides(const Rectangle &r)
+{
+    return !(
+            x + w < r.x ||
+            y + h < r.y ||
+            x > r.x + r.w ||
+            y > r.y + r.h
+            );
 }
 
 
@@ -262,12 +323,8 @@ void TileRepository::importBitmap(
         int tile_w, int tile_h, int tile_spacing)
 {
     BITMAP *tileBitmap;
-    BITMAP *tempBitmap;
-    TileType *tempTileType;
-    char tempTilename[256];
     char tempFilename[256];
     PALETTE pal;
-    int x, y;
 
     tileBitmap = load_bitmap(filename, pal);
     if (!tileBitmap) {
@@ -278,28 +335,7 @@ void TileRepository::importBitmap(
     set_palette(pal);
     replace_extension(tempFilename, get_filename(filename), "", 256);
 
-    ASSERT(tileBitmap);
-
-    for (y = 0; y < (tileBitmap->h / (tile_h + tile_spacing)); y++)
-    {
-        for (x = 0; x < (tileBitmap->w / (tile_w + tile_spacing)); x++)
-        {
-            // Create a new tile type and add it to the hash_map
-            tempBitmap = create_bitmap(tile_w, tile_h);
-            blit(
-                    tileBitmap, tempBitmap,
-                    x * (tile_w + tile_spacing),
-                    y * (tile_h + tile_spacing),
-                    0, 0, tile_w, tile_h
-                );
-
-            sprintf(tempTilename, "%s%03d", tempFilename,
-                    y * (tileBitmap->w / tile_w) + x);
-
-            tempTileType = new TileType(tempBitmap, tempTilename);
-            tileTypes.insert(make_pair(tempTileType->getName(), tempTileType));
-        }
-    }
+    importBitmap(tileBitmap, tempFilename, tile_w, tile_h, tile_spacing);
 
     destroy_bitmap(tileBitmap);
 }
@@ -340,8 +376,8 @@ void TileRepository::exportBitmap(
     tile_bitmap = create_bitmap
         (
          tiles_in_row * tile_w,
-         (tiles_to_save.size() / tiles_in_row +
-          tiles_to_save.size() % tiles_in_row) * tile_h
+         ((int)tiles_to_save.size() / tiles_in_row +
+          (int)tiles_to_save.size() % tiles_in_row) * tile_h
         );
     int x = 0;
     int y = 0;
@@ -394,19 +430,50 @@ vector<TileType*> TileRepository::generateTileArray()
 
 TiledMapLayer::TiledMapLayer()
 {
-    mapWidth = 0;
-    mapHeight = 0;
+    width = 0;
+    height = 0;
+    name = NULL;
     tileMap = NULL;
 }
 
 TiledMapLayer::~TiledMapLayer()
 {
     // Delete tiles on map
-    for (int y = 0; y < mapHeight; y++)
-        for (int x = 0; x < mapWidth; x++)
-            delete tileMap[x + y * mapWidth];
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
+            delete tileMap[x + y * width];
 
     free(tileMap);
+}
+
+void TiledMapLayer::setName(const char *newName)
+{
+    // Delete any previous name
+    if (name) {
+        delete[] name;
+        name = NULL;
+    }
+
+    // Set the new name if it is not NULL
+    if (newName) {
+        name = new char[strlen(newName) + 1];
+        strcpy(name, newName);
+    }
+}
+
+const char* TiledMapLayer::getName()
+{
+    return name;
+}
+
+void TiledMapLayer::setOpacity(float opacity)
+{
+    this->opacity = opacity;
+}
+
+float TiledMapLayer::getOpacity()
+{
+    return opacity;
 }
 
 void TiledMapLayer::resizeTo(int w, int h, int dx, int dy)
@@ -423,8 +490,8 @@ void TiledMapLayer::resizeTo(int w, int h, int dx, int dy)
             newTileMap[x + y * w] = new Tile();
 
     // Copy old map data
-    for (y = 0; y < mapHeight; y++) {
-        for (x = 0; x < mapWidth; x++)
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++)
         {
             xn = x + dx;
             yn = y + dy;
@@ -432,7 +499,7 @@ void TiledMapLayer::resizeTo(int w, int h, int dx, int dy)
             if (xn >= 0 && yn >= 0 && xn < w && yn < h)
             {
                 Tile *newTile = newTileMap[xn + yn * w];
-                Tile *oldTile = tileMap[x + y * mapWidth];
+                Tile *oldTile = tileMap[x + y * width];
                 newTile->setType(oldTile->getType());
                 newTile->obstacle = oldTile->obstacle;
             }
@@ -440,14 +507,14 @@ void TiledMapLayer::resizeTo(int w, int h, int dx, int dy)
     }
 
     // Delete tiles on old map
-    for (y = 0; y < mapHeight; y++)
-        for (x = 0; x < mapWidth; x++)
-            delete tileMap[x + y * mapWidth];
+    for (y = 0; y < height; y++)
+        for (x = 0; x < width; x++)
+            delete tileMap[x + y * width];
 
     free(tileMap);
     tileMap = newTileMap;
-    mapWidth = w;
-    mapHeight = h;
+    width = w;
+    height = h;
 }
 
 void TiledMapLayer::saveTo(PACKFILE *file)
@@ -455,12 +522,12 @@ void TiledMapLayer::saveTo(PACKFILE *file)
     ASSERT(file);
 
     // The layer header
-    pack_iputw(mapWidth, file);
-    pack_iputw(mapHeight, file);
+    pack_iputw(width, file);
+    pack_iputw(height, file);
 
     // The tile data
-    for (int y = 0; y < mapHeight; y++)
-        for (int x = 0; x < mapWidth; x++)
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
             getTile(Point(x,y))->saveTo(file);
 }
 
@@ -470,14 +537,14 @@ void TiledMapLayer::saveTo(xmlTextWriterPtr writer)
     
     xmlTextWriterStartElement(writer, BAD_CAST "layer");
 
-    snprintf(strbuf, 16, "%d", mapWidth);
+    snprintf(strbuf, 16, "%d", width);
     xmlTextWriterWriteAttribute(writer, BAD_CAST "width", BAD_CAST strbuf);
 
-    snprintf(strbuf, 16, "%d", mapHeight);
+    snprintf(strbuf, 16, "%d", height);
     xmlTextWriterWriteAttribute(writer, BAD_CAST "height", BAD_CAST strbuf);
 
-    for (int y = 0; y < mapHeight; y++)
-        for (int x = 0; x < mapWidth; x++)
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
             getTile(Point(x,y))->saveTo(writer);
 
     xmlTextWriterEndElement(writer);
@@ -493,8 +560,8 @@ void TiledMapLayer::loadFrom(PACKFILE *file, TileRepository *tileRepository)
     resizeTo(w, h);
 
     // Load the tile data
-    for (int y = 0; y < mapHeight; y++)
-        for (int x = 0; x < mapWidth; x++)
+    for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
             getTile(Point(x,y))->loadFrom(file, tileRepository);
 }
 
@@ -518,10 +585,10 @@ void TiledMapLayer::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
     
     // Load the tile data
     while (cur != NULL) {
-        if (xmlStrEqual(cur->name, BAD_CAST "tile") && y < mapHeight) {
+        if (xmlStrEqual(cur->name, BAD_CAST "tile") && y < height) {
             getTile(Point(x,y))->loadFrom(cur, tileRepository);
             x++;
-            if (x == mapWidth) {x = 0; y++;}
+            if (x == width) {x = 0; y++;}
         } 
         cur = cur->next;
     }
@@ -529,14 +596,14 @@ void TiledMapLayer::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
 
 Tile *TiledMapLayer::getTile(Point tile)
 {
-    if (tile.x < 0 || tile.x >= mapWidth ||
-            tile.y < 0 || tile.y >= mapHeight)
+    if (tile.x < 0 || tile.x >= width ||
+            tile.y < 0 || tile.y >= height)
     {
         return NULL;
     }
     else
     {
-        return tileMap[tile.x + tile.y * mapWidth];
+        return tileMap[tile.x + tile.y * width];
     }
 }
 
@@ -545,7 +612,7 @@ Tile *TiledMapLayer::getTile(Point tile)
 //  Defines a generic tiled map interface and data model.
 
 TiledMap::TiledMap():
-nrLayers(2), mapWidth(0), mapHeight(0)
+nrLayers(2), width(0), height(0)
 {
     mapLayers[0] = new TiledMapLayer();
     mapLayers[1] = new TiledMapLayer();
@@ -582,8 +649,8 @@ void TiledMap::resizeTo(int w, int h, int dx, int dy)
 {
     mapLayers[0]->resizeTo(w, h, dx, dy);
     mapLayers[1]->resizeTo(w, h, dx, dy);
-    mapWidth = w;
-    mapHeight = h;
+    width = w;
+    height = h;
 }
 
 void TiledMap::saveTo(PACKFILE *file)
@@ -746,8 +813,8 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
         }
     }
 
-    mapWidth = mapLayers[0]->getWidth();
-    mapHeight = mapLayers[0]->getHeight();
+    width = mapLayers[0]->getWidth();
+    height = mapLayers[0]->getHeight();
 }
 
 void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
@@ -794,8 +861,8 @@ void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
         cur = cur->next;
     }
 
-    mapWidth = mapLayers[0]->getWidth();
-    mapHeight = mapLayers[0]->getHeight();
+    width = mapLayers[0]->getWidth();
+    height = mapLayers[0]->getHeight();
 }
 
 TiledMapLayer *TiledMap::getLayer(int i)
@@ -958,8 +1025,7 @@ void TiledMap::updateObjects()
     // Iterate through all objects, destroying the dead and updating the others.
     for (i = objects.begin(); i != objects.end(); i++)
     {
-        if ((*i)->_destroy)
-        {
+        if ((*i)->_destroy) {
             list<Object*>::iterator i2 = i;
 
             // We can safely iterate one back because the first object never
@@ -969,8 +1035,7 @@ void TiledMap::updateObjects()
             delete (*i2);
             objects.erase(i2);
         }
-        else
-        {
+        else {
             (*i)->update();
         }
     }
@@ -1043,13 +1108,9 @@ void SquareMap::drawLayer(
     Point end = screenToTile(Point(cameraScreenRect.x + cameraScreenRect.w - 1,
                cameraScreenRect.y + cameraScreenRect.h - 1));
 
-    start.x = MAX(0, MIN(mapWidth  - 1, start.x));
-    start.y = MAX(0, MIN(mapHeight - 1, start.y));
+    start.x = MAX(0, MIN(width  - 1, start.x));
+    start.y = MAX(0, MIN(height - 1, start.y));
 
-    if (opacity < 255) {
-        set_trans_blender(0,0,0,opacity);
-        drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-    }
 
     for (int y = start.y; y <= end.y; y++) {
         for (int x = start.x; x <= end.x; x++) {
@@ -1057,12 +1118,15 @@ void SquareMap::drawLayer(
             tempTileType = tempTile->getType();
             if (tempTileType) {
                 if (opacity < 255) {
+                    set_trans_blender(0, 0, 0, opacity);
+                    drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
                     draw_trans_sprite(
                             dest,
                             tempTileType->getBitmap(),
                             cameraScreenRect.x - cameraCoords.x + x * tileWidth,
                             cameraScreenRect.y - cameraCoords.y + y * tileHeight
                             );
+                    drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
                 }
                 else {
                     draw_sprite(
@@ -1080,6 +1144,8 @@ void SquareMap::drawLayer(
                 int th = tileHeight;
                 int to = tempTile->obstacle;
 
+                set_trans_blender(0, 0, 0, 100);
+                drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
                 if (to & OB_TOP) {
                     line(dest, tx + 2, ty + 2, tx + tw - 3, ty + 2,
                             makecol(255,0,0));
@@ -1104,12 +1170,9 @@ void SquareMap::drawLayer(
                     line(dest, tx + 3, ty + th - 2, tx + tw - 2, ty + th - 2, 
                             makecol(0,0,0));
                 }
+                drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
             }
         }
-    }
-
-    if (opacity < 255) {
-        drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
     }
 
     oldClip.rectToClip(dest);
@@ -1136,8 +1199,8 @@ Point SquareMap::mapToScreen(Point mapCoords)
 Point SquareMap::mapToTile(Point mapCoords)
 {
     return Point(
-            MIN(mapWidth - 1, MAX(0, mapCoords.x / tileWidth)),
-            MIN(mapHeight - 1, MAX(0, mapCoords.y / tileHeight)),
+            MIN(width - 1, MAX(0, mapCoords.x / tileWidth)),
+            MIN(height - 1, MAX(0, mapCoords.y / tileHeight)),
             mapCoords.z
             );
 }
@@ -1154,90 +1217,98 @@ Point SquareMap::tileToMap(Point tileCoords)
 Point SquareMap::getMapSize()
 {
     return Point(
-            tileWidth  * mapWidth,
-            tileHeight * mapHeight
+            tileWidth  * width,
+            tileHeight * height
             );
 }
 
 
 // IsometricMap class ========================================================
 //  Provides algorithms for isometric-tiled maps
-/*
-   IsometricMap::IsometricMap(int tileStepX, int tileStepY)
-   {
-   this->tileGridSize = tileStepX;
-   this->tileStepX = tileStepX;
-   this->tileStepY = tileStepY;
-   }
 
-   void IsometricMap::draw(BITMAP *dest, bool drawObstacle)
-   {
-   if (tileMap == NULL) return;
-
-   Rectangle oldClip;
-   Tile *tempTile;
-   TileType *tempTileType;
-   Point temp, temp2, area;
-
-   oldClip.clipToRect(dest);
-   cameraScreenRect.rectToClip(dest);
-
-   temp = screenToTile(Point(cameraScreenRect.x, cameraScreenRect.y));
-   area = Point(cameraScreenRect.w / (tileStepX * 2) + 3, cameraScreenRect.h / tileStepY + 3);
-
-// Move up one row
-temp.x--;
-
-for (int y = 0; y < area.y; y++) {
-// Initialize temp2 to draw a horizontal line of tiles
-temp2 = temp;
-
-for (int x = 0; x < area.x; x++) {
-// Check if we are drawing a valid tile
-tempTile = getTile(temp2);
-if (tempTile) {
-tempTileType = tempTile->getType();
-} else {
-tempTileType = NULL;
+IsometricMap::IsometricMap(int tileStepX, int tileStepY)
+{
+    this->tileGridSize = tileStepX;
+    this->tileStepX = tileStepX;
+    this->tileStepY = tileStepY;
 }
 
-// Draw the tile if valid
-if (tempTileType) {
-draw_sprite(
-dest,
-tempTileType->getBitmap(),
-cameraScreenRect.x - cameraCoords.x + (temp2.x - temp2.y - 1) * tileStepX + mapHeight * tileStepX,
-cameraScreenRect.y - cameraCoords.y + (temp2.x + temp2.y    ) * tileStepY
-);
+void IsometricMap::draw(BITMAP *dest, bool drawObstacle)
+{
+    /*
+    if (tileMap == NULL) return;
+
+    Rectangle oldClip;
+    TileType *tempTileType;
+    Point temp, temp2, area;
+
+    oldClip.clipToRect(dest);
+    cameraScreenRect.rectToClip(dest);
+
+    temp = screenToTile(Point(cameraScreenRect.x, cameraScreenRect.y));
+    area = Point(
+            cameraScreenRect.w / (tileStepX * 2) + 3,
+            cameraScreenRect.h / tileStepY + 3);
+
+    // Move up one row
+    temp.x--;
+
+    for (int y = 0; y < area.y; y++) {
+        // Initialize temp2 to draw a horizontal line of tiles
+        temp2 = temp;
+
+        for (int x = 0; x < area.x; x++) {
+            // Check if we are drawing a valid tile
+            tempTileType = getTile(temp2);
+
+            // Draw the tile if valid
+            if (tempTileType) {
+                draw_sprite(
+                        dest,
+                        tempTileType->getBitmap(),
+                        cameraScreenRect.x - cameraCoords.x + (temp2.x -
+                            temp2.y - 1) * tileStepX + height * tileStepX,
+                        cameraScreenRect.y - cameraCoords.y + (temp2.x +
+                            temp2.y) * tileStepY
+                        );
+            }
+
+            // Advance to the next tile (to the right)
+            temp2.x++; temp2.y--;
+        }
+
+        // Advance to the next row
+        if ((y & 1) > 0) temp.x++; else temp.y++;
+    }
+
+    // Draw a red line along the edges of the map
+    Point top    = mapToScreen(Point(-1, 0));
+    Point right  = mapToScreen(Point(tileGridSize * width, 0));
+    Point bottom = mapToScreen(Point(tileGridSize * width,
+                tileGridSize * height + 1));
+    Point left   = mapToScreen(Point(-1, tileGridSize * height + 1));
+    line(dest, top.x,    top.y,    right.x,  right.y,  makecol(255,0,0));
+    line(dest, right.x,  right.y,  bottom.x, bottom.y, makecol(255,0,0));
+    line(dest, bottom.x, bottom.y, left.x,   left.y,   makecol(255,0,0));
+    line(dest, left.x,   left.y,   top.x,    top.y,    makecol(255,0,0));
+
+    // Now draw the entities
+    drawEntities(dest);
+
+    oldClip.rectToClip(dest);
+    */
 }
 
-// Advance to the next tile (to the right)
-temp2.x++; temp2.y--;
-}
-
-// Advance to the next row
-if ((y & 1) > 0) temp.x++; else temp.y++;
-}
-
-// Draw a red line along the edges of the map
-//Point top    = mapToScreen(Point(-1,                      0));
-//Point right  = mapToScreen(Point(tileGridSize * mapWidth, 0));
-//Point bottom = mapToScreen(Point(tileGridSize * mapWidth, tileGridSize * mapHeight + 1));
-//Point left   = mapToScreen(Point(-1,                      tileGridSize * mapHeight + 1));
-//line(dest, top.x,    top.y,    right.x,  right.y,  makecol(255,0,0));
-//line(dest, right.x,  right.y,  bottom.x, bottom.y, makecol(255,0,0));
-//line(dest, bottom.x, bottom.y, left.x,   left.y,   makecol(255,0,0));
-//line(dest, left.x,   left.y,   top.x,    top.y,    makecol(255,0,0));
-
-// Now draw the entities
-drawEntities(dest);
-
-oldClip.rectToClip(dest);
+void IsometricMap::drawLayer(
+        BITMAP *dest, bool drawObstacle,
+        TiledMapLayer *layer, int opacity)
+{
 }
 
 Point IsometricMap::screenToMap(Point screenCoords)
 {
-    screenCoords.x = screenCoords.x + cameraCoords.x - cameraScreenRect.x - mapHeight * tileStepX;
+    screenCoords.x = screenCoords.x + cameraCoords.x - cameraScreenRect.x -
+        height * tileStepX;
     screenCoords.y = screenCoords.y + cameraCoords.y - cameraScreenRect.y;
     return Point(
             screenCoords.y + screenCoords.x / 2,
@@ -1249,8 +1320,10 @@ Point IsometricMap::screenToMap(Point screenCoords)
 Point IsometricMap::mapToScreen(Point mapCoords)
 {
     return Point(
-            cameraScreenRect.x - cameraCoords.x + (mapCoords.x - mapCoords.y) + mapHeight * tileStepX,
-            cameraScreenRect.y - cameraCoords.y + (mapCoords.x + mapCoords.y) / 2,
+            cameraScreenRect.x - cameraCoords.x + (mapCoords.x - mapCoords.y) +
+            height * tileStepX,
+            cameraScreenRect.y - cameraCoords.y + (mapCoords.x + mapCoords.y) /
+            2,
             mapCoords.z
             );
 }
@@ -1258,8 +1331,10 @@ Point IsometricMap::mapToScreen(Point mapCoords)
 Point IsometricMap::mapToTile(Point mapCoords)
 {
     return Point(
-            (mapCoords.x < 0) ? mapCoords.x / tileGridSize - 1 : mapCoords.x / tileGridSize,
-            (mapCoords.y < 0) ? mapCoords.y / tileGridSize - 1 : mapCoords.y / tileGridSize,
+            (mapCoords.x < 0) ?
+            mapCoords.x / tileGridSize - 1 : mapCoords.x / tileGridSize,
+            (mapCoords.y < 0) ?
+            mapCoords.y / tileGridSize - 1 : mapCoords.y / tileGridSize,
             mapCoords.z
             );
 }
@@ -1276,8 +1351,7 @@ Point IsometricMap::tileToMap(Point tileCoords)
 Point IsometricMap::getMapSize()
 {
     return Point(
-            tileStepX * (mapWidth + mapHeight),
-            tileStepY * (mapWidth + mapHeight)
+            tileStepX * (width + height),
+            tileStepY * (width + height)
             );
 }
-*/

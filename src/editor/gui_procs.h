@@ -30,7 +30,7 @@ int update_color(void *dp3, int d2);
 void resizemap_change(DIALOG *d);
 
 char *list_tilesets(int index, int *list_size);
-char *list_objects(int index, int *list_size);
+const char *list_objects(int index, int *list_size);
 
 
 #endif

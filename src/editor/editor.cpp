@@ -19,7 +19,6 @@
 #include "editor.h"
 #include "gui_procs.h"
 #include "../shared/tiled_map.h"
-#include "../shared/engine.h"
 #include "../shared/object.h"
 #include "../shared/module.h"
 
@@ -164,8 +163,8 @@ DIALOG edit_obstacle_layer[] =
 DIALOG edit_objects_layer[] = 
 {
     /*(proc)                (x)  (y)  (w)  (h)  (fg) (bg) (key) (flags)     (d1) (d2) (dp)           (dp2)         (dp3)*/
-    { d_bjorn_objects_list, 6,   454, 123, 120, 0,   0,   0,    0,          0,   0,   (void*)list_objects,   NULL, NULL },
-    { d_bjorn_check_snap,   136, 560, 97,  14,  0,   0,   0,    0,          1,   0,   (void*)"Snap to grid", NULL, NULL },
+    { d_bjorn_objects_list, 6,   454, 153, 120, 0,   0,   0,    0,          0,   0,   (void*)list_objects,   NULL, NULL },
+    { d_bjorn_check_snap,   166, 560, 97,  14,  0,   0,   0,    0,          1,   0,   (void*)"Snap to grid", NULL, NULL },
     { NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL }
 };
 
@@ -273,7 +272,6 @@ MENU menu_file[] =
     { "&Load map...",          menu_item_load_map,       NULL,      0,          NULL },
     { "&Save map",             menu_item_save_map,       NULL,      0,          NULL },
     { "Save map &as...",       menu_item_save_map_as_xml, NULL,      0,          NULL },
-    { "Save &old map as...",   menu_item_save_map_as,    NULL,     0,          NULL },
     { "Save map image",        menu_item_save_map_image, NULL,      0,          NULL },
     { "",                      NULL,                     NULL,      0,          NULL },
     { "&Import tileset...",    menu_item_import_tileset, NULL,      0,          NULL },
@@ -344,7 +342,7 @@ int menu_item_new_map()
                 currentMap->removeObjects();
                 currentMap->resizeTo(0, 0);
                 currentMap->resizeTo(imap_w, imap_h);
-                ustrzcpy(map_filename, sizeof map_filename, "untitled.map");
+                ustrzcpy(map_filename, sizeof map_filename, "untitled.tmx");
                 object_message(&D_MAP, MSG_NEW_MAP, 0);
                 set_map_changed(false);
                 update_window_title();
@@ -367,7 +365,7 @@ int menu_item_load_map()
         char path_buf[1024] = "";
 
         if (file_select_ex(
-                    "Load XML map... (*.map)", path_buf, "map", sizeof path_buf,
+                    "Load XML map... (*.tmx)", path_buf, "tmx", sizeof path_buf,
                     MAX(OLD_FILESEL_WIDTH,  SCREEN_W / 2),
                     MAX(OLD_FILESEL_HEIGHT, SCREEN_H / 2)
                     ))
@@ -419,8 +417,8 @@ int menu_item_save_map()
 {
     if (!currentMap) return D_O_K;
 
-    if (ustrcmp(map_filename, "untitled.map") == 0) {
-        menu_item_save_map_as();
+    if (ustrcmp(map_filename, "untitled.tmx") == 0) {
+        menu_item_save_map_as_xml();
         return D_O_K;
     }
 
@@ -437,35 +435,6 @@ int menu_item_save_map()
     }
     else {
         menu_item_save_map_as_xml();
-    }
-    return D_O_K;
-}
-
-int menu_item_save_map_as()
-{
-    if (!currentMap) return D_O_K;
-
-    char path_buf[1024];
-
-    ustrcpy(path_buf, map_filename);
-
-    if (file_select_ex(
-                "Save old map... (*.map)", path_buf, "map", sizeof path_buf,
-                MAX(OLD_FILESEL_WIDTH,  SCREEN_W / 2),
-                MAX(OLD_FILESEL_HEIGHT, SCREEN_H / 2)
-                ))
-    {
-        PACKFILE *file = pack_fopen(path_buf, F_WRITE_PACKED);
-        if (file) {
-            currentMap->saveTo(file);
-            pack_fclose(file);
-            ustrcpy(map_filename, path_buf);
-            set_map_changed(false);
-            update_window_title();
-        } else {
-            alert(NULL, "Error while trying to save map!",
-                    NULL, "OK", NULL, 13, 0);
-        }
     }
     return D_O_K;
 }
@@ -746,7 +715,7 @@ int menu_item_save_map_as_xml()
     ustrcpy(path_buf, map_filename);
 
     if (file_select_ex(
-                "Save map... (*.map)", path_buf, "map", sizeof path_buf,
+                "Save map... (*.tmx)", path_buf, "tmx", sizeof path_buf,
                 MAX(OLD_FILESEL_WIDTH,  SCREEN_W / 2),
                 MAX(OLD_FILESEL_HEIGHT, SCREEN_H / 2)
                 ))

@@ -14,10 +14,9 @@
 #include "agup.h"
 #include "aphoton.h"
 #include "editor.h"
-#include "../shared/tiled_map.h"
 #include "script.h"
 #include "../common.h"
-#include "../shared/engine.h"
+#include "../shared/tiled_map.h"
 #include "../shared/module.h"
 
 
@@ -220,12 +219,12 @@ void initialize()
     set_dialog_size(&main_dlg[10],         x + w - 12,        y + h - 12,      10,                    10);
 
     // Edit objects area
-    w = 123;
+    w = 160;
     h = 120;
     x = margin;
     y = main_dlg[6].y - margin - h;
     set_dialog_size(&edit_objects_layer[0], x,                y,               w,                     h);
-    set_dialog_size(&edit_objects_layer[1], 136, main_dlg[6].y - margin - 14,  97,                    14);
+    set_dialog_size(&edit_objects_layer[1], w + margin * 2, main_dlg[6].y - margin - 14,  97,                    14);
 
 
     // Initialize map and tile stuff
@@ -256,7 +255,7 @@ void initialize()
     }
 
     currentMap = new SquareMap(TILES_W, TILES_H);
-    ustrcpy(map_filename, "untitled.map");
+    ustrcpy(map_filename, "untitled.tmx");
 
     // Load map specified in rpgedit.cfg
     const char* filename = get_config_string("startup", "load_map", NULL);

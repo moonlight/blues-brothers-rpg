@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ class Object
         int offset_x, offset_y, offset_z;
         int id;
         int tableRef;           // A reference to the associated Lua table
-        char *className;
+        const char *className;
 
         Object(int luaTableRef, TiledMap* myMap);
         ~Object();
@@ -53,7 +53,7 @@ class Object
 
         // Methods
         void walk(int dir, bool col);
-        void set_dir(int dir);
+        void setDir(int dir);
         void setX(double x);
         void setY(double y);
 

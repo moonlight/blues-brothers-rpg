@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,13 @@
 
 #include <allegro.h>
 #include <string.h>
+#ifndef WIN32
 #include <dirent.h>
+#endif
 #include <string>
-#include "../common.h"
 #include "module.h"
+#include "../common.h"
 #include "../script.h"
-#include "engine.h"
 
 
 Module::Module(const char *name)
@@ -43,14 +44,14 @@ Module::~Module()
     delete[] datafile_name;
 }
 
-void Module::loadScript(std::string name)
+void Module::loadScript(const std::string name)
 {
     // Create the indent
     char *spaces = new char[loadLevel + 1];
     int i;
     for (i = 0; i < loadLevel; i++) spaces[i] = ' ';
     spaces[loadLevel] = '\0';
-    map<std::string, char*, ltstr>::iterator script_i = scripts.find(name);
+    map<std::string, char*>::iterator script_i = scripts.find(name);
 
     if (script_i != scripts.end()) {
         console.log(CON_LOG, CON_VDEBUG, "%s# Already loaded \"%s\"",
@@ -81,6 +82,7 @@ void Module::loadScripts()
     console.log(CON_LOG, CON_ALWAYS, "Loading scripts from \"%s\"...", path);
 
     char *dirname = makeFilename("", "/scripts");
+#ifndef WIN32
     DIR *dir;
 
     dir = opendir(dirname);
@@ -88,7 +90,8 @@ void Module::loadScripts()
         // Read the scripts from the file system
         struct dirent *direntry;
         while ((direntry = readdir(dir)) != NULL) {
-            if (strstr(direntry->d_name, ".lua")) {
+            char *luaExt = strstr(direntry->d_name, ".lua");
+            if (luaExt != NULL && strcmp(luaExt, ".lua") == 0) {
                 loadLevel = 0;
                 loadScript(direntry->d_name);
             }
@@ -96,6 +99,7 @@ void Module::loadScripts()
         closedir(dir);
     }
     else {
+#endif
         // Read the scripts from the datafile
         script_data = load_datafile_object(datafile_name, "data/scripts");
         if (script_data) {
@@ -114,7 +118,9 @@ void Module::loadScripts()
             unload_datafile_object(script_data);
             script_data = NULL;
         }
+#ifndef WIN32
     }
+#endif
 
     // Clean up any loaded scripts
     /*
@@ -128,7 +134,7 @@ void Module::loadScripts()
     delete[] dirname;
 }
 
-TiledMap* Module::loadMap(std::string name)
+TiledMap* Module::loadMap(const std::string name)
 {
     TiledMap *mmap = NULL;
     char *filename = makeFilename(name.c_str(), "/maps");
@@ -161,10 +167,10 @@ TiledMap* Module::loadMap(std::string name)
     return mmap;
 }
 
-BITMAP* Module::findBitmap(std::string name)
+BITMAP* Module::findBitmap(const std::string name)
 {
     BITMAP *bitmap = NULL;
-    map<std::string, BITMAP*, ltstr>::iterator i = bitmaps.find(name);
+    map<std::string, BITMAP*>::iterator i = bitmaps.find(name);
 
     if (i != bitmaps.end()) {
         bitmap = (*i).second;
@@ -189,10 +195,10 @@ BITMAP* Module::findBitmap(std::string name)
     return bitmap;
 }
 
-MIDI* Module::findMidi(std::string name)
+MIDI* Module::findMidi(const std::string name)
 {
     MIDI *midi = NULL;
-    map<std::string, MIDI*, ltstr>::iterator i = midis.find(name);
+    map<std::string, MIDI*>::iterator i = midis.find(name);
     char *filename = makeFilename(name.c_str(), "/music");
 
     if (i != midis.end()) {
@@ -217,10 +223,10 @@ MIDI* Module::findMidi(std::string name)
     return midi;
 }
 
-SAMPLE* Module::findSample(std::string name)
+SAMPLE* Module::findSample(const std::string name)
 {
     SAMPLE *sample = NULL;
-    map<std::string, SAMPLE*, ltstr>::iterator i = samples.find(name);
+    map<std::string, SAMPLE*>::iterator i = samples.find(name);
     char *filename = makeFilename(name.c_str(), "/samples");
 
     if (i != samples.end()) {
@@ -245,10 +251,10 @@ SAMPLE* Module::findSample(std::string name)
     return sample;
 }
 
-FONT* Module::findFont(std::string name)
+FONT* Module::findFont(const std::string name)
 {
     FONT *font = NULL;
-    map<std::string, FONT*, ltstr>::iterator i = fonts.find(name);
+    map<std::string, FONT*>::iterator i = fonts.find(name);
 
     if (i != fonts.end()) {
         font = (*i).second;
@@ -266,10 +272,10 @@ FONT* Module::findFont(std::string name)
     return font;
 }
 
-char* Module::findScript(std::string name)
+char* Module::findScript(const std::string name)
 {
     char *script = NULL;
-    map<std::string, char*, ltstr>::iterator i = scripts.find(name);
+    map<std::string, char*>::iterator i = scripts.find(name);
     char *filename = makeFilename(name.c_str(), "/scripts");
 
     if (i != scripts.end()) {

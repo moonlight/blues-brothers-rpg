@@ -9,29 +9,19 @@
     (at your option) any later version.
 */
 
-#include <allegro.h>
-#include <time.h>
+#ifndef _INCLUDED_ENGINE_H_
+#define _INCLUDED_ENGINE_H_
+
+#include "shared/tiled_map.h"
+#include "script.h"
 #include <list>
-#include "console.h"
-#include "tiled_map.h"
-#include "engine.h"
-#include "module.h"
-#include "../script.h"
-#include "../common.h"
 
 using namespace std;
-
-list<TiledMap*> maps;
-
-bool exclusive_mode = false;
 
 
 
 //============   Engine functions   ===========================================
 
-void update_objects()
-{
-    // Iterate through all maps
-    for (list<TiledMap*>::iterator i = maps.begin(); i != maps.end(); i++)
-        (*i)->updateObjects();
-}
+void update_objects();
+
+#endif

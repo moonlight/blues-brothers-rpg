@@ -1,7 +1,7 @@
 /*
     The Moonlight Engine - An extendable, portable, RPG-focused game engine.
     Project Home: http://moeng.sourceforge.net/
-    Copyright (C) 2003  Bjørn Lindeijer
+    Copyright (C) 2003, 2004  Bjørn Lindeijer
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -250,7 +250,7 @@ int l_play_sample(lua_State *L)
             console.log(CON_LOG, CON_ALWAYS, "Playing sample: %s", name);
             play_sample(sample, sfx_vol, 128, 1000, 0);
         } else {
-            return luaL_error(L,
+            console.log(CON_LOG, CON_ALWAYS,
                     "Error: Cannot find requested sample (%s)!", name);
         }
     }
