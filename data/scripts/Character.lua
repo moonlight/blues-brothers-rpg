@@ -44,6 +44,18 @@ Character = Pawn:subclass
 	event_walk_finished = function(self)
 		Pawn.event_walk_finished(self)
 		self:updateBitmap()
+
+		-- Check for snow tiles
+		local tile = m_get_tile_at(self.map, self.x - 0.5, self.y - 0.5)
+		m_message(tile)
+		for k,v in pairs(self.snowTiles) do
+			if (v == tile) then
+				m_message("Standing on snow!")
+				local snowFeet = self:spawn(SnowFeet)
+				snowFeet:setDirection(self.dir)
+				break
+			end
+		end
 	end;
 
 	event_dir_change = function(self)
@@ -99,6 +111,35 @@ Character = Pawn:subclass
 	-- To be implemented: removeFromInventory = function(self, obj)
 
 	defaultproperties = {
+		snowTiles = {
+			--"tiles_subcity.000",
+			"tiles_subcity.001",
+			--"tiles_subcity.002",
+			"tiles_subcity.012",
+			--"tiles_subcity.013",
+			--"tiles_subcity.014",
+			"tiles_subcity.016",
+			"tiles_subcity.017",
+			"tiles_subcity.018",
+			"tiles_subcity.021",
+			--"tiles_subcity.028",
+			"tiles_subcity.029",
+			"tiles_subcity.030",
+			--"tiles_subcity.032",
+			"tiles_subcity.033",
+			--"tiles_subcity.034",
+			"tiles_subcity.037",
+			--"tiles_subcity.045",
+			--"tiles_subcity.046",
+			"tiles_subcity.063",
+			"tiles_subcity.079",
+			"tiles_subcity.092",
+			"tiles_subcity.125",
+			"tiles_subcity.144",
+			"tiles_subcity.145",
+			"tiles_subcity.147",
+			"tiles_subcity.161",
+		},
 		inventory = nil,
 		leg_used = 0,
 		tick_time = 1,

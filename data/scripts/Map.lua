@@ -17,7 +17,7 @@ Map = Object:subclass
 	end;
 
 	spawn = function(self, class, x, y, owner)
-		return Actor:spawn(class, x, y, self.map, owner)
+		return Actor:spawn(class, x, y, self, owner)
 	end;
 
 	defaultproperties = {

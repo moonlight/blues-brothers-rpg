@@ -46,7 +46,7 @@ PlayerController = Controller:subclass
 				end
 			end
 
-			self.bActivatePrev = self.bActivate
+			self.bActivatePrev = self.bActivate			
 		end
 	end;
 

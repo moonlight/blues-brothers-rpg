@@ -24,7 +24,14 @@ Actor = Object:subclass
 		obj._instance = true
 
 		-- Setup the binding with the engine
-		m_register_object(obj, map)
+		if (type(map) == "userdata") then
+			m_register_object(obj, map)
+		elseif (map:instanceOf(Map)) then
+			m_register_object(obj, map.map)
+			self.myMap = map
+		else
+			error("No valid map given to create Actor on!")
+		end
 
 		-- Assign default properties
 		for key, value in pairs(self.defaultproperties) do obj[key] = value; end
@@ -137,7 +144,9 @@ Actor = Object:subclass
 	spawn = function(self, class, x, y, map, owner)
 		if (not class or type(class) ~= "table") then error("No valid class to spawn specified!") end
 		if (not map) then
-			if (self.map) then
+			if (self.myMap) then
+				map = self.myMap
+			elseif (self.map) then
 				map = self.map
 			else
 				error("Could not determine map to spawn object on!")
@@ -218,6 +227,7 @@ Actor = Object:subclass
 			self.map = map
 		elseif (map:instanceOf(Map)) then
 			self.map = map.map
+			self.myMap = map
 		else
 			error("Type error, object of type Map or map pointer expected.")
 		end
@@ -312,6 +322,7 @@ Actor = Object:subclass
 		bLoopAnim = false,
 		animTime = 0,
 		animSpeed = 0,
+		myMap = nil,
 
 		bCenterBitmap = false,
 		bCenterOnTile = false,
