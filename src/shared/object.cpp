@@ -32,7 +32,7 @@ Object::Object(int luaTableRef, TiledMap* myMap):
 	bitmap(NULL),
 	x(0), y(0), px(0), py(0), nx(0), ny(0), w(1), h(1), obstacle(0),
 	offset_x(0), offset_y(0), offset_z(0),
-	tableRef(luaTableRef),
+	tableRef(luaTableRef), className(NULL),
 	drawMode(DM_MASKED), alpha(255), selected(false),
 	map(myMap)
 {

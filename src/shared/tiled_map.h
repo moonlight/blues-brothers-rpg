@@ -23,6 +23,8 @@ class Object;
 
 #define DAT_MAPDATA  DAT_ID('M','A','P',' ')
 
+#define TILES_W			24
+#define TILES_H			24
 
 #define DM_INVISIBLE	0
 #define DM_ADD			1

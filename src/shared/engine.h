@@ -26,8 +26,6 @@ extern list<TiledMap*> maps;
 #define DIR_RIGHT		2
 #define DIR_DOWN		3
 
-#define TILES_W			24
-#define TILES_H			24
 
 
 

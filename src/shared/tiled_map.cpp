@@ -470,7 +470,10 @@ void TiledMap::saveTo(PACKFILE *file)
 	ASSERT(file);
 
 	// Version info
-	pack_iputw(2, file);
+	// Version 1: No version number stored, one layer in map
+	// Version 2: First int is version number, second one the number of layers
+	// Version 3: Object list stored at end of tile data.
+	pack_iputw(3, file);
 	// The map header
 	pack_iputw(nrLayers, file);
 
@@ -478,6 +481,16 @@ void TiledMap::saveTo(PACKFILE *file)
 	for (int i = 0; i < nrLayers; i++) {
 		mapLayers[i]->saveTo(file);
 	}
+
+	// Object data
+	list<Object*>::iterator i;
+	pack_iputw(objects.size(), file);
+	for (i = objects.begin(); i != objects.end(); i++) {
+		pack_iputw(int(TILES_W * (*i)->x), file);
+		pack_iputw(int(TILES_H * (*i)->y), file);
+		pack_fputs((*i)->className, file);
+		pack_fputs("\n", file);
+	}	
 
 	// Extra newline fixes last tile not loaded.
 	pack_fputs("\n", file);
@@ -508,13 +521,50 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
 	}
 
 	// Load the map header
-	/*int version = */pack_igetw(file);
+	int version = pack_igetw(file);
 	int layers = pack_igetw(file);
 
 	// Load the tile data
 	//allegro_message("Loading %d layers from map version %d", layers, version);
 	for (int i = 0; i < layers; i++) {
 		mapLayers[i]->loadFrom(file, tileRepository);
+	}
+
+	// Load object data
+	if (version == 3) {
+		int nrObjects = pack_igetw(file);
+
+		for (int i = 0; i < nrObjects; i++) {
+			int x = pack_igetw(file); //int(TILES_W * (*i)->x), file);
+			int y = pack_igetw(file); //pack_iputw(int(TILES_H * (*i)->y), file);
+			char *className = new char[64];
+			int objectInstance = 0;
+			pack_fgets(className, 64, file);
+
+			// Spawn the object
+			// Assumes Lua environment is set up and such of course
+			lua_pushstring(L, className);
+			lua_gettable(L, LUA_GLOBALSINDEX);
+			if (!lua_isnil(L, -1)) {
+				lua_call(L, putLuaArguments(L, "m", this), 1);
+				if (lua_istable(L, -1)) {
+					objectInstance = lua_ref(L, -1);
+				} else {
+					console.log(CON_QUIT, CON_ALWAYS, "Error while instaniating object \"%s\"", className);
+				}
+			} else {
+				console.log(CON_QUIT, CON_ALWAYS, "Error: could not find object class \"%s\"", className);
+			}
+			
+			lua_getref(L, objectInstance);
+			lua_pushstring(L, "_pointer");
+			lua_gettable(L, -2);
+			Object* obj = (Object*)lua_touserdata(L, -1);
+			obj->x = (double(x) / TILES_W);
+			obj->y = (double(y) / TILES_H);
+			obj->className = className; // Assign class name (maybe not the best place for this)
+			lua_pop(L, 1);
+		}
 	}
 
 	mapWidth = mapLayers[0]->getWidth();

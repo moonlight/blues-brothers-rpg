@@ -470,7 +470,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 			{
 				// Spawn object
 				int objectInstance = 0;
-				const char* typeName = objectTypes[selectedObjectType];
+				char* typeName = objectTypes[selectedObjectType];
 
 				lua_pushstring(L, typeName);
 				lua_gettable(L, LUA_GLOBALSINDEX);
@@ -491,6 +491,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 				lua_pushstring(L, "_pointer");
 				lua_gettable(L, -2);
 				Object* obj = (Object*)lua_touserdata(L, -1);
+				obj->className = typeName; // Assign class name (not the best place for this)
 				lua_pop(L, 1);
 
 				select_object(obj);
@@ -595,6 +596,41 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 						selection_end_x = int(new_end_x);
 						selection_end_y = int(new_end_y);
 
+						// Select the objects within the rectangle
+						list<Object*> objects;
+						list<Object*>::iterator i;
+						for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++) {
+							Point pos = (*i)->pos;
+							Point start, end;
+							
+							if (selection_start_x < selection_end_x) {
+								if (selection_start_y < selection_end_y) {
+									start = Point(selection_start_x, selection_start_y);
+									end = Point(selection_end_x, selection_end_y);
+								} else {
+									start = Point(selection_start_x, selection_end_y);
+									end = Point(selection_end_x, selection_start_y);
+								}
+							} else {
+								if (selection_start_y < selection_end_y) {
+									start = Point(selection_end_x, selection_start_y);
+									end = Point(selection_start_x, selection_end_y);
+								} else {
+									start = Point(selection_end_x, selection_end_y);
+									end = Point(selection_start_x, selection_start_y);
+								}
+							}
+							
+							if (pos.x > start.x &&
+								pos.y > start.y &&
+								pos.x < end.x &&
+								pos.y < end.y) {
+								objects.push_back((*i));
+							}
+						}
+						select_objects(objects);
+						
+						
 						scare_mouse();
 						object_message(d, MSG_DRAW, 0);
 						unscare_mouse();
@@ -602,37 +638,6 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
 
 					broadcast_dialog_message(MSG_IDLE, 0);
 				}
-
-				// Select the objects within the rectangle
-				list<Object*> objects;
-				list<Object*>::iterator i;
-				for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++)
-				{
-					Point pos = (*i)->pos;
-
-					if (selection_start_x > selection_end_x) {
-						int temp = selection_end_x;
-						selection_end_x = selection_start_x;
-						selection_start_x = temp;
-					}
-					if (selection_start_y > selection_end_y) {
-						int temp = selection_end_y;
-						selection_end_y = selection_start_y;
-						selection_start_y = temp;
-					}
-
-					Point start = Point(selection_start_x, selection_start_y);
-					Point end = Point(selection_end_x, selection_end_y);
-
-					if (pos.x > start.x &&
-						pos.y > start.y &&
-						pos.x < end.x &&
-						pos.y < end.y)
-					{
-						objects.push_back((*i));
-					}
-				}
-				select_objects(objects);
 
 				selecting = false;
 				d->flags |= D_DIRTY;

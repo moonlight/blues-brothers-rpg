@@ -36,6 +36,7 @@ public:
 	int offset_x, offset_y, offset_z;
 	int id;
 	int tableRef;						// A reference to the associated Lua table
+	char *className;
 
 	Object(int luaTableRef, TiledMap* myMap);
 	~Object();
