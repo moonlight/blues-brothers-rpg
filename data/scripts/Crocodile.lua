@@ -18,6 +18,7 @@ Crocodile = Enemy:subclass
 		offset_y = 6,
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("croc.bmp"), 24, 24),
+		deathBitmap = m_get_bitmap("croc_dead.bmp"),
 		nature = AGGRESSIVE,
 		controllerClass = AdvAIRandom,
 		

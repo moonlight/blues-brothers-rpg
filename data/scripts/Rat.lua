@@ -18,6 +18,7 @@ Rat = Enemy:subclass
 
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("rat.bmp"), 16, 16),
+		deathBitmap = m_get_bitmap("rat_dead.bmp"),
 		nature = NEUTRAL,
 		controllerClass = AdvAIRandom,
 		shadowClass = RatShadow,
