@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 rm data.dat
 dat -a -k -t LUA  data.dat data/scripts/*.lua
