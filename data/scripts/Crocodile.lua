@@ -13,8 +13,8 @@ Crocodile = Enemy:subclass
 	
 	defaultproperties = {
 		attackMinDam = 3,
-		attackMaxDam = 6,
-		maxHealth = 50,
+		attackMaxDam = 5,
+		maxHealth = 40,
 		speed = 3,
 		experience = 25,
 

@@ -6,11 +6,11 @@ Turtle = Enemy:subclass
 	bPlaceable = true;
 
 	defaultproperties = {
-		attackMinDam = 2,
+		attackMinDam = 1,
 		attackMaxDam = 4,
-		maxHealth = 40,
+		maxHealth = 50,
 		speed = 1,
-		experience = 10,
+		experience = 20,
 
 		offset_y = 4,
 		draw_mode = DM_MASKED,

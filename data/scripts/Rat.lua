@@ -25,10 +25,10 @@ Rat = Enemy:subclass
 	
 	defaultproperties = {
 		attackMinDam = 0,
-		attackMaxDam = 3,
-		maxHealth = 25,
+		attackMaxDam = 2,
+		maxHealth = 20,
 		speed = 4,
-		experience = 11,
+		experience = 12,
 
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("rat.bmp"), 16, 16),
