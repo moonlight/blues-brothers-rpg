@@ -20,8 +20,6 @@ EnemyGuard = Enemy:subclass
 		bDead = false,
 		bAttacking = false,
 
-		hitEffectClass = BloodSplat,
-		hitEffectHeight = 24,
 		deathBitmap = m_get_bitmap("cop_dead.bmp"),
 	};
 }

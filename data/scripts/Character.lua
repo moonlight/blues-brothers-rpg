@@ -69,6 +69,12 @@ Character = Pawn:subclass
 		self:updateBitmap()
 	end;
 
+	died = function(self, killer, damageType, location)
+		Pawn.died(self, killer, damageType, location)
+		self.charAnim = nil
+		self:setBitmap(self.deathBitmap)
+	end;
+
 	destroyed = function(self)
 		-- Set bDead to prevent AI's from chasing destroyed characters
 		self.bDead = true
@@ -151,6 +157,7 @@ Character = Pawn:subclass
 		charAnim = nil,
 		shadow = nil,
 		shadowClass = Shadow,
+		deathBitmap = nil,
 
 		bAttacking = false,
 	};

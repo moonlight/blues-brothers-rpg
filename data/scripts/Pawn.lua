@@ -3,6 +3,7 @@
 -- By Bjorn Lindeijer
 
 import("Actor.lua")
+import("BloodSplat.lua")
 
 
 Pawn = Actor:subclass
@@ -44,6 +45,7 @@ Pawn = Actor:subclass
 	--== TAKING DAMAGE ==--
 
 	takeDamage = function(self, damage, instigator, damageType, momentum, location)
+		self:log("takes "..damage.." damage")
 		if (damage > 0) then
 			local actualDamage = damage
 			self.health = self.health - actualDamage

@@ -53,9 +53,10 @@ Jail = Map:subclass
 
 		guard = self:spawn(Guard, 37, 17);
 
-		ActionController:addSequence{
-			ActionWait(50),
-			ActionShowMapName(m_get_bitmap("bb_title_prison.bmp")),
-		}
+		-- This is not the right place to add this sequence
+		--ActionController:addSequence{
+		--	ActionWait(50),
+		--	ActionShowMapName(m_get_bitmap("bb_title_prison.bmp")),
+		--}
 	end;
 }

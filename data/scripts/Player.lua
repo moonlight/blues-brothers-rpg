@@ -89,9 +89,6 @@ Player = Character:subclass
 			self:log("Commited suicide.")
 		end
 
-		self.charAnim = nil
-		self:setBitmap(self.deathBitmap)
-		
 		ActionController:addSequence({
 			ActionExModeOn(),
 			ActionWait(200),
@@ -123,7 +120,6 @@ Player = Character:subclass
 
 	defaultproperties =
 	{
-		deathBitmap = nil,
 		sleepBitmap = nil,
 		strength = 5,
 		dexterity = 5,

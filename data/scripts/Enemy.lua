@@ -1,6 +1,6 @@
 
 import("Character.lua")
-import("BloodSplat.lua")
+
 
 Enemy = Character:subclass
 {
@@ -11,7 +11,7 @@ Enemy = Character:subclass
 
 	attack = function(self)
 		if (self.bAttacking == false and self.walking == 0 and self.charging == 0) then
-			m_message("Enemy "..self:toString().." attacking.")
+			self:log("attacking.")
 			self.bAttacking = true
 
 			-- See if there is something at the attacked location
@@ -44,16 +44,13 @@ Enemy = Character:subclass
 	--== Notifications ==--
 
 	died = function(self, killer, damageType, location)
+		-- Let character adapt to dead status
 		Character.died(self, killer, damageType, location)
 
 		-- Give players experience
 		if (killer and killer:instanceOf(Player)) then
 			killer:gainExperience(self.experience)
 		end
-
-		-- Disable animation and display death bitmap
-		self.charAnim = nil
-		self:setBitmap(self.deathBitmap)
 
 		-- Fade away
 		ActionController:addSequence({

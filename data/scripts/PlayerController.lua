@@ -15,9 +15,7 @@ PlayerController = Controller:subclass
 	--
 	
 	playerTick = function(self)
-	
-		
-		if (self.pawn) then
+		if (self.pawn and not self.pawn.bDead) then
 			if (not self.pawn.bSleeping) then
 				if (self.bUp    and self.pawn.walking == 0) then self.pawn:walk(DIR_UP)    end
 				if (self.bLeft  and self.pawn.walking == 0) then self.pawn:walk(DIR_LEFT)  end
@@ -31,7 +29,7 @@ PlayerController = Controller:subclass
 					
 					if (self.pawn.onActivate) then
 						self.pawn:onActivate()
-					elseif (not self.pawn.bSleeping) then
+					elseif (not self.pawn.bSleeping) then
 						if (self.pawn.dir == DIR_LEFT)  then ax = ax - 1 end
 						if (self.pawn.dir == DIR_RIGHT) then ax = ax + 1 end
 						if (self.pawn.dir == DIR_UP)    then ay = ay - 1 end

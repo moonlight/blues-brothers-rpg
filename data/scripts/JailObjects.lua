@@ -1,4 +1,4 @@
--- JailObjects.lua
+--
 -- Objects that appear in jail.
 -- By Georg Muntingh
 
@@ -39,7 +39,7 @@ Painting = Decoration:subclass
 Painting2 = Decoration:subclass
 {
 	name = "Painting2";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -68,7 +68,7 @@ Boss = Decoration:subclass
 PileOfPaper = Decoration:subclass
 {
 	name = "PileOfPaper";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
@@ -84,7 +84,7 @@ PileOfPaper = Decoration:subclass
 Plant1 = Decoration:subclass
 {
 	name = "Plant1";
-	bPlaceable = true;
+	bPlaceable = true;
 	defaultproperties = {
 		bCenterOnTile = false,
 		bCenterBitmap = false,
