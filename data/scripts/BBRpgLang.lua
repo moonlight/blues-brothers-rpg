@@ -247,7 +247,9 @@ BBRpgLang = Lang:subclass
 		BedOccupied = {
 			{"{PLAYER}", "Hmm, it seems that somebody is sleeping in this bed."},
 		},
-
+		PrisonDoorLocked = {
+			{"{PLAYER}", "This door is locked."},
+		},
 		
 		-- Conversation tables. Used for random events.
 		Guitar = {

@@ -92,19 +92,36 @@ ElecDoor = Actor:subclass
 ElecDoorPrison = ElecDoor:subclass
 {
 	name = "ElecDoorPrison";
+	
+	activatedBy = function(self, obj)
+		if self.isLocked2 then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("PrisonDoorLocked")),
+				ActionExModeOff(),
+			}
+		else
+			ElecDoor.activatedBy(self, obj)
+		end
+	end;
 
 	event_bumped_into = function(self, obj)
-		local dummy = cellsMap:spawn(Dummy, obj.x, obj.y - 2)
-
-		ElecDoor.event_bumped_into(self, obj)
+		if self.isLocked2 then
+			ActionController:addSequence{
+				ActionConversation(lang:getConv("PrisonDoorLocked")),
+				ActionExModeOff(),				
+			}
+		else
+			ElecDoor.event_bumped_into(self, obj)
+		end
 
 		if (self.firstTime) then
 			ActionController:addSequence{
 				ActionExModeOn(),
-				ActionWait(50),
+				ActionWait(30),
 				ActionWalkPath(obj, "U2"),
-				ActionSetCameraTarget(dummy, false),
-				ActionTweenVariable(dummy, "y", 100, obj.y - 7),
+				ActionSetPosition(self.dummy, obj.x, obj.y - 2),
+				ActionSetCameraTarget(self.dummy, false),
+				ActionTweenVariable(self.dummy, "y", 100, obj.y - 7),
 				ActionParallel{
 					ActionSequence{
 						ActionWait(20),
@@ -117,6 +134,7 @@ ElecDoorPrison = ElecDoor:subclass
 					},
 				},
 				ActionWalkPath(obj, "U3"),
+				ActionSetVariable(self, "isLocked2", true),
 				ActionExModeOff(),
 			};
 
@@ -131,6 +149,7 @@ ElecDoorPrison = ElecDoor:subclass
 		offset_x = -3,
 		tick_time = 0,
 		isLocked = false,
+		isLocked2 = false,
 		closeTimer = 0,
 		openTime = 3,
 		period = 0.25,

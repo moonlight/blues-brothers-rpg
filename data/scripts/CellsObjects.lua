@@ -229,11 +229,34 @@ Soap = Decoration:subclass
 	}
 }
 
+Button = Decoration:subclass
+{
+	name = "Button";
 
-
-
-
-
+	activatedBy = function(self, obj)
+		if (not self.isPushed) then
+			self.isPushed = true
+		else
+			self.isPushed = false
+		end
+		
+		if (self.prison_door) then
+			if (not self.isPushed) then
+				self.prison_door.isLocked2 = true
+			else
+				self.prison_door.isLocked2 = false
+			end
+		end	end;
+	
+	defaultproperties = {
+		bCanActivate = true,
+		obstacle = 0,
+		prison_door = nil,
+		isPushed = false,
+		bitmap = m_get_bitmap("elevator_buttons.bmp"),
+		ticktime = 1,
+	}
+}
 
 
 
