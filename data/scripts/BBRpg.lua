@@ -27,6 +27,7 @@ BBRpg = Game:subclass
 		leesMap   = LeesPlace()
 		jakesMap  = JakesPlace()
 		cellsMap  = Cells()
+		restMap   = RestPlace()
 
 		-- Links between portals
 		cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)

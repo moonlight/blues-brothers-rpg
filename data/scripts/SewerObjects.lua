@@ -122,6 +122,20 @@ Ladder2 = Decoration:subclass
 	}
 }
 
+Ladder3 = Decoration:subclass
+{
+	name = "Ladder3";
+
+	defaultproperties = {
+		bCenterBitmap = false,
+		bCenterOnTile = false,
+		offset_y = 0,
+		obstacle = 0,
+		draw_mode = DM_MASKED,
+		bitmap = m_get_bitmap("ladder.bmp"),
+	}
+}
+
 WallAndTube = Actor:subclass
 {
 	name = "WallAndTube";

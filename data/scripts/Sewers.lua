@@ -17,6 +17,8 @@ Sewers = Map:subclass
 		self:spawn(WallAndTube2, 54, 25);
 		self:spawn(Ladder1,  73,  37);
 		self:spawn(Ladder2, 152,  10);
+		self:spawn(Ladder2,  44,  47);
+
 		self:spawn(FenceH5, 131,  47);
 		self:spawn(FenceH3, 136,  98);
 		self:spawn(FenceV8,  52,  83);
