@@ -22,6 +22,7 @@ MainMenu = GuiMenu:subclass
 			ActionShowMapName(m_get_bitmap("prison.tga")),
 			ActionWait(300),
 			ActionConversation(lang:getConv("Intro1")),
+			ActionWait(25),
 			ActionWalkPath(jailMap.guard, "DLD"),
 			ActionSetVariable(elwood, "dir", DIR_DOWN),
 			ActionWait(25),

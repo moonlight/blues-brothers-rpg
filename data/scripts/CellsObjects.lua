@@ -349,8 +349,11 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetPosition(jake, 14, 18, DIR_RIGHT, jakesMap),
 					ActionSetPosition(brian, 15, 19, DIR_UP, jakesMap),
 					ActionSetPosition(elwood, 16, 19, DIR_UP, jakesMap),
+					ActionSetVariable(jake, "bSleeping", false),
+					ActionSetVariable(elwood, "bSleeping", false),
 					ActionFadeInMap(100),
 					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
+					ActionWait(200),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}
@@ -371,8 +374,11 @@ TriggerFreeBrian = Actor:subclass
 					ActionSetPosition(jake, 14, 18, DIR_RIGHT, jakesMap),
 					ActionSetPosition(brian, 15, 19, DIR_UP, jakesMap),
 					ActionSetPosition(elwood, 16, 19, DIR_UP, jakesMap),
+					ActionSetVariable(jake, "bSleeping", false),
+					ActionSetVariable(elwood, "bSleeping", false),
 					ActionFadeInMap(100),
 					ActionShowMapName(m_get_bitmap("jakesplace.tga")),
+					ActionWait(200),
 					ActionConversation(lang:getConv("EscapedInAppartment")),
 					ActionExModeOff(),
 				}

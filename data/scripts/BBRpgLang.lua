@@ -180,7 +180,7 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Nothing."},
 			{"Brian", "Okay, let's get to business. We must prevent the outbreak of the Fourth World War!"},
 			{"Elwood", "But how?"},
-			{"Brian", "Al I need are some mini-rocket engines, and give them to Lee!"},
+			{"Brian", "Al I need are my mini-rocket engines, and give them to Lee!"},
 			{"Jake", "Who's Lee?"},
 			{"Brian", "He's the one with the Wall Mart Discount Plus Deluxe Card."},
 			{"Elwood", "Ofcourse, Lee!"},
