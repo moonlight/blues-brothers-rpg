@@ -11,5 +11,10 @@ Jake = Player:subclass
 		talkieBitmap = m_get_bitmap("jake_talk.bmp"),
 		deathBitmap = m_get_bitmap("jake_dead.bmp"),
 		sleepBitmap = m_get_bitmap("bed_jake.bmp"),
+		hitSounds = {
+			"Hoei.wav",
+			"Hey.wav",
+			"Heuw.wav",
+		},
 	};
 }

@@ -56,6 +56,12 @@ Pawn = Actor:subclass
 				obj.offset_z = obj.offset_z + self.hitEffectHeight
 			end
 
+			-- A sample perhapt?
+			if (table.getn(self.hitSounds) > 0) then
+				local sampleFile = self.hitSounds[math.random(table.getn(self.hitSounds))]
+				m_play_sample(sampleFile)
+			end
+
 			if (self.health <= 0 and not self.bDead) then
 				-- Pawn died
 				self:died(instigator, damageType, location)
@@ -152,6 +158,7 @@ Pawn = Actor:subclass
 		obstacle = 1,
 		bCenterBitmap = true,
 
+		hitSounds = {},
 		hitEffectClass = BloodSplat,
 		hitEffectHeight = 24,
 		controllerClass = nil,
