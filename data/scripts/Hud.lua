@@ -67,20 +67,20 @@ Hud = Interaction:subclass
 				alpha = alpha * (255 - map_fade.alpha) / 255
 			end
 			
-			m_set_cursor(x, y);      m_set_alpha(0.75 * alpha); draw_icon(self.map_name)
-			m_set_cursor(0, y - 10); m_set_alpha(alpha);        draw_rect(m_get_bitmap("pixel_black.bmp"), self.screen_w, 1)
-			m_set_cursor(0, y - 10); m_set_alpha(0.25 * alpha); draw_rect(m_get_bitmap("pixel_black.bmp"), self.screen_w, h + 20)
-			m_set_cursor(0, y + h + 10); m_set_alpha(alpha);    draw_rect(m_get_bitmap("pixel_black.bmp"), self.screen_w, 1)
+			m_set_cursor(x, y);      m_set_alpha(0.75 * alpha); canvas:drawIcon(self.map_name)
+			m_set_cursor(0, y - 10); m_set_alpha(alpha);        canvas:drawRect(m_get_bitmap("pixel_black.bmp"), self.screen_w, 1)
+			m_set_cursor(0, y - 10); m_set_alpha(0.25 * alpha); canvas:drawRect(m_get_bitmap("pixel_black.bmp"), self.screen_w, h + 20)
+			m_set_cursor(0, y + h + 10); m_set_alpha(alpha);    canvas:drawRect(m_get_bitmap("pixel_black.bmp"), self.screen_w, 1)
 		end
 		
 		-- Draw gameover screen stuff
 		if (game.game_over and game.game_over_alpha and game.game_over_alpha > 0) then
 			m_set_alpha(0.25 * game.game_over_alpha)
 			m_set_cursor((self.screen_w - self.go_w)/2 + 6, (self.screen_h - self.go_h)/3 + 4)
-			draw_icon(self.game_over_s)
+			canvas:drawIcon(self.game_over_s)
 			m_set_alpha(game.game_over_alpha)
 			m_set_cursor((self.screen_w - self.go_w)/2, (self.screen_h - self.go_h)/3)
-			draw_icon(self.game_over)
+			canvas:drawIcon(self.game_over)
 		end
 	end;
 

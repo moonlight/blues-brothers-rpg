@@ -9,6 +9,16 @@ PlayerSwitcher = Interaction:subclass
 		self.playerHosts = {}
 		self.playerController = playerController
 		self.cameraTarget = cameraTarget
+
+		-- Health bar images
+		self.hb_empty = m_get_bitmap("healthbar_empty.bmp")
+		self.hb_full = m_get_bitmap("healthbar_full.bmp")
+		self.hb_w, self.hb_h = m_bitmap_size(self.hb_full)
+		
+		-- Experience bar images
+		self.eb_empty = m_get_bitmap("expbar_empty.bmp")
+		self.eb_full = m_get_bitmap("expbar_full.bmp")
+		self.eb_w, self.eb_h = m_bitmap_size(self.eb_full)		
 	end;
 
 	addPlayerHost = function(self, playerHost)
@@ -120,6 +130,39 @@ PlayerSwitcher = Interaction:subclass
 
 	preRender = function(self)
 		self.cameraTarget:preRender()
+	end;
+
+	postRender = function(self, canvas)
+		-- Draw information about each player
+		-- and highlight the selected player
+
+		for i = 1, table.getn(self.playerHosts) do
+			local player = self.playerHosts[i]
+			local health_perc = player.health / player.maxHealth
+			local experience_perc = player.experience / player.nextLevelExperience
+			local x = 16 + (self.hb_w + 16) * (i - 1)
+			local y = 16
+
+			-- Draw selection block
+			if (i == self.currentHost) then
+				guiTheme:drawBox(x - 3, y - 2, self.hb_w + 6, 14 + 5)
+			end
+			
+			-- Draw the health bar
+			m_set_alpha(128)
+			m_set_cursor(x, y)
+			canvas:drawIcon(self.hb_empty)
+			m_set_cursor(x, y)
+			canvas:drawPattern(self.hb_full, self.hb_w * health_perc, self.hb_h)
+			
+			-- Draw the experience bar
+			m_set_cursor(x, y + 11)
+			canvas:drawIcon(self.eb_empty)
+			m_set_cursor(x, y + 11)
+			canvas:drawPattern(self.eb_full, self.eb_w * experience_perc, self.eb_h)
+			m_set_alpha(255)
+		end
+
 	end;
 
 	defaultproperties = {
