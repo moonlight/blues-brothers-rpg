@@ -27,6 +27,8 @@ remake: clean default
 clean:
 	rm -f src/*.o src/editor/*.o src/shared/*.o
 
+%.o: %.cpp
+	$(CC) $(CPPFLAGS) -c $< -o $@
 
 $(ENGINE_EXE): $(COMMON_OBJS) $(ENGINE_OBJS)
 	$(CC) $(CPPFLAGS) -o $(ENGINE_EXE) $(COMMON_OBJS) $(ENGINE_OBJS) $(COMMON_LIBS) $(ENGINE_LIBS)

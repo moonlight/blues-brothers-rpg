@@ -15,8 +15,9 @@ SOUND=true
 # echo $TMP
 # a b c d
 function CLEAN () {
+    TMP=""
     for arg do
-	TMP=`echo "$TMP" | sed -e "s'$arg''g"`" $arg"
+	TMP=`echo "$TMP" | sed -e "s'$arg ''g"`" $arg"
     done
 }
 
@@ -182,6 +183,9 @@ CPPFLAGS=$TMP
 
 CLEAN $LIBS
 LIBS=$TMP
+
+CLEAN $LIBS_ENGINE
+LIBS_ENGINE=$TMP
 
 sed "s,@cc@,$CC,;
 s'@cppflags@'$CPPFLAGS';
