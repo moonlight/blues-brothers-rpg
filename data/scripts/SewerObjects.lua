@@ -143,6 +143,7 @@ WallAndTube = Actor:subclass
 	init = function(self)
 		Actor.init(self)
 	end;
+
 	event_bumped_into = function(self, player)
 		if (player:instanceOf(Elwood)) then
 			ActionController:addSequence{
@@ -173,7 +174,6 @@ WallAndTube = Actor:subclass
 		offset_y = -5,
 		offset_z = 8,
 		obstacle = 1,
-		bCanActivate = true,
 		draw_mode = DM_MASKED,
 		bitmap = m_get_bitmap("wall_and_tube.bmp"),
 	}
@@ -188,7 +188,6 @@ WallAndTube2 = Actor:subclass
 	end;
 
 	event_bumped_into = function(self, player)
-
 		if (player:instanceOf(Elwood)) then
 			ActionController:addSequence{
 				ActionExModeOn(),	
@@ -216,6 +215,5 @@ WallAndTube2 = Actor:subclass
 
 	defaultproperties = {
 		obstacle = 1,
-		bCanActivate = true,
 	}
 }

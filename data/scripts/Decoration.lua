@@ -46,7 +46,6 @@ Decoration = Actor:subclass
 		tick_time = 0,
 
 		convTable = nil,
-		bCanActivate = false,
 		prev_random = -1,
 		bCenterBitmap = true,
 		bCenterOnTile = true,

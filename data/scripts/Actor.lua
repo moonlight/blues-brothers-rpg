@@ -186,6 +186,10 @@ Actor = Object:subclass
 
 	--== NOTIFICATIONS ==--
 
+	-- Acticated (only ever called when self.bCanActivate == true)
+	activatedBy = function(self, instigator)
+	end;
+
 	-- The instigator, damageType, momentum and location are all optional.
 	takeDamage = function(self, damage, instigator, damageType, momentum, location)
 	end;
@@ -343,6 +347,7 @@ Actor = Object:subclass
 
 		bCenterBitmap = false,
 		bCenterOnTile = false,
+		bCanActivate = false,
 
 		xDir = {
 			 0,  -- DIR_UP
