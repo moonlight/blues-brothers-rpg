@@ -87,6 +87,7 @@ MainMenu = GuiMenu:subclass
 			ActionConversation(lang:getConv("Intro5a")),
 			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
 			ActionConversation(lang:getConv("Intro6")),
+			ActionSetVariable(copcar, "tick_time", 5),
 			ActionTweenVariable(copcar, "x", 250, 118, function(from, to, perc)
 				perc = 1 - math.sin(perc * 0.5 * math.pi + 0.5 * math.pi)
 				return from + (to - from) * perc
@@ -100,6 +101,7 @@ MainMenu = GuiMenu:subclass
 				perc = math.sin(perc * 0.5 * math.pi)
 				return from + (to - from) * perc
 			end),
+			ActionSetVariable(copcar, "tick_time", 0),
 			ActionWait(50),
 
 			ActionSetPosition(elwood, 90, 78, DIR_DOWN),			
