@@ -1,26 +1,48 @@
+Legenda:
+! Essentieel
+- Normaal
+? Niet belangrijk
+
+
 Niet ingedeeld:
-- Intro verbeteren
-- Schaduw onder de auto
-- Naam van area weergeven bij naartoe gaan
-- Monsters in de sewers
-  * Krododillen
-  * Ratten/muizen
-- Hier en daar een plas op de weg, of smurrie
-- Experience/levelup afmaken en fijn tunen
+- Experience fijn tunen
+- Animated tiles in the sewer
+- Sounds effects
+- Fading music
+- Na samenbrengen brothers in huis nog opdracht met nitro/rope/skimask
+? Hier en daar een plas op de weg, of smurrie
 
 Bjorn:
+! Fix bug with two policemen
+! Experience/levelup afmaken
+- Add moveAwayPlease method to Characters
+- Implement following
+- Schaduw onder de auto scripten
+- Naam van area weergeven bij naartoe gaan
+- Add map to HUD in sewers when found
 
 Georg:
-- Daarna naar Brian in de gevangenis en er over nadenken hoe hem eruit
-te krijgen
+! Crop texts in intro
+! Kerstboom scripten en ergens plaatsen
+! Monsters in de sewers plaatsen
+- Scripts schrijven bij ontmoeten Brian
+- Auto's en prullenbakken in citymap plaatsen
+- Achter Ramon aan voor de muziek
+- Prullenbak sneeuw fixen
+- Fix rare misleidende buizen in riool
+? Witte lijntjes in Jake's optrekje wegwerken
 
 Frode:
+! Electronica voor in de `control room'
 - Small inventory bitmap for keyfob (and rope and nitro fuel?)
 - Wachters in de gevangenis
-- Electronica voor in de `control room'
+- Sneeuw op de autos
+- Draw map item + inventory graphic
 
 Ramon:
-- Kerstmis blues
+! Blues
 
 Hedde:
+! Krokodil scripten (eerst gewoon met AIController)
+! Rat scripten (eerst gewoon met AIController)
 - AI voor random rondlopen + aanvallen

@@ -13,7 +13,7 @@ SnowFeet = Actor:subclass
 	init = function(self)
 		ActionController:addSequence{
 			ActionWait(100),
-			ActionTweenVariable(self, "alpha", 500, 0),
+			ActionTweenVariable(self, "alpha", 800, 0),
 			ActionDestroyObject(self),
 		}
 	end;

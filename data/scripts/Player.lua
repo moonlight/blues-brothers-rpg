@@ -30,7 +30,7 @@ Player = Character:subclass
 		self.attack_speed = self.charge_time/2
 
 		-- Hack to play faster
-		self.speed = self.speed * 2.5
+		self.speed = self.speed * 1.4
 		--self.attack_speed = self.attack_speed * 0.5
 		--self.charge_time = self.charge_time * 0.5
 		--self.maxHealth = self.maxHealth * 100
