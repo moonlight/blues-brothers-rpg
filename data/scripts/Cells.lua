@@ -182,7 +182,6 @@ Cells = Map:subclass
 		button1.door = prison_door
 		button2.door = brians_door
 
-		self:spawn(PrisonDoor2, 37, 19)
 		self:spawn(TriggerFreeBrian, 37, 18)
 
 		-- Spawn portals

@@ -23,7 +23,8 @@ MainMenu = GuiMenu:subclass
 			ActionExModeOff(),
 		}
 
---[[		local startSequence = {
+--[[
+		local startSequence = {
 			ActionFadeOutMap(50),
 			ActionCallFunction(jake.addToInventory, jake, cityMap.walkieTalkie),
 			ActionSetVariable(_G, "show_main_menu", nil),
