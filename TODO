@@ -12,7 +12,6 @@ Bjorn:
   * tiled_map
   * console
   * engine
-  * map
 - Objecten plaatsen in editor afmaken (en module "map" weghalen)
 - Sneeuwval
 - Sneeuw op prullenbak, dat eraf valt als je ertegenaan slaat
