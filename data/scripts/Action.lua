@@ -30,7 +30,7 @@
 --   ActionFadeInMap(time)
 --   ActionFadeOutMap(time)
 --   ActionSetState(object, state)
---   ActionSetPosition(actor, x, y [, dir])
+--   ActionSetPosition(actor, x, y [,dir[,map]])
 --   ActionDestroyObject(object)
 --   ActionAddObject({name|class}, x, y)
 --   ActionQuitGame()
@@ -397,18 +397,22 @@ ActionSetPosition = Action:subclass
 {
 	name = "ActionSetPosition";
 
-	init = function(self, obj, x, y, dir)
+	init = function(self, obj, x, y, dir, map)
 		self.x = x
 		self.y = y
 		self.dir = dir
 		self.obj = obj
+		self.map = map
 	end;
 
 	exec = function(self)
 		self.obj:setPosition(self.x, self.y)
 
-		if self.dir ~= nil then
+		if (self.dir) then
 			self.obj.dir = self.dir
+			if (self.map) then
+				self.obj:setMap(self.map)
+			end
 		end
 
 		return true
