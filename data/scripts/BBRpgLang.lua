@@ -17,7 +17,7 @@ BBRpgLang = Lang:subclass
 	};
 
 	convs = {
-				-- Conversations. Used in sequences.
+				-- Conversations. Used in sequences.
 		Intro1 = {
 			{"Mr. ??", "Standard parole 3 out of 5. Good behavior."},
 			{"Mr. ??", "Here are your belongings: One Timex digital watch, broken. One unused prophylactic. One soiled. <pause> One pair of sunglasses. Twenty three dollars and seven cents."},
@@ -315,6 +315,9 @@ BBRpgLang = Lang:subclass
 			{{"{PLAYER}", "There is a soapbar lying at the floor."}},
 			{{"{PLAYER}", "Oh, no. This one is a classic. You don't fool me."}},
 			{{"{PLAYER}", "It's a soapbar."}},
+		},
+		ChristmasTree = {
+			{{"{PLAYER}", "That's one huge Christmas tree!"}},
 		},
 	};
 }
