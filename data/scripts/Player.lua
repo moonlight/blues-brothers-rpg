@@ -139,6 +139,6 @@ Player = Character:subclass
 		tick_time = 1,
 		travel = 1,               -- Player can travel to other maps
 
-		charAnim = extr_char_anim(m_get_bitmap("frode.tga")),
+		charAnim = extr_char_anim(m_get_bitmap("brian.bmp")),
 	};
 }

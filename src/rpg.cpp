@@ -107,10 +107,12 @@ void init_engine()
 
 	bVSync = get_config_int("Video", "VSync", 0);
 	
-	sound_enabled = (get_config_int("Sound", "EnableMusic", 1)) ? 1 : 0;
-	sfx_enabled = (get_config_int("Sound", "EnableSfx", 1)) ? 1 : 0;
+	sound_enabled = (get_config_int("Sound", "MusicEnabled", 1)) ? 1 : 0;
+	sfx_enabled = (get_config_int("Sound", "SfxEnabled", 1)) ? 1 : 0;
 	music_vol = get_config_int("Sound", "MusicVolume", 255);
 	sfx_vol = get_config_int("Sound", "SfxVolume", 255);
+	music_format = (strcmp(get_config_string("Sound", "MusicFormat", "MIDI"), "MIDI") == 0) ? MUSIC_MIDI : MUSIC_OGG;
+	console.enableLogfile = (get_config_int("Engine", "LogEnabled", 1));
 
 	// Screen initialisation
 	int width, height, colordepth = 0;
@@ -169,14 +171,14 @@ void init_engine()
 		console.log(CON_QUIT, CON_ALWAYS, "Error while loading: data.dat");
 	}
 
-	// Lua initialisation
-	console.log(CON_LOG, CON_ALWAYS, "Initialising Lua scripting environment...");
-	initScripting();
-
 	if (sound_enabled || sfx_enabled) {
 		console.log(CON_LOG, CON_ALWAYS, "Initialising sound...");
 		init_sound();
 	}
+
+	// Lua initialisation
+	console.log(CON_LOG, CON_ALWAYS, "Initialising Lua scripting environment...");
+	initScripting();
 
 	console.log(CON_LOG, CON_ALWAYS, "Installing timers...");
 	LOCK_VARIABLE(frames_to_do);			// Game speed handler

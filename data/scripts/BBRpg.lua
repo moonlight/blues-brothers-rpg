@@ -62,20 +62,19 @@ BBRpg = Game:subclass
 		brian.dir = DIR_DOWN
 
 		-- Call superfunction
-		Game.init(self)
-
 		gameCameraTarget = CameraTarget() -- GLOBAL!?
 		self.playerSwitcher = PlayerSwitcher(playerController, gameCameraTarget)
 		playerSwitcher = self.playerSwitcher -- Can't do without this global var for the moment
+		Game.init(self)
+
 		self.viewPort.target = gameCameraTarget
 
 		self.playerSwitcher:addPlayerHost(elwood)
-		self.playerSwitcher:addPlayerHost(jake)
+		--self.playerSwitcher:addPlayerHost(jake)
 		--self.playerSwitcher:addPlayerHost(brian)
 
 		-- Tell the HUD about the playerSwitcher
 		self.hud:setPlayerSwitcher(self.playerSwitcher)
-
 
 		-- Show startup screen
 		show_main_menu = 1
@@ -87,7 +86,7 @@ BBRpg = Game:subclass
 
 		ActionController:addSequence{
 			ActionExModeOn(),
-			ActionPlaySong("data/music/3.ogg", 100),
+			ActionPlaySong("data/music/mainmenu.ogg", 100),
 			ActionTweenVariable(main_menu_bg, "alpha", 100, 255),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, self.playerSwitcher),
 			ActionCallFunction(self.interactionMaster.addInteraction, self.interactionMaster, SnowyWeather(cityMap)),

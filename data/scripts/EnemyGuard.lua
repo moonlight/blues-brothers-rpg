@@ -16,8 +16,8 @@ EnemyGuard = Enemy:subclass
 		chargeTime = 100,
 		charging = 0,
 		attackMinDam = 0,
-		attackMaxDam = 5,
-		maxHealth = 70,
+		attackMaxDam = 4,
+		maxHealth = 50,
 
 		bDead = false,
 		bAttacking = false,
@@ -41,8 +41,8 @@ EnemyGuard2 = Enemy:subclass
 		chargeTime = 100,
 		charging = 0,
 		attackMinDam = 0,
-		attackMaxDam = 5,
-		maxHealth = 70,
+		attackMaxDam = 4,
+		maxHealth = 50,
 
 		bDead = false,
 		bAttacking = false,

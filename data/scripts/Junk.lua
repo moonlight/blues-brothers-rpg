@@ -8,6 +8,7 @@ Junk = Enemy:subclass
 
 	defaultproperties = {
 		speed = 2,
+		maxHealth = 130,
 		experience = 40,
 		draw_mode = DM_MASKED,
 		charAnim = extr_char_anim(m_get_bitmap("junk.bmp"), 23, 40),

@@ -9,6 +9,8 @@ City = Map:subclass
 	name = "City";
 
 	init = function(self)
+		local obj;
+
 		Map.init(self, "data/maps/city1.map")
 
 		-- Spawn the walkie talkie. Needed by the addToInventory function.
@@ -17,10 +19,13 @@ City = Map:subclass
 		-- Spawn the crowbar needed to remove the putdeksel.
 		self:spawn(KeyFob, 66, 42)		
 
-		-- No go areas.
+		-- No go areas
 		self:spawn(TooDangerous,  63, 80)
 		self:spawn(TooDangerous2, 93, 36)
-		
+		obj = self:spawn(LeaveTown,  52, 113); obj.w = 6; obj.walkBack = "U1"
+		obj = self:spawn(LeaveTown,  18,  17); obj.h = 7; obj.walkBack = "R1"
+		obj = self:spawn(LeaveTown, 121,  17); obj.h = 7; obj.walkBack = "L1"
+
 		-- Litter the city with stuff
 
 		self:spawn(Dustbin,  51,  10);
@@ -81,6 +86,6 @@ City = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("suburbs.tga"),
-		musicFilename = "data/music/4.ogg",
+		musicFilename = "data/music/city.ogg",
 	}
 }

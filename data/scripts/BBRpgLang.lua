@@ -212,7 +212,10 @@ BBRpgLang = Lang:subclass
 			{"Elwood", "Shouldn't Lee do what he is suppost to do, while we go home, forget this dreadfull mission ever happened, and make some music?"},
 			{"Jake", "Good plan."},
 			{"Elw00t", "Why don't the three of us start a band?"},
-		},		
+		},
+		NotYetFightGuards = {
+			{"{PLAYER}","There are guards inside. Before I come back here, I'd better make sure I'm strong enough to defeat them."},
+		},
 		WallAndTubeElwood = {
 			{"{PLAYER}", "I can't get in the tube. It's to damn small!"},
 		},
@@ -288,6 +291,12 @@ BBRpgLang = Lang:subclass
 		},
 		LeverNotElwood = {
 			{"{PLAYER}", "Damn, these levers are rusty. I can't pull them... Maybe Elwood can."},
+		},
+		InventoryFullAtRockets = {
+			{"{PLAYER}", "Ah, there are the mini-rocket engines! But alas, I am already carrying all I can."},
+		},
+		LeaveTown = {
+			{"{PLAYER}", "There is no point in leaving the town."},
 		},
 
 		-- Conversation tables. Used for random events.

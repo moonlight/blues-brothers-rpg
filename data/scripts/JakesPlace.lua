@@ -30,6 +30,6 @@ JakesPlace = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("jakesplace.tga"),
-		musicFilename = "data/music/4.ogg",
+		musicFilename = "data/music/city.ogg",
 	};
 }

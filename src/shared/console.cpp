@@ -34,6 +34,7 @@ Console::Console(const char* filename)
 
 	progress = 0;
 	active = false;
+	enableLogfile = true;
 }
 
 
@@ -107,28 +108,32 @@ void Console::log(int where, int when, const char *what, ...)
 			time_t t;
 			time(&t);
 
-			logFile = fopen(logFilename, "a");
-			fprintf(
-				logFile,
-				"[%s%d:%s%d:%s%d] ",
-				(((t / 60) / 60) % 24 < 10) ? "0" : "",
-				(int)(((t / 60) / 60) % 24),
-				((t / 60) % 60 < 10) ? "0" : "",
-				(int)((t / 60) % 60),
-				(t % 60 < 10) ? "0" : "",
-				(int)(t % 60)
-			);
-			fprintf(logFile, buf);
-			fprintf(logFile, "\n");
+			if (enableLogfile) {
+				logFile = fopen(logFilename, "a");
+				fprintf(
+					logFile,
+					"[%s%d:%s%d:%s%d] ",
+					(((t / 60) / 60) % 24 < 10) ? "0" : "",
+					(int)(((t / 60) / 60) % 24),
+					((t / 60) % 60 < 10) ? "0" : "",
+					(int)((t / 60) % 60),
+					(t % 60 < 10) ? "0" : "",
+					(int)(t % 60)
+				);
+				fprintf(logFile, buf);
+				fprintf(logFile, "\n");
+				fclose(logFile);
+			}
+
 			if (where & CON_QUIT)
 			{
+				logFile = fopen(logFilename, "a");
 				fprintf(logFile, "FATAL ERROR!\n");
 				fclose(logFile);
 				set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
 				allegro_message(buf);
 				exit(1);
 			}
-			fclose(logFile);
 		}
 
 		if (where & CON_POPUP)

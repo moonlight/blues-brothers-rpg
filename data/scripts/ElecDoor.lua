@@ -94,12 +94,14 @@ ElecDoorPrison = ElecDoor:subclass
 	name = "ElecDoorPrison";
 	
 	activatedBy = function(self, obj)
-		if self.isLocked2 then
-			ActionController:addSequence{
-				ActionConversation(lang:getConv("PrisonDoorLocked")),
-			}
-		else
-			ElecDoor.activatedBy(self, obj)
+		if (self.firstime == 2) then
+			if self.isLocked2 then
+				ActionController:addSequence{
+					ActionConversation(lang:getConv("PrisonDoorLocked")),
+				}
+			else
+				ElecDoor.activatedBy(self, obj)
+			end
 		end
 	end;
 
@@ -108,11 +110,20 @@ ElecDoorPrison = ElecDoor:subclass
 	end;
 
 	event_bumped_into = function(self, obj)
-		if (not self.isLocked2) then
+		if (not (self.firstTime == 0) and not self.isLocked2) then
 			ElecDoor.event_bumped_into(self, obj)
 		end
 
-		if (self.firstTime) then
+		if (self.firstTime == 0) then
+			ActionController:addSequence{
+					ActionSequence{
+						ActionExModeOn(),
+						ActionConversation(lang:getConv("NotYetFightGuards")),
+						ActionExModeOff(),
+					},
+			};
+			self.firstTime = 1
+		elseif (self.firstTime == 1) then
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionWait(30),
@@ -136,12 +147,12 @@ ElecDoorPrison = ElecDoor:subclass
 				ActionExModeOff(),
 			};
 
-			self.firstTime = false
+			self.firstTime = 2
 		end
 	end;
 	
 	defaultproperties = {
-		firstTime = true,
+		firstTime = 0,
 		bCenterOnTile = false,
 		bCenterBitmap = false,
 		offset_x = -3,

@@ -191,6 +191,6 @@ Cells = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("prison.tga"),
-		musicFilename = "data/music/1.ogg",
+		musicFilename = "data/music/cells.ogg",
 	}
 }

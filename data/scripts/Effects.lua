@@ -77,7 +77,7 @@ end
 -- A poison projectile
 --
 
-PoisonProjectile = Actor:subclass
+--[[PoisonProjectile = Actor:subclass
 {
 	name = "PoisonProjectile";
 
@@ -94,3 +94,4 @@ PoisonProjectile = Actor:subclass
 		tick_time = 10,
 	};
 }
+]]

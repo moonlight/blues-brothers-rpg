@@ -8,7 +8,7 @@ MessPile = Decoration:subclass
 	bPlaceable = true;
 	defaultproperties = {
 		offset_x = -6,
-		offset_y = 6,
+		offset_y = 4,
 		w = 2,
 		h = 2,
 		obstacle = 1,
@@ -25,7 +25,14 @@ MessPile2 = Decoration:subclass
 	name = "MessPile2";
 	bPlaceable = true;
 	activatedBy = function(self, obj)
-		if self.containsEngines then
+		if (self.containsEngines) then
+			if (table.getn(obj.inventory) >= 3) then
+				ActionController:addSequence{
+					ActionConversation(lang:getConv("InventoryFullAtRockets")),
+				}
+				return
+			end
+
 			ActionController:addSequence{
 				ActionExModeOn(),
 				ActionSetVariable(obj, "bWalkieTalkie", true),
@@ -38,9 +45,9 @@ MessPile2 = Decoration:subclass
 				ActionSetPosition(brian, 30, 19, DIR_RIGHT, leesMap),
 				ActionSetPosition(jake, 31, 20, DIR_UP, leesMap),
 				ActionSetPosition(elwood, 32, 20, DIR_UP, leesMap),
-				ActionSetVariable(jake, "bSleeping", false),
-				ActionSetVariable(elwood, "bSleeping", false),
-				ActionSetVariable(brian, "bSleeping", false),
+				ActionCallFunction(jake.setSleeping, jake, false),
+				ActionCallFunction(elwood.setSleeping, elwood, false),
+				ActionCallFunction(brian.setSleeping, brian, false),
 				ActionFadeInMap(100),
 				ActionShowMapName(m_get_bitmap("leesplace.tga")),
 				ActionWait(250),
@@ -53,7 +60,7 @@ MessPile2 = Decoration:subclass
 				ActionSetVariable(_G, "show_main_menu", true),
 				ActionSetVariable(main_menu_bg, "drawMode", DM_ALPHA),
 				ActionSetVariable(main_menu_bg, "bm", m_get_bitmap("theend.tga")),
-				ActionPlaySong("data/music/6.ogg", 10),
+				ActionPlaySong("data/music/enddemo.ogg", 10),
 			}
 		else
 			ActionController:addSequence{

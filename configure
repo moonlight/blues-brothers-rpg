@@ -169,6 +169,7 @@ else
     echo "no"
     echo "*** Compiling of lua program failed"
     echo "*** Please install lua. http://www.lua.org"
+    exit 1
 fi
 rm -f conftest*
 echo "LIBS: $LIBS" >>$LOG    

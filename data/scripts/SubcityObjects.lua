@@ -177,7 +177,6 @@ Bed = Decoration:subclass
 
 	activatedBy = function(self, obj)
 		local bitmapje = self.bitmap
-		local schaduwtje = obj.shadow.bitmap
 	
 		if (obj.health == obj.maxHealth) then
 			ActionController:addSequence{
@@ -187,21 +186,15 @@ Bed = Decoration:subclass
 			ActionController:addSequence{
 				ActionSetVariable(self, "bOccupied", true),
 				ActionConversation(lang:getConv("BedTiredBefore")),
-				ActionSetVariable(obj, "bSleeping", true),
+				ActionCallFunction(obj.setSleeping, obj, true),
 				ActionChangeBitmap(self, obj.sleepBitmap),
-				ActionChangeBitmap(obj.shadow, nil),
-				ActionSetVariable(obj, "alpha", 0),
-				ActionSetVariable(obj, "bitmap"),
-				ActionSetVariable(obj, "obstacle", 0),
 				ActionSetVariable(obj, "onActivate",
 					function(self2)
-						self2.bSleeping = false
 						self2.onActivate = nil
 						ActionController:addSequence{
-							ActionSetVariable(obj, "alpha", 255),
+							ActionCallFunction(obj.setSleeping, obj, false),
 							ActionSetVariable(obj, "dir", DIR_DOWN),
 							ActionChangeBitmap(self, bitmapje),
-							ActionChangeBitmap(obj.shadow, schaduwtje),
 							ActionConversation(lang:getConv("BedTiredAfter")),
 							ActionSetVariable(obj, "obstacle", 1),
 							ActionSetVariable(self, "bOccupied", false),
@@ -728,6 +721,30 @@ TooDangerous2 = Actor:subclass
 		bCanActivate = true,	
 		obstacle = 0,
 		w = 7,
+		h = 1,
+	}
+}
+
+LeaveTown = Actor:subclass
+{
+	name = "LeaveTown";
+
+	event_stand_on = function(self, obj)
+		if ((obj == brian) or (obj == elwood) or (obj == jake)) then
+			ActionController:addSequence{
+				ActionExModeOn(),	
+				ActionConversation(lang:getConv("LeaveTown")),
+				ActionWalkPath(obj, self.walkBack),
+				ActionExModeOff(),
+			}
+		end
+	end;
+
+	defaultproperties = {
+		bCanActivate = true,
+		walkBack = "R1",
+		obstacle = 0,
+		w = 1,
 		h = 1,
 	}
 }

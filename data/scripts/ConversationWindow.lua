@@ -205,6 +205,7 @@ ConversationWindow = Interaction:subclass
 		local screen_w, screen_h = m_screen_size()
 		m_set_font(self.font)
 
+		--[[
 		if (self.state ~= CB_SCALING) then
 			-- Draw the shadow of the text
 			m_set_clip(self.x, self.y, self.x + self.w - 1, self.y + self.h - 1)
@@ -218,6 +219,7 @@ ConversationWindow = Interaction:subclass
 				end
 			end
 		end
+]]
 
 		-- Draw the box
 		m_set_clip(0, 0, screen_w - 1, screen_h - 1)

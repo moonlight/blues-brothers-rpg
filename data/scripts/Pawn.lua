@@ -104,6 +104,25 @@ Pawn = Actor:subclass
 		end
 	end;
 
+	setSleeping = function(self, sleeping)
+		self.bSleeping = sleeping
+		if (self.bSleeping) then
+			self.shadow.bitmap = nil
+			self.alpha = 0
+			self.prevBitmap = self.bitmap
+			self.bitmap = nil
+			self.obstacle = 0
+		else
+			self.shadow.bitmap = self.shadow.defaultproperties.bitmap
+			self.alpha = 255
+			if (self.prevBitmap) then
+				self.bitmap = self.prevBitmap
+				self.prevBitmap = nil
+			end
+			self.obstacle = 1
+		end
+	end;
+
 
 	attack = function(self)
 		-- Implement in subclass

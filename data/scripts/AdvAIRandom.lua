@@ -41,8 +41,8 @@ AdvAIRandom = Controller:subclass
 		end
 	end;
 	notifyWalkFinished = function(self)
-                if (self.distanceToWalk <= 0 and self.pawn.bAttacking == false) then
-		        -- Reached his goal, pause and choose new goal.
+		if (self.distanceToWalk <= 0 and self.pawn.bAttacking == false) then
+			-- Reached his goal, pause and choose new goal.
 			if (self.target or self.scaring) then
 				-- korte wachttijd, anders staat ie na elke tile even (te lang) stil
 				self.waitTime = math.random(4) + 1
@@ -92,6 +92,7 @@ AdvAIRandom = Controller:subclass
 	-- timebom
 	tick = function(self)
 		if (self.pawn.bDead) then return end
+		if (self.target and self.target.bDead) then self.target = nil end
 
 		if (self.pawn.charging > 0) then self.pawn.charging = self.pawn.charging - 1 end
 		

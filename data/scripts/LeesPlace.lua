@@ -27,5 +27,6 @@ LeesPlace = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("leesplace.tga"),
+		musicFilename = "data/music/city.ogg",
 	}
 }

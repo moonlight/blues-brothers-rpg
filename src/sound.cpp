@@ -27,9 +27,9 @@ int sound_enabled = 1;
 int sfx_enabled = 1;
 int sfx_vol = 255;
 int music_vol = 255;
+int music_format = 0;
 
 
-#ifdef ENABLE_MUSIC
 // Currently playing OGG file
 struct {
 	SAMPLE *sample;
@@ -38,27 +38,32 @@ struct {
 	AUDIOSTREAM *ass;
 	char filename[128];
 } channels[CHANNELS];
-#endif
 
 char *error;
 
 
 
 void init_sound() {
-	// Read config variables
-	//ChunkSize = (get_config_int("Sound", "StreamChunkSize", 1<<15));
-	//BufferSize = (get_config_int("Sound", "BufferSize", 1<<16));
-
 	// To achieve the max possible volume
 	set_volume_per_voice(0);
 
 	// Initialize alogg
+
+	int midi_driver = MIDI_NONE;
+	int sound_driver = DIGI_NONE;
+
+	if (music_format == MUSIC_MIDI) {
+		midi_driver = MIDI_AUTODETECT;
+	}
+	if (sfx_enabled || (sound_enabled && music_format != MUSIC_MIDI)) {
 #ifdef ENABLE_MUSIC
-	alogg_init();
+		alogg_init();
 #endif
+		sound_driver = DIGI_AUTODETECT;
+	}
 
 	// Install sound driver
-	if (install_sound(DIGI_AUTODETECT, MIDI_NONE, NULL) != 0) {
+	if (install_sound(sound_driver, midi_driver, NULL) != 0) {
 		console.log(CON_LOG, CON_ALWAYS, "Error initialising sound system: %s", allegro_error);
 		return;
 	}
@@ -75,7 +80,6 @@ void init_sound() {
 }
 
 
-#ifdef ENABLE_MUSIC
 
 /* play_music(filename, channel)
  */
@@ -87,56 +91,51 @@ int l_play_music(lua_State *L)
 
 	error = NULL;
 
-	if (sound_enabled) {
-		// Stop currently playing music
-		stop_music(channel);
+	if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
 
-		if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
-		else if (!exists(filename)) {error = "file does not exist";}
-		
-		if (error == NULL) {
-			/*
-			channels[channel].sample = alogg_load_ogg(filename);
-			if (!channels[channel].sample) {
-				fprintf(stderr,"Error loading %s (%d)\n", filename, alogg_error_code);
-				alogg_exit();
-				exit(1);
+	if (sound_enabled && error == NULL) {
+		if (music_format == MUSIC_MIDI) {
+			replace_extension(channels[channel].filename, get_filename(filename), "mid", 128);
+			
+			DATAFILE *found_object = find_datafile_object(bitmap_data, channels[channel].filename);
+			if (found_object) {
+				play_looped_midi((MIDI*)found_object->dat, 0, -1);
+			} else {
+				console.log(CON_QUIT, CON_ALWAYS, "Could not find MIDI file in datafile (%s)", channels[channel].filename);
 			}
-			*/
+		} else {
+#ifdef ENABLE_MUSIC
+			// Stop currently playing music
+			stop_music(channel);
+			
+			if (!exists(filename)) {error = "file does not exist";}
+			
 			strncpy(channels[channel].filename, filename, 128);
+			
 			channels[channel].stream = alogg_start_streaming(channels[channel].filename, BLOCK_SIZE);
 			if (!channels[channel].stream) {
-				fprintf(stderr,"Error opening %s\n", filename);
+				fprintf(stderr,"Error opening %s\n", channels[channel].filename);
 				alogg_exit();
 				exit(1);
 			}
 			channels[channel].ass = alogg_get_audio_stream(channels[channel].stream);
 			voice_set_volume(channels[channel].ass->voice, music_vol);
-		}
-
-		/*
-		channels[channel].voice = allocate_voice(channels[channel].sample);
-		if (channels[channel].voice == -1) {
-			error = "unable to allocate a voice";
-		}
-		*/
-
-		if (error == NULL) {
-			/*
-			voice_start(channels[channel].voice);
-			release_voice(channels[channel].voice);
-			channels[channel].voice = 0;
-			channels[channel].sample = NULL;
-			*/
-			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Playing OGG file (%s)", filename);
-		}
-		else {
-			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error playing OGG file \"%s\" (%s)", filename, error);
+#endif
 		}
 	}
-
+	
+	if (error == NULL) {
+		console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Playing music file (%s)", filename);
+	}
+	else {
+		console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error playing music file \"%s\" (%s)", filename, error);
+	}
+	
 	return 0;
 }
+
+
+#ifdef ENABLE_MUSIC
 
 /* adjust_channel(channel, volume, panning, speed)
  */
@@ -147,7 +146,7 @@ int l_adjust_channel(lua_State *L)
 
 	error = NULL;
 
-	if (sound_enabled) {
+	if (sound_enabled && music_format != MUSIC_MIDI) {
 		if (channel < 0 || channel > CHANNELS) {error = "invalid channel";}
 		else if (!channels[channel].ass) {error = "no music on this channel to adjust";}
 		else if (vol < 0 || vol > 255) {error = "illegal volume value";}
@@ -156,7 +155,6 @@ int l_adjust_channel(lua_State *L)
 
 		if (error == NULL) {
 			voice_set_volume(channels[channel].ass->voice, int(vol * (float(music_vol) / 255.0f)));
-			//alogg_adjust_oggstream(ogg[channel]->s, vol, pan, speed);
 			//console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Adjusted channel parameters (%d, %d, %d, %d)", channel, vol, pan, speed);
 		} else {
 			console.log(CON_LOG | CON_CONSOLE, CON_ALWAYS, "Error adjusting channel parameters (%s)", error);
@@ -176,20 +174,22 @@ int l_get_number_of_channels(lua_State *L)
 
 void poll_sound()
 {
-	for (int i = 0; i < CHANNELS; i++) {
-		if (channels[i].stream) {
-			int ret = alogg_update_streaming(channels[i].stream);
-			if (ret == 0) {
-				// Loop song
-				stop_music(i);
-				channels[i].stream = alogg_start_streaming(channels[i].filename, BLOCK_SIZE);
-				if (!channels[i].stream) {
-					fprintf(stderr,"Error opening %s\n", channels[i].filename);
-					alogg_exit();
-					exit(1);
+	if (music_format != MUSIC_MIDI) {
+		for (int i = 0; i < CHANNELS; i++) {
+			if (channels[i].stream) {
+				int ret = alogg_update_streaming(channels[i].stream);
+				if (ret == 0) {
+					// Loop song
+					stop_music(i);
+					channels[i].stream = alogg_start_streaming(channels[i].filename, BLOCK_SIZE);
+					if (!channels[i].stream) {
+						fprintf(stderr,"Error opening %s\n", channels[i].filename);
+						alogg_exit();
+						exit(1);
+					}
+					channels[i].ass = alogg_get_audio_stream(channels[i].stream);
+					break;
 				}
-				channels[i].ass = alogg_get_audio_stream(channels[i].stream);
-				break;
 			}
 		}
 	}
@@ -205,7 +205,7 @@ void stop_music(int channel)
 		channels[channel].sample = NULL;
 	}
 	*/
-	if (channels[channel].stream) {
+	if (music_format != MUSIC_MIDI && channels[channel].stream) {
 		alogg_stop_streaming(channels[channel].stream);
 		channels[channel].stream = NULL;
 		channels[channel].ass = NULL;
@@ -242,12 +242,10 @@ int l_play_sample(lua_State *L)
 	getLuaArguments(L, "s", &name);
 
 	if (sfx_enabled) {
-		console.log(CON_LOG, CON_ALWAYS, "Trying to play sample: %s", name);
-
 		DATAFILE *found_object = find_datafile_object(bitmap_data, name);
 
 		if (found_object) {
-			//int play_sample(const SAMPLE *spl, int vol, int pan, int freq, int loop);
+			console.log(CON_LOG, CON_ALWAYS, "Playing sample: %s", name);
 			play_sample((SAMPLE*)found_object->dat, sfx_vol, 128, 1000, 0);
 		} else {
 			return luaL_error(L, "Error: Cannot find requested sample (%s)!", name);
@@ -264,6 +262,8 @@ void exit_sound()
 		stop_music(i);
 	}
 
-	alogg_exit();
+	if (sound_enabled && music_format != MUSIC_MIDI) {
+		alogg_exit();
+	}
 #endif
 }

@@ -26,6 +26,6 @@ RestPlace = Map:subclass
 
 	defaultproperties = {
 		mapNameBitmap = m_get_bitmap("restplace.tga"),
-		musicFilename = "data/music/4.ogg",
+		musicFilename = "data/music/city.ogg",
 	}
 }

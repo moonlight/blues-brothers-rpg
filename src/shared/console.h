@@ -38,6 +38,8 @@ public:
 	bool handleInput(int key);
 	void log(int where, int when, const char* what, ...);
 
+	bool enableLogfile;
+
 private:
 	FILE* logFile;
 	char* logFilename;

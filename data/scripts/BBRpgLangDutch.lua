@@ -73,11 +73,11 @@ BBRpgLangDutch = Lang:subclass
 			{"Jake", "Ze hebben het JOU nooit verteld."},
 			{"Elwood", "Je bedoelt dat jij het altijd al geweten hebt?"},
 			{"Jake", "Ja, maar laat je me nou eindelijk een keer uitspreken?!"},
-			{"Jake", "Goed, onze broer Brian, ook wel bekend als The Brain, is twee weken geleden gearresteerd terwijl hij met een gestolen creditcard mini-raket motoren in een hobbywinkel kocht voor zijn mini versie van de Columbia Ruimteveer met schaal een op honderd, gemaakt van alleen maar mini-raket motoren, ducktape, gebruikte walkmans, oude houten ijsstokjes, fietsen en een autoband."},
+			{"Jake", "Goed, onze broer Brian, ook wel bekend als Het Brein, is twee weken geleden gearresteerd terwijl hij met een gestolen creditcard mini-raket motoren in een hobbywinkel kocht voor zijn mini versie van de Columbia Ruimteveer met schaal een op honderd, gemaakt van alleen maar mini-raket motoren, ducktape, gebruikte walkmans, oude houten ijsstokjes, fietsen en een autoband."},
 			{"Elwood", "Een op 100? That is nog behoorlijk groot."},
 			{"Jake", "Ja, ik weet het. Maar goed, we moeten hem bevrijden! De wereldvrede staat hier op het spel!"},
 			{"Elwood", "Ik vrees dat ik het belang hiervan nog niet zo in de gaten heb..."},
-			{"Jake", "Kijk, Brian, alias The Brain, is lid van de Internationale Schaak Club. Een vriend van hem, ook lid van deze Schaak Club, wil met deze miniversie van de Columbia ruimteveer een miniatuur aanvalssateliet lanceren om de Chinese aanvalssateliet die gericht is op Washington aan te vallen, en op deze manier de Vierde Werelde Oorlog voorkomen."},
+			{"Jake", "Kijk, Brian, alias Het Brein, is lid van de Internationale Schaak Club. Een vriend van hem, ook lid van deze Schaak Club, wil met deze miniversie van de Columbia ruimteveer een miniatuur aanvalssateliet lanceren om de Chinese aanvalssateliet die gericht is op Washington aan te vallen, en op deze manier de Vierde Werelde Oorlog voorkomen."},
 			{"Elwood", "Derde. De Derde Wereld Oorlog. Er zijn er maar twee geweest Jake."},
 			{"Jake", "O ja? En hoe zit het dan met al die kroegengevechten die we hebben mee gemaakt? Alleen maar buitenlanders daar."},
 			{"Elwood", "Dat is waar..."},
@@ -172,7 +172,7 @@ BBRpgLangDutch = Lang:subclass
 			{"Brian", "Hij is degene die de mini-raket gaat lanceren."},
 			{"Elwood", "Ach natuurlijk, Lee!"},
 			{"Jake", "Aha, en waar zijn de mini-raket motoren?"},
-			{"Brian", "Ehm, ja, dat is misschien een probleempje. Die heb ik verstop in een bult rotzooi vlak voordat ik opgepakt werd door de politie..."},
+			{"Brian", "Ehm, ja, dat is misschien een probleempje. Die heb ik verstopt in een bult rotzooi vlak voordat ik opgepakt werd door de politie..."},
 			{"Elwood", "Nou dat is weer geweldig. En hoe gaan we die dan terug vinden?"},
 			{"Brian", "Ik denk dat we maar eens moeten gaan zoeken."}
 		},
@@ -187,7 +187,7 @@ BBRpgLangDutch = Lang:subclass
 			{"Lee", "Hallo daar."},
 			{"Elwood", "Dit is Lee?"},
 			{"Jake", "Aangezien Brian de man kent, en dat Brian hem Lee noemt zit het er dik in dat het Lee is."},
-			{"Lee", "Inderdaad, ik ben degene die Lee genoemd wordt."},
+			{"Lee", "Juist, ik ben degene die Lee genoemd wordt."},
 			{"Brian", "We hebben de mini-raket motoren voor de miniversie van de Columbia ruimteveer die een miniaanval gaat uitvoeren en daarmee de Vierde Wereld Oorlog gaat voorkomen! Alstjeblieft!"},
 		},
 		Ending2 = {
@@ -201,6 +201,9 @@ BBRpgLangDutch = Lang:subclass
 			{"Jake", "Goed idee."},
 			{"Elw00t", "Waarom beginnen we niet met zijn drieen een band?"},
 		},		
+		NotYetFightGuards = {
+			{"{PLAYER}","Daar binnen zitten gevangenisbewaarders. Voordat ik hier terugkom kan ik maar beter zorgen dat ik sterk genoeg ben om ze te verslaan."},
+		},
 		WallAndTubeElwood = {
 			{"{PLAYER}", "Ik pas niet in deze buis. Hij is veel te smal!"},
 		},
@@ -225,7 +228,7 @@ BBRpgLangDutch = Lang:subclass
 			{"Elwood", "Wat? Het riool?!"},
 			{"Jake", "Ja, wat anders? Klop jij liever aan bij de hoofdingang?"},
 			{"Elwood", "Waarom niet, ik doe alles om mijn grote broer te bevrijden, die ik in mijn hele leven nog nooit gezien heb, en waarvan ik denk dat hij gestoord is omdat hij een miniversie van de Columbia ruimteveer gebouwd heeft."},
-			{"Jake", "Ja, zo mag ik het horen. Laten we Brian the Brain bevrijden!"},
+			{"Jake", "Ja, zo mag ik het horen. Laten we Brian het Brein bevrijden!"},
 		},
 		JakesDoorLocked = {
 			{"{PLAYER}", "Deze deur zit op slot. Ik moet eerst een sleutel vinden."},
@@ -277,6 +280,12 @@ BBRpgLangDutch = Lang:subclass
 		},
 		LeverNotElwood = {
 			{"{PLAYER}", "Aargh, deze hendel is roestig. Ik krijg hem niet om. Misschien lukt Elwood dit."},
+		},
+		InventoryFullAtRockets = {
+			{"{PLAYER}", "Ah, daar zijn de mini-raket motoren! Maar helaas, ik heb al teveel bij me."},
+		},
+		LeaveTown = {
+			{"{PLAYER}", "Het heeft geen zin om de stad te verlaten."},
 		},
 
 		-- Conversation tables. Used for random events.
