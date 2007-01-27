@@ -24,7 +24,7 @@ tokenize = function(str)
 end
 
 detokenize = function(tokens)
-	token_cnt = table.getn(tokens)
+	token_cnt = #tokens
 
 	if (token_cnt > 0) then
 		local string = tokens[1]
@@ -88,8 +88,8 @@ ConversationWindow = Interaction:subclass
 		if (self.state == CB_CLOSED) then
 			return
 
-		elseif (self.state == CB_READY and table.getn(self.lines_todo) > 0) then
-			if (table.getn(self.lines) < self.nr_lines) then
+		elseif (self.state == CB_READY and #self.lines_todo > 0) then
+			if (#self.lines < self.nr_lines) then
 				-- There is space, start writing the line.
 
 				-- We need the correct font set when calculating how big the text is
@@ -99,14 +99,14 @@ ConversationWindow = Interaction:subclass
 				local new_line = tokens[1]
 				table.remove(tokens, 1)
 
-				while (table.getn(tokens) > 0 and m_text_size(new_line.." "..tokens[1]) < self.w) do
+				while (#tokens > 0 and m_text_size(new_line.." "..tokens[1]) < self.w) do
 					new_line = new_line.." "..tokens[1]
 					table.remove(tokens, 1)
 				end
 
 				-- Continue indicates if writing should continue after this line
 				-- or if it should show a blinking square (end of sentence)
-				if (table.getn(tokens) > 0) then
+				if (#tokens > 0) then
 					self.continue = 1
 					self.lines_todo[1] = detokenize(tokens)
 				else
@@ -153,7 +153,7 @@ ConversationWindow = Interaction:subclass
 			end
 
 		elseif (self.state == CB_WRITING) then
-			local current_string = self.lines[table.getn(self.lines)]
+			local current_string = self.lines[#self.lines]
 			local length = string.len(current_string)
 
 			if (self.quickFinish) then
@@ -219,10 +219,10 @@ ConversationWindow = Interaction:subclass
 		if (self.state ~= CB_SCALING) then
 			-- Draw the shadow of the text
 			m_set_clip(self.x, self.y, self.x + self.w - 1, self.y + self.h - 1)
-			for n = 1, table.getn(self.lines) do
+			for n = 1, #self.lines do
 				m_set_color(0, 0, 0)
 				m_set_cursor(self.x + 1, self.y + (n - 1) * self.line_height - self.scroll + 1)
-				if (n == table.getn(self.lines)) then
+				if (n == #self.lines) then
 					m_draw_text(string.sub(self.lines[n], 1, self.curr_char))
 				else
 					m_draw_text(self.lines[n])
@@ -250,10 +250,10 @@ ConversationWindow = Interaction:subclass
 
 			-- Draw the lines of text
 			m_set_clip(self.x, self.y, self.x + self.w - 1, self.y + self.h - 1)
-			for n = 1, table.getn(self.lines) do
+			for n = 1, #self.lines do
 				m_set_color(guiTheme:getTextColor())
 				m_set_cursor(self.x, self.y + (n - 1) * self.line_height - self.scroll)
-				if (n == table.getn(self.lines)) then
+				if (n == #self.lines) then
 					m_draw_text(string.sub(self.lines[n], 1, self.curr_char))
 				else
 					m_draw_text(self.lines[n])

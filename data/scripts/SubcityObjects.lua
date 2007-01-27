@@ -184,7 +184,7 @@ Bed = Decoration:subclass
             }
         elseif (not self.bOccupied) then
             local afterTable = lang:getConv("BedTiredAfterTable")
-            local options = table.getn(afterTable) - 1
+            local options = #afterTable - 1
 
             ActionController:addSequence{
                 ActionSetVariable(self, "bOccupied", true),

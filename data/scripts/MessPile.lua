@@ -26,7 +26,7 @@ MessPile2 = Decoration:subclass
 	bPlaceable = true;
 	activatedBy = function(self, obj)
 		if (self.containsEngines) then
-			if (table.getn(obj.inventory) >= 3) then
+			if (#obj.inventory >= 3) then
 				ActionController:addSequence{
 					ActionConversation(lang:getConv("InventoryFullAtRockets")),
 				}

@@ -169,11 +169,11 @@ int main(int argc, char **argv) {
 END_OF_MAIN()
 
 EOF
-echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null" >>$LOG
-echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null" >>$LOGERR
-if $CC $CPPFLAGS conftest.cpp $LIBS -llua -llualib -o /dev/null >>$LOG 2>>$LOGERR ; then
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -ldl -o /dev/null" >>$LOG
+echo "$CC $CPPFLAGS conftest.cpp $LIBS -llua -ldl -o /dev/null" >>$LOGERR
+if $CC $CPPFLAGS conftest.cpp $LIBS -llua -ldl -o /dev/null >>$LOG 2>>$LOGERR ; then
     # gelukt
-    LIBS="$LIBS -llua -llualib"
+    LIBS="$LIBS -llua"
     echo "yes"
 else
     #niet gelukt

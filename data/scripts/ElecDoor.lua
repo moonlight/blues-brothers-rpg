@@ -25,7 +25,7 @@ ElecDoor = Actor:subclass
 			self.closeTimer = self.closeTimer - 1
 			if (self.closeTimer <= 0) then
 				self.closeTimer = 1
-				if (table.getn(m_get_objects_at(self.x + 0.5, self.y - 0.5, self.map)) == 1) then
+				if (#m_get_objects_at(self.x + 0.5, self.y - 0.5, self.map) == 1) then
 					self.closeTimer = 0
 					self.toStatus = 0
 				end
@@ -54,7 +54,7 @@ ElecDoor = Actor:subclass
 
 	updateBitmap = function(self)
 		local s = math.sin(self.status * 0.5 * math.pi)
-		local bi = (table.getn(self.bitmaps) - 1) * s + 1
+		local bi = (#self.bitmaps - 1) * s + 1
 
 		self.bitmap = self.bitmaps[math.ceil(bi - 0.5)]
 	end;

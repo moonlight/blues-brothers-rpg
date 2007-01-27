@@ -68,7 +68,7 @@ SnowyWeather = Interaction:subclass
 			local maxy = miny + (viewport.h / 24) + 0.5
 
 			-- Add snow particles to reach density
-			while (table.getn(self.particles) < self.density) do
+			while (#self.particles < self.density) do
 				local p = self.map:spawn(SnowParticle, 0, 0, self)
 				p.x = math.random(minx * 24, maxx * 24) / 24;
 				p.y = math.random(viewport.h) / 24 + miny;

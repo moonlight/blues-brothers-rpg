@@ -61,14 +61,14 @@ int l_import(lua_State *L)
 void initScripting()
 {
     // Create Lua state
-    L = lua_open();
+    L = luaL_newstate();
 
     // Enable these Lua libraries to the script
-    luaopen_base(L);
-    luaopen_string(L);
-    luaopen_math(L);
-    luaopen_table(L);
-    luaopen_io(L);
+    lua_pushcfunction(L, luaopen_base);   lua_call(L, 0, 0);
+    lua_pushcfunction(L, luaopen_string); lua_call(L, 0, 0);
+    lua_pushcfunction(L, luaopen_math);   lua_call(L, 0, 0);
+    lua_pushcfunction(L, luaopen_table);  lua_call(L, 0, 0);
+    lua_pushcfunction(L, luaopen_io);     lua_call(L, 0, 0);
 
     // Add the Object type to Lua
     //Lunar<Object>::Register(L);
@@ -151,7 +151,7 @@ void initScripting()
     lua_register(L, "m_update_input",   l_update_input);
     lua_register(L, "m_get_shift",      l_get_shift);
 
-    handleLuaError(lua_dostring(L, lua_include), "lua_include");
+    handleLuaError(luaL_dostring(L, lua_include), "lua_include");
 
 
     module->loadScripts();

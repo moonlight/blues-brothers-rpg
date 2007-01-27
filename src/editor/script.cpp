@@ -95,7 +95,7 @@ void initScripting()
 
     lua_register(L, "import",           l_import);
 
-    handleLuaError(lua_dostring(L, lua_include), "lua_include");
+    handleLuaError(luaL_dostring(L, lua_include), "lua_include");
 
 
     // Load all scripts
@@ -449,7 +449,7 @@ int l_get_bitmap(lua_State *L)
 {
     const char *name;
     getLuaArguments(L, "s", &name);
-    BITMAP* found_bitmap = found_bitmap = module->findBitmap(name);
+    BITMAP* found_bitmap = module->findBitmap(name);
 
     if (found_bitmap) {
         return putLuaArguments(L, "b", found_bitmap);
