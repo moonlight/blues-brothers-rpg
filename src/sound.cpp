@@ -9,8 +9,6 @@
     (at your option) any later version.
 */
 
-
-
 #include <allegro.h>
 #include "shared/console.h"
 #include "sound.h"

@@ -166,4 +166,3 @@ void Console::log(int where, int when, const char *what, ...)
         }
     }
 }
-
