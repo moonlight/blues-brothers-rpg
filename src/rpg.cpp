@@ -166,10 +166,10 @@ void init_engine()
     console.log(CON_LOG, CON_ALWAYS, "Creating tile repository...");
     tileRepository = new TileRepository();
 
-    console.log(CON_LOG, CON_ALWAYS, "Loading gui.dat...");
-    engine_data = load_datafile("gui.dat");
+    console.log(CON_LOG, CON_ALWAYS, "Loading engine.dat...");
+    engine_data = load_datafile("engine.dat");
     if (!engine_data) {
-        console.log(CON_QUIT, CON_ALWAYS, "Error while loading: gui.dat");
+        console.log(CON_QUIT, CON_ALWAYS, "Error while loading: engine.dat");
     }
 
     // Set font to use
