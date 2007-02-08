@@ -20,7 +20,10 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
 
-
+inline int clamp(int a, int min, int max)
+{
+    return (a < min) ? min : ((a > max) ? max : a);
+}
 
 // Vector class ==============================================================
 
@@ -69,7 +72,7 @@ Vector Vector::operator+(const Vector &v)
     result.z = z + v.z;
     return result;
 }
-   
+
 Vector Vector::operator-(const Vector &v)
 {
     Vector result;
@@ -148,10 +151,10 @@ TileType::~TileType()
 
 // Tile class ================================================================
 
-Tile::Tile()
+Tile::Tile():
+    tileType(NULL),
+    obstacle(0)
 {
-    tileType = NULL;
-    obstacle = 0;
 }
 
 void Tile::saveTo(PACKFILE *file)
@@ -168,12 +171,12 @@ void Tile::saveTo(PACKFILE *file)
 void Tile::saveTo(xmlTextWriterPtr writer)
 {
     xmlTextWriterStartElement(writer, BAD_CAST "tile");
-    
+
     if (tileType) {
         xmlTextWriterWriteAttribute(writer,
                 BAD_CAST "name", BAD_CAST tileType->getName());
     }
-    
+
     if (obstacle) {
         char obs[5];
         obs[0] = (obstacle & OB_TOP) ? '1' : '0';
@@ -184,7 +187,7 @@ void Tile::saveTo(xmlTextWriterPtr writer)
         xmlTextWriterWriteAttribute(writer,
                 BAD_CAST "obstacle", BAD_CAST obs);
     }
-    
+
     xmlTextWriterEndElement(writer);
 }
 
@@ -403,7 +406,7 @@ TileType* TileRepository::getTileType(const char *tileName)
 {
     map<const char*, TileType*, ltstr>::iterator found =
         tileTypes.find(tileName);
-    
+
     if (found != tileTypes.end()) {
         return (*found).second;
     } else {
@@ -534,7 +537,7 @@ void TiledMapLayer::saveTo(PACKFILE *file)
 void TiledMapLayer::saveTo(xmlTextWriterPtr writer)
 {
     char strbuf[16];
-    
+
     xmlTextWriterStartElement(writer, BAD_CAST "layer");
 
     snprintf(strbuf, 16, "%d", width);
@@ -568,7 +571,7 @@ void TiledMapLayer::loadFrom(PACKFILE *file, TileRepository *tileRepository)
 void TiledMapLayer::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
 {
     xmlChar *prop;
-    
+
     // Load the map header
     prop = xmlGetProp(cur, BAD_CAST "width");
     int w = atoi((char*)prop);
@@ -576,25 +579,25 @@ void TiledMapLayer::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
     prop = xmlGetProp(cur, BAD_CAST "height");
     int h = atoi((char*)prop);
     xmlFree(prop);
-    
+
     resizeTo(w, h);
 
     cur = cur->xmlChildrenNode;
     int x = 0;
     int y = 0;
-    
+
     // Load the tile data
     while (cur != NULL) {
         if (xmlStrEqual(cur->name, BAD_CAST "tile") && y < height) {
             getTile(Point(x,y))->loadFrom(cur, tileRepository);
             x++;
             if (x == width) {x = 0; y++;}
-        } 
+        }
         cur = cur->next;
     }
 }
 
-Tile *TiledMapLayer::getTile(Point tile)
+Tile *TiledMapLayer::getTile(const Point &tile)
 {
     if (tile.x < 0 || tile.x >= width ||
             tile.y < 0 || tile.y >= height)
@@ -637,8 +640,8 @@ void TiledMap::setCamera(Point cam, Rectangle rect, bool center, bool modify)
     }
     if (modify) {
         Point mapSize = getMapSize();
-        cam.x = MAX(0, MIN(mapSize.x - rect.w, cam.x));
-        cam.y = MAX(0, MIN(mapSize.y - rect.h, cam.y));
+        cam.x = clamp(cam.x, 0, mapSize.x - rect.w);
+        cam.y = clamp(cam.y, 0, mapSize.y - rect.h);
     }
 
     cameraCoords = cam;
@@ -678,7 +681,7 @@ void TiledMap::saveTo(PACKFILE *file)
         pack_iputw(int(TILES_H * (*i)->y), file);
         pack_fputs((*i)->className, file);
         pack_fputs("\n", file);
-    }	
+    }
 
     // Extra newline fixes last tile not loaded.
     pack_fputs("\n", file);
@@ -700,19 +703,19 @@ void TiledMap::saveTo(xmlTextWriterPtr writer)
     list<Object*>::iterator i;
     for (i = objects.begin(); i != objects.end(); i++) {
         xmlTextWriterStartElement(writer, BAD_CAST "object");
-        
+
         snprintf(strbuf, 16, "%d", int(TILES_W * (*i)->x));
         xmlTextWriterWriteAttribute(writer, BAD_CAST "x", BAD_CAST strbuf);
-        
+
         snprintf(strbuf, 16, "%d", int(TILES_H * (*i)->y));
         xmlTextWriterWriteAttribute(writer, BAD_CAST "y", BAD_CAST strbuf);
-        
+
         snprintf(strbuf, 64, "%d", int(TILES_W * (*i)->x));
         xmlTextWriterWriteAttribute(writer, BAD_CAST "type",
                 BAD_CAST (*i)->className);
 
         xmlTextWriterEndElement(writer);
-    }	
+    }
 
     xmlTextWriterEndElement(writer);
 }
@@ -740,10 +743,10 @@ int TiledMap::loadMap(const char* filename)
     map_string[size] = '\0';
 
     fclose(f);
-    
+
     xmlDocPtr doc = xmlReadMemory(map_string, size, NULL, NULL, 0);
     delete[] map_string;
-    
+
     if (doc) {
         console.log(CON_LOG, CON_VDEBUG, "- Looking for root node");
         xmlNodePtr cur = xmlDocGetRootElement(doc);
@@ -753,7 +756,7 @@ int TiledMap::loadMap(const char* filename)
                     "Warning, no map file (%s)!", filename);
             return 1;
         }
-        
+
         console.log(CON_LOG, CON_VDEBUG, "- Loading map from XML tree");
         loadFrom(cur, tileRepository);
         xmlFreeDoc(doc);
@@ -767,12 +770,12 @@ int TiledMap::loadMap(const char* filename)
                     "Warning, no such file (%s)!", filename);
             return 1;
         }
-        
+
         console.log(CON_LOG, CON_VDEBUG, "- Loading map from packfile");
         this->loadFrom(file, tileRepository);
         pack_fclose(file);
     }
-    
+
     return 0;
 }
 
@@ -808,7 +811,7 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
                     double(x) / TILES_W,
                     double(y) / TILES_H,
                     className);
-            
+
             delete[] className;
         }
     }
@@ -821,14 +824,14 @@ void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
 {
     int layerNr = 0;
     xmlChar *prop;
-    
+
     removeObjects();
 
     prop = xmlGetProp(cur, BAD_CAST "version");
     xmlFree(prop);
 
     cur = cur->xmlChildrenNode;
-    
+
     while (cur != NULL) {
         if (xmlStrEqual(cur->name, BAD_CAST "layer")) {
             if (layerNr < 2) {
@@ -845,10 +848,10 @@ void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
             prop = xmlGetProp(cur, BAD_CAST "y");
             int y = atoi((char*)prop);
             xmlFree(prop);
-            
+
             // Spawn the object
             prop = xmlGetProp(cur, BAD_CAST "type");
-            
+
             console.log(CON_LOG, CON_VDEBUG, "- Adding %s at (%d, %d)",
                     (char*)prop, x, y);
             addObject(
@@ -1108,13 +1111,16 @@ void SquareMap::drawLayer(
     Point end = screenToTile(Point(cameraScreenRect.x + cameraScreenRect.w - 1,
                cameraScreenRect.y + cameraScreenRect.h - 1));
 
-    start.x = MAX(0, MIN(width  - 1, start.x));
-    start.y = MAX(0, MIN(height - 1, start.y));
+    start.x = clamp(start.x, 0, width - 1);
+    start.y = clamp(start.y, 0, height - 1);
 
 
-    for (int y = start.y; y <= end.y; y++) {
-        for (int x = start.x; x <= end.x; x++) {
+    for (int y = start.y; y <= end.y; y++)
+    {
+        for (int x = start.x; x <= end.x; x++)
+        {
             tempTile = layer->getTile(Point(x, y));
+            if (!tempTile) continue;
             tempTileType = tempTile->getType();
             if (tempTileType) {
                 if (opacity < 255) {
@@ -1167,7 +1173,7 @@ void SquareMap::drawLayer(
                 if (to & OB_BOTTOM) {
                     line(dest, tx + 2, ty + th - 3, tx + tw - 3, ty + th - 3,
                             makecol(255,0,0));
-                    line(dest, tx + 3, ty + th - 2, tx + tw - 2, ty + th - 2, 
+                    line(dest, tx + 3, ty + th - 2, tx + tw - 2, ty + th - 2,
                             makecol(0,0,0));
                 }
                 drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
@@ -1198,11 +1204,9 @@ Point SquareMap::mapToScreen(Point mapCoords)
 
 Point SquareMap::mapToTile(Point mapCoords)
 {
-    return Point(
-            MIN(width - 1, MAX(0, mapCoords.x / tileWidth)),
-            MIN(height - 1, MAX(0, mapCoords.y / tileHeight)),
-            mapCoords.z
-            );
+    return Point(clamp(mapCoords.x / tileWidth, 0, width - 1),
+                 clamp(mapCoords.y / tileHeight, 0, height - 1),
+                 mapCoords.z);
 }
 
 Point SquareMap::tileToMap(Point tileCoords)

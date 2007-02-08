@@ -76,12 +76,12 @@ AdvAIRandom = Controller:subclass
 	-- check if we can go in 'dir'-ection ... if not, choose any other, but not 'notdir'
 	goingDirection = function(self, dir, notdir)
 		local dirs = self.pawn:freeTilesAround()
-		for v in dirs do
+		for k,v in pairs(dirs) do
 		    if (v == dir) then
 			return dir
 		    end;
 		end;
-		for v in dirs do
+		for k,v in pairs(dirs) do
 		    if (v ~= notdir) then
 			return v;
 		    end;

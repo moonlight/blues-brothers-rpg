@@ -182,7 +182,7 @@ class TiledMapLayer {
         const char* getName();
         float getOpacity();
 
-        Tile* getTile(Point tileCoords);
+        Tile* getTile(const Point &tileCoords);
 
     private:
         int width, height;

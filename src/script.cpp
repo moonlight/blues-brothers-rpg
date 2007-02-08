@@ -833,6 +833,7 @@ int l_get_bitmap(lua_State *L)
     BITMAP* found_bitmap = module->findBitmap(name);
 
     if (found_bitmap) {
+        console.log(CON_LOG, CON_ALWAYS, "Loaded bitmap %s", name);
         return putLuaArguments(L, "b", found_bitmap);
     } else {
         return luaL_error(L, "Error: Cannot find bitmap (%s)!", name);
@@ -951,7 +952,7 @@ int l_get_tile_at(lua_State *L)
 
     if (map) {
         Tile* tile = map->mapLayers[0]->getTile(Point(x, y));
-        if (tile) {
+        if (tile && tile->getType()) {
             char *tileTypeName = tile->getType()->getName();
             return putLuaArguments(L, "si", tileTypeName, tile->obstacle);
         } else {
@@ -976,7 +977,7 @@ int l_set_tile_at(lua_State *L)
     if (map) {
         TileType *type = tileRepository->getTileType(tileName);
         Tile *tile = map->mapLayers[0]->getTile(Point(x, y));
-        if (tile) tile->setType(type); 
+        if (tile) tile->setType(type);
         return 0;
     }
     else {
@@ -1016,7 +1017,7 @@ int l_quit_game(lua_State *L)
 
 int object_gettable(lua_State *L)
 {
-    if (lua_isstring(L, -1)) 
+    if (lua_isstring(L, -1))
     {
         const char *index = lua_tostring(L, -1);      // table key
 
