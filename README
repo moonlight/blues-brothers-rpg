@@ -88,9 +88,11 @@ History
 -------
 
 1.1.1 - X January, 2006 (Final release)
+
 * Upgraded to Lua 5.1
 * First proper source release
 * A lot of small fixes and improvements
+
 
 1.1.0 - 10 January, 2004 (First post-compo release)
 

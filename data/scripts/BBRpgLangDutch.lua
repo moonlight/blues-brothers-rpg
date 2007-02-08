@@ -200,7 +200,7 @@ BBRpgLangDutch = Lang:subclass
             {"Elwood", "Moet Lee niet aan het werk, terwijl wij naar huis gaan, vergeten dat deze akelige missie ooit gebeurd is, en muziek maken?"},
             {"Jake", "Goed idee."},
             {"Elw00t", "Waarom beginnen we niet met zijn drieen een band?"},
-        },		
+        },
         NotYetFightGuards = {
             {"{PLAYER}","Daar binnen zitten gevangenisbewaarders. Voordat ik hier terugkom kan ik maar beter zorgen dat ik sterk genoeg ben om ze te verslaan."},
         },

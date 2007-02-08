@@ -22,6 +22,7 @@ Bjorn:
 - Experience/levelup weergeven
 ? Fix brother still lying in bed when he slept
 - Corpses should not be obstacles in most of the cases
+- Fix "this door is locked" remark after door has been opened
 
 Georg:
 - Record new sounds.

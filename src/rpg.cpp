@@ -174,7 +174,11 @@ void init_engine()
 
     // Set font to use
     DATAFILE *temp = find_datafile_object(engine_data, "SmallFont");
-    if (temp) {engine_font = ((FONT *)temp->dat);}
+    if (temp) {
+        engine_font = ((FONT *)temp->dat);
+    } else {
+        console.log(CON_LOG, CON_ALWAYS, "Warning: SmallFont not found!");
+    }
 
     console.log(CON_LOG, CON_ALWAYS, "Loading module \"data\"...");
     module = new Module("data");
