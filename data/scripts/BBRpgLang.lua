@@ -320,7 +320,7 @@ BBRpgLang = Lang:subclass
             {{"{PLAYER}", "It's a washstand."}},
         },
         Toilet = {
-            {{"{PLAYER}", "It's a toilet. Dawm, it's dirty."}},
+            {{"{PLAYER}", "It's a toilet. Damn, it's dirty."}},
         },
         Clock = {
             {{"{PLAYER}", "It's a clock."}},

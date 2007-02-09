@@ -28,8 +28,8 @@ Jail = Map:subclass
 		self:spawn(ElecDoor, 14, 35);
 		self:spawn(ElecDoor, 16, 35);
 		self:spawn(ElecDoor, 18, 35);
-		obj = self:spawn(ElecDoor, 47, 13);	obj.isLocked = true
-		obj = self:spawn(ElecDoor, 44, 49);	obj.isLocked = true
+		obj = self:spawn(ElecDoor, 47, 13); obj.isLocked = true
+		obj = self:spawn(ElecDoor, 44, 49); obj.isLocked = true
 		obj = self:spawn(ElecDoor, 54, 49); obj.isLocked = true
 		obj = self:spawn(ElecDoor, 37, 35); obj.isLocked = true
 		obj = self:spawn(ElecDoor, 25, 35); obj.isLocked = true
