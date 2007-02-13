@@ -46,9 +46,25 @@ int main(int argc, char *argv[])
     clean_up();
     return 0;
 }
-END_OF_MAIN();
+END_OF_MAIN()
 
 
+void xmlNullLogger(void *ctx, const char *msg, ...)
+{
+    // Does nothing, that's the whole point of it
+}
+
+// Initialize libxml2 and check for potential ABI mismatches between
+// compiled version and the shared library actually used.
+void initXML()
+{
+    console.log(CON_LOG, CON_ALWAYS, "Initializing libxml2...");
+    xmlInitParser();
+    LIBXML_TEST_VERSION;
+
+    // Suppress libxml2 error messages
+    xmlSetGenericErrorFunc(NULL, xmlNullLogger);
+}
 
 void initialize()
 {
@@ -56,7 +72,7 @@ void initialize()
     int i;
 
     // Do the libxml binary compatibility check
-    LIBXML_TEST_VERSION
+    initXML();
 
     // Initialise Allegro
     allegro_init();

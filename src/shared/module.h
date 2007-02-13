@@ -41,12 +41,12 @@ class Module
     private:
         char* makeFilename(const char *name, const char *subdir);
         char* addMagic(const char *file);
-        
+
         DATAFILE *script_data;
         char *path;
         char *datafile_name;
         int loadLevel;
-        
+
         map<std::string, BITMAP*> bitmaps;
         map<std::string, MIDI*> midis;
         map<std::string, SAMPLE*> samples;

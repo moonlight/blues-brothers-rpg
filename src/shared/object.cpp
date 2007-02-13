@@ -111,7 +111,7 @@ void Object::walk(int dir, bool col)
 
     if (col && obstacle) {
         // Check for map obstacle
-        Tile *nextTile = map->getLayer(0)->getTile(
+        Tile *nextTile = map->getLayer((unsigned int)0)->getTile(
                 Point((int)next_x, (int)next_y));
 
         if (!nextTile || next_x < 0 || next_y < 0 ||
@@ -126,7 +126,7 @@ void Object::walk(int dir, bool col)
         }
 
         // Check for object in the way
-        list<Object*>::iterator i;
+        std::list<Object*>::iterator i;
         for (i = map->objects.begin(); i != map->objects.end(); i++) {
             Object *obj = (*i);
             if ((obj->obstacle) &&
@@ -183,7 +183,7 @@ void Object::check_stand_on()
     if (!map) return;
 
     // Check if this object is now standing on something
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     for (i = map->objects.begin(); i != map->objects.end(); i++) {
         Object *obj = (*i);
         if ((obj != this) &&

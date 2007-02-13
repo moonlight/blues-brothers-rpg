@@ -15,14 +15,13 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <string>
 #include <allegro.h>
 #include <libxml/xmlwriter.h>
 #include <libxml/tree.h>
 
-using namespace std;
-
 class Object;
-
+class Tileset;
 
 #define TILES_W                 24
 #define TILES_H                 24
@@ -84,17 +83,24 @@ class Rectangle {
 
 class TileType {
     public:
-        TileType(BITMAP *tileBitmap, const char *tileName);
+        TileType(BITMAP *tileBitmap, const char *tileName, int id = 0);
         ~TileType();
+
+        void
+        setTileset(Tileset* set) { mTileset = set; }
 
         BITMAP* getBitmap() {return bitmap;}
         char*   getName()   {return name;}
         int     getColor()  {return color;}
 
+        int     getId() const { return mId; }
+
     protected:
         BITMAP* bitmap;
         char*   name;
         int     color;
+        Tileset* mTileset;
+        int     mId;
 };
 
 
@@ -123,9 +129,9 @@ class TileRepository {
                 int tile_w, int tile_h, int tile_spacing, int tiles_in_row);
 
         TileType* getTileType(const char *tileName);
-        vector<TileType*> generateTileArray();
+        std::vector<TileType*> generateTileArray();
     protected:
-        map<const char*, TileType*, ltstr> tileTypes;
+        std::map<const char*, TileType*, ltstr> tileTypes;
 };
 
 
@@ -138,7 +144,6 @@ class Tile {
         void saveTo(PACKFILE *file);
         void saveTo(xmlTextWriterPtr writer);
         void loadFrom(PACKFILE *file, TileRepository *tileRepository);
-        void loadFrom(xmlNodePtr reader, TileRepository *tileRepository);
 
         void setType(TileType* tileType);
         TileType* getType() {return tileType;}
@@ -146,6 +151,61 @@ class Tile {
         int  obstacle;
     protected:
         TileType* tileType;
+};
+
+
+/**
+ * Tileset class.
+ */
+class Tileset
+{
+    public:
+        /**
+         * Constructor.
+         */
+        Tileset();
+
+        void
+        importTileBitmap(BITMAP *tileBitmap,
+                         const std::string &imgSource,
+                         int tw, int th, int ts);
+
+        TileType*
+        getTile(int id);
+
+        void
+        setFirstGid(int gid) { firstgid = gid; }
+
+        void
+        setName(const std::string &name) { mName = name; }
+
+        int
+        getFirstGid() const { return firstgid; }
+
+        int
+        getNumTiles() const { return tiles.size(); }
+
+        int
+        getTileWidth() const { return tileWidth; }
+
+        int
+        getTileHeight() const { return tileHeight; }
+
+        int
+        getTileSpacing() const { return tileSpacing; }
+
+        const std::string&
+        getName() const { return mName; }
+
+        const std::string&
+        getImgSource() const { return mImgSource; }
+
+    protected:
+        std::string mName;
+        std::string mImgSource;
+        int tileWidth, tileHeight, tileSpacing;
+        int firstgid;
+        std::vector<TileType*> tiles;
 };
 
 
@@ -172,7 +232,6 @@ class TiledMapLayer {
         void saveTo(PACKFILE* file);
         void saveTo(xmlTextWriterPtr writer);
         void loadFrom(PACKFILE* file, TileRepository *tileRepository);
-        void loadFrom(xmlNodePtr reader, TileRepository *tileRepository);
 
         int getWidth()  { return width; }
         int getHeight() { return height; }
@@ -183,6 +242,7 @@ class TiledMapLayer {
         float getOpacity();
 
         Tile* getTile(const Point &tileCoords);
+        void setTile(const Point &tileCoords, TileType*);
 
     private:
         int width, height;
@@ -207,14 +267,15 @@ class TiledMap {
         void saveTo(xmlTextWriterPtr writer);
         int loadMap(const char* filename);
         void loadFrom(PACKFILE* file, TileRepository *tileRepository);
-        void loadFrom(xmlNodePtr reader, TileRepository *tileRepository);
 
         int getWidth()  {return width;}
         int getHeight() {return height;}
 
         // Tile and entity methods
         //Tile* getTile(Point tileCoords);
-        TiledMapLayer* getLayer(int i);
+        TiledMapLayer* getLayer(unsigned int i);
+        TiledMapLayer* getLayer(const char *name);
+        void deleteLayers();
 
         // Drawing the map
         virtual void setCamera(Point cameraCoords, Rectangle screenRect,
@@ -234,6 +295,10 @@ class TiledMap {
         void addReference(Object* obj);
         void removeObjects();
 
+        // Tileset methods
+        Tileset* getTileset(const char* name) const;
+        TileType* getTile(int gid) const;
+
         // Coordinate space converters
         virtual Point screenToTile(Point screenCoords);
         virtual Point tileToScreen(Point tileCoords);
@@ -245,12 +310,13 @@ class TiledMap {
         virtual Point getMapSize() = 0;
 
         // The layers
-        TiledMapLayer *mapLayers[2];
-        int nrLayers;
+        std::vector<TiledMapLayer*> mapLayers;
 
         // Entity list
-        list<Object*> objects;
+        std::list<Object*> objects;
 
+        // Tileset list
+        std::list<Tileset*> tilesets;
 
         int width, height;
     protected:

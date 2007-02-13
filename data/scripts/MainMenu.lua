@@ -24,7 +24,7 @@ MainMenu = GuiMenu:subclass
 			ActionCallFunction(elwood.addToInventory, elwood, cityMap.walkieTalkie),
 			ActionSetPosition(elwood, 94, 73, DIR_UP, cityMap),
 --			ActionSetPosition(elwood, 37, 12, DIR_UP, cityMap),
---			ActionSetPosition(elwood, 34, 65, DIR_UP, cellsMap),
+--			ActionSetPosition(elwood, 10, 20, DIR_UP, forestMap),
 			ActionSetPosition(jake, 93, 73, DIR_UP, cityMap),
 			ActionSetCameraTarget(elwood, false),
 			ActionSetPosition(copcar, 88, 77),

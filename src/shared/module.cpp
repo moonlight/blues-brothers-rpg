@@ -23,6 +23,7 @@
 #include "module.h"
 #include "../common.h"
 #include "../script.h"
+#include "map_reader.h"
 
 
 Module::Module(const char *name)
@@ -30,7 +31,7 @@ Module::Module(const char *name)
     // Remember the path to be able to load from files later
     path = new char[strlen(name) + 1];
     strcpy(path, name);
-    
+
     // Open the datafile
     datafile_name = new char[strlen(name) + 1 + 4];
     sprintf(datafile_name, "%s.dat", name);
@@ -73,7 +74,7 @@ void Module::loadScript(const std::string name)
     else {
         console.log(CON_LOG, CON_ALWAYS, "%sX \"%s\" not found!", spaces, name.c_str());
     }
-    
+
     delete[] spaces;
 }
 
@@ -113,7 +114,7 @@ void Module::loadScripts()
                 }
                 temp++;
             }
-            
+
             // Unload the datafile
             unload_datafile_object(script_data);
             script_data = NULL;
@@ -140,6 +141,9 @@ TiledMap* Module::loadMap(const std::string name)
     char *filename = makeFilename(name.c_str(), "/maps");
     console.log(CON_LOG, CON_ALWAYS, "Loading map \"%s\"...", filename);
 
+    mmap = MapReader::readMap(filename);
+
+    /*
     if (exists(filename)) {
         mmap = new SquareMap(TILES_W, TILES_H);
         if (mmap) {
@@ -162,6 +166,7 @@ TiledMap* Module::loadMap(const std::string name)
             unload_datafile_object(df);
         }
     }
+    */
 
     delete[] filename;
     return mmap;
@@ -177,7 +182,7 @@ BITMAP* Module::findBitmap(const std::string name)
     }
     else {
         char *filename = makeFilename(name.c_str(), "/bitmaps");
-    
+
         // Attempt to load from disk, and otherwise from the datafile
         if (exists(filename)) {
             bitmap = load_bitmap(filename, NULL);

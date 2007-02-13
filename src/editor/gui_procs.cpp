@@ -277,7 +277,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
             currentMap->drawLayer(buffer, (map_edit_mode == EM_OBSTACLE), currentMap->mapLayers[0]);
 
             {
-                list<Object*>::iterator i;
+                std::list<Object*>::iterator i;
                 // Iterate through all objects, calling the preRender function
                 for (i = currentMap->objects.begin(); i != currentMap->objects.end(); i++) {
                     callMemberFunction((*i)->tableRef, "preRender");
@@ -452,7 +452,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
                 {
                     // In obstacle edit mode
                     while (gui_mouse_b() & 1) {
-                        Tile* cursorTile = currentMap->getLayer(0)->getTile(currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y())));
+                        Tile* cursorTile = currentMap->getLayer((unsigned int)0)->getTile(currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y())));
 
                         if (cursorTile && selectedObstacle != cursorTile->obstacle)
                         {
@@ -564,7 +564,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
                 {
                     // In tile edit mode: clear tile obstacle settings
                     while (gui_mouse_b() & 2) {
-                        Tile* cursorTile = currentMap->getLayer(0)->getTile(currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y())));
+                        Tile* cursorTile = currentMap->getLayer((unsigned int)0)->getTile(currentMap->screenToTile(Point(gui_mouse_x(), gui_mouse_y())));
 
                         if (cursorTile && cursorTile->obstacle)
                         {
@@ -589,8 +589,8 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
                     double new_end_x, new_end_y;
                     selection_end_x = selection_start_x;
                     selection_end_y = selection_start_y;
-                    list<Object*> objects;
-                    list<Object*>::iterator i;
+                    std::list<Object*> objects;
+                    std::list<Object*>::iterator i;
                     select_objects(objects);
 
                     while (gui_mouse_b() & 2) {

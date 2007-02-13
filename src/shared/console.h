@@ -11,22 +11,25 @@
 
 #ifndef _INCLUDED_CONSOLE_H_
 #define _INCLUDED_CONSOLE_H_
+
 #include <stdio.h>
 #include <list>
-
-using namespace std;
-
-
-#define CON_CONSOLE		1
-#define CON_LOG			2
-#define CON_QUIT		4
-#define CON_POPUP		8
-
-#define CON_ALWAYS		1
-#define CON_DEBUG		2
-#define CON_VDEBUG		4
+#include <allegro.h>
 
 
+#define CON_CONSOLE    1
+#define CON_LOG        2
+#define CON_QUIT       4
+#define CON_POPUP      8
+
+#define CON_ALWAYS     1
+#define CON_DEBUG      2
+#define CON_VDEBUG     4
+
+/**
+ * The console. This class handles logging as well as displaying a console with
+ * the log in the game when the tilde is pressed.
+ */
 class Console
 {
     public:
@@ -36,14 +39,14 @@ class Console
         void update();
         void draw(BITMAP *dest);
         bool handleInput(int key);
-        void log(int where, int when, const char* what, ...);
+        void log(int where, int when, const char *what, ...);
 
         bool enableLogfile;
 
     private:
         FILE* logFile;
         char* logFilename;
-        list<char*> logMessages;
+        std::list<char*> logMessages;
         bool active;
         int progress;
 };

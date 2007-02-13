@@ -32,7 +32,7 @@ extern DATAFILE *interface_graphics;
 extern int gameClassInstance;
 
 extern TileType *selectedTile;
-extern list<TiledMap*> maps;
+extern std::list<TiledMap*> maps;
 
 extern bool game_end;
 extern bool exclusive_mode;

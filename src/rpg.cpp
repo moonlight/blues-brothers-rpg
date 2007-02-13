@@ -74,8 +74,25 @@ int main()
 
     return 0;
 }
-END_OF_MAIN();
+END_OF_MAIN()
 
+
+void xmlNullLogger(void *ctx, const char *msg, ...)
+{
+    // Does nothing, that's the whole point of it
+}
+
+// Initialize libxml2 and check for potential ABI mismatches between
+// compiled version and the shared library actually used.
+void initXML()
+{
+    console.log(CON_LOG, CON_ALWAYS, "Initializing libxml2...");
+    xmlInitParser();
+    LIBXML_TEST_VERSION;
+
+    // Suppress libxml2 error messages
+    xmlSetGenericErrorFunc(NULL, xmlNullLogger);
+}
 
 void init_engine()
 {
@@ -86,6 +103,7 @@ void init_engine()
     install_timer();
     three_finger_flag = 0;
     set_display_switch_mode(SWITCH_BACKAMNESIA);
+    initXML();
 
     set_config_file("rpg.cfg");
 

@@ -41,7 +41,7 @@ Console::Console(const char* filename)
 Console::~Console()
 {
     // Deallocate console string messages
-    list<char*>::iterator i;
+    std::list<char*>::iterator i;
     while (!logMessages.empty())
     {
         i = logMessages.begin();
@@ -77,7 +77,7 @@ void Console::draw(BITMAP *dest)
 
         font = engine_font;
 
-        list<char*>::iterator i = logMessages.begin();
+        std::list<char*>::iterator i = logMessages.begin();
         while (i != logMessages.end() && posY > - text_height(font))
         {
             textprintf_ex(dest, font, 2, posY, makecol(200,200,200), -1, (*i));

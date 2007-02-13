@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <allegro.h>
 #include <map>
+#include <cassert>
 #include <algorithm>
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
@@ -39,11 +40,11 @@ Vector::Vector(double x, double y, double z)
     this->z = z;
 }
 
-Vector::Vector(const Vector &v)
+Vector::Vector(const Vector &v):
+    x(v.x),
+    y(v.y),
+    z(v.z)
 {
-    this->x = v.x;
-    this->y = v.y;
-    this->z = v.z;
 }
 
 Vector Vector::operator*(double c)
@@ -108,23 +109,27 @@ void Rectangle::clipToRect(BITMAP *src)
 
 bool Rectangle::collides(const Rectangle &r)
 {
-    return !(
-            x + w < r.x ||
-            y + h < r.y ||
-            x > r.x + r.w ||
-            y > r.y + r.h
-            );
+    return !(x + w < r.x ||
+             y + h < r.y ||
+             x > r.x + r.w ||
+             y > r.y + r.h);
 }
 
 
 // TileType ==================================================================
 //  An object holding static information about a tile type.
 
-TileType::TileType(BITMAP *tileBitmap, const char *tileName)
+TileType::TileType(BITMAP *tileBitmap, const char *tileName, int id):
+    mId(id)
 {
     bitmap = tileBitmap;
-    name = (char*)malloc(ustrsizez(tileName));
-    ustrcpy(name, tileName);
+    if (tileName) {
+        name = (char*)malloc(ustrsizez(tileName));
+        ustrcpy(name, tileName);
+    }
+    else {
+        name = NULL;
+    }
     int x, y;
     unsigned long r = 0, g = 0, b = 0;
     unsigned long pixels = tileBitmap->w * tileBitmap->h;
@@ -152,8 +157,8 @@ TileType::~TileType()
 // Tile class ================================================================
 
 Tile::Tile():
-    tileType(NULL),
-    obstacle(0)
+    obstacle(0),
+    tileType(NULL)
 {
 }
 
@@ -199,32 +204,6 @@ void Tile::loadFrom(PACKFILE *file, TileRepository *tileRepository)
     setType(tileRepository->getTileType(name));
 
     obstacle = pack_igetw(file);
-}
-
-void Tile::loadFrom(xmlNodePtr cur, TileRepository *tileRepository)
-{
-    xmlChar *prop;
-
-    prop = xmlGetProp(cur, BAD_CAST "name");
-    if (prop) {
-        setType(tileRepository->getTileType((char*)prop));
-        xmlFree(prop);
-    }
-    else {
-        setType(NULL);
-    }
-    prop = xmlGetProp(cur, BAD_CAST "obstacle");
-    if (prop) {
-        obstacle =
-            ((prop[0] == '1') ? OB_TOP : 0) |
-            ((prop[1] == '1') ? OB_RIGHT : 0) |
-            ((prop[2] == '1') ? OB_BOTTOM : 0) |
-            ((prop[3] == '1') ? OB_LEFT : 0);
-        xmlFree(prop);
-    }
-    else {
-        obstacle = 0;
-    }
 }
 
 void Tile::setType(TileType *tileType)
@@ -280,7 +259,7 @@ void TileRepository::importDatafile(DATAFILE *file)
                 tempTileType = new TileType(tempBitmap,
                         get_datafile_property(file, DAT_ID('N','A','M','E')));
 
-                tileTypes.insert(make_pair(
+                tileTypes.insert(std::make_pair(
                             tempTileType->getName(), tempTileType));
                 break;
         }
@@ -316,7 +295,7 @@ void TileRepository::importBitmap(
                     y * (tileBitmap->w / tile_w) + x);
 
             tempTileType = new TileType(tempBitmap, tempTilename);
-            tileTypes.insert(make_pair(tempTileType->getName(), tempTileType));
+            tileTypes.insert(std::make_pair(tempTileType->getName(), tempTileType));
         }
     }
 }
@@ -347,9 +326,9 @@ void TileRepository::exportBitmap(
         const char *filename,
         int tile_w, int tile_h, int tile_spacing, int tiles_in_row)
 {
-    list<TileType*> tiles_to_save;
-    map<const char*, TileType*, ltstr>::iterator i;
-    list<TileType*>::iterator j;
+    std::list<TileType*> tiles_to_save;
+    std::map<const char*, TileType*, ltstr>::iterator i;
+    std::list<TileType*>::iterator j;
     char tempTilename[256];
     char tempFilename[256];
     replace_extension(tempFilename, get_filename(filename), "", 256);
@@ -404,7 +383,7 @@ void TileRepository::exportBitmap(
 
 TileType* TileRepository::getTileType(const char *tileName)
 {
-    map<const char*, TileType*, ltstr>::iterator found =
+    std::map<const char*, TileType*, ltstr>::iterator found =
         tileTypes.find(tileName);
 
     if (found != tileTypes.end()) {
@@ -414,10 +393,10 @@ TileType* TileRepository::getTileType(const char *tileName)
     }
 }
 
-vector<TileType*> TileRepository::generateTileArray()
+std::vector<TileType*> TileRepository::generateTileArray()
 {
-    map<const char*, TileType*, ltstr>::iterator i;
-    vector<TileType*> tileArray;
+    std::map<const char*, TileType*, ltstr>::iterator i;
+    std::vector<TileType*> tileArray;
 
     for (i = tileTypes.begin(); i != tileTypes.end(); i++)
     {
@@ -427,6 +406,52 @@ vector<TileType*> TileRepository::generateTileArray()
     return tileArray;
 }
 
+// Tileset ===================================================================
+
+Tileset::Tileset()
+{
+    tileWidth = tileHeight = tileSpacing = 0;
+    firstgid = 0;
+}
+
+void
+Tileset::importTileBitmap(BITMAP *tileImage,
+                          const std::string &source,
+                          int tw, int th, int ts)
+{
+    assert(tw > 0 && th > 0 && ts >= 0 && tileImage);
+
+    mImgSource = source;
+    int x, y, id = 0;
+    tileWidth = tw;
+    tileHeight = th;
+    tileSpacing = ts;
+
+    for (y = 0; y < (tileImage->h / (th + ts)); y++)
+    {
+        for (x = 0; x < (tileImage->w / (tw + ts)); x++)
+        {
+            // Create a new tile type and add it to the vector
+            BITMAP *subImage = create_sub_bitmap(tileImage,
+                                                 x * (tw + ts),
+                                                 y * (th + ts),
+                                                 tw, th);
+
+            TileType *tileType = new TileType(subImage, NULL, id++);
+            tileType->setTileset(this);
+            tiles.push_back(tileType);
+        }
+    }
+}
+
+TileType* Tileset::getTile(int id)
+{
+    if (id >= 0 && (unsigned int) id < tiles.size()) {
+        return tiles[id];
+    } else {
+        return NULL;
+    }
+}
 
 // TiledMapLayer =============================================================
 //  Defines a tiled layer, used by tiled maps
@@ -568,39 +593,9 @@ void TiledMapLayer::loadFrom(PACKFILE *file, TileRepository *tileRepository)
             getTile(Point(x,y))->loadFrom(file, tileRepository);
 }
 
-void TiledMapLayer::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
-{
-    xmlChar *prop;
-
-    // Load the map header
-    prop = xmlGetProp(cur, BAD_CAST "width");
-    int w = atoi((char*)prop);
-    xmlFree(prop);
-    prop = xmlGetProp(cur, BAD_CAST "height");
-    int h = atoi((char*)prop);
-    xmlFree(prop);
-
-    resizeTo(w, h);
-
-    cur = cur->xmlChildrenNode;
-    int x = 0;
-    int y = 0;
-
-    // Load the tile data
-    while (cur != NULL) {
-        if (xmlStrEqual(cur->name, BAD_CAST "tile") && y < height) {
-            getTile(Point(x,y))->loadFrom(cur, tileRepository);
-            x++;
-            if (x == width) {x = 0; y++;}
-        }
-        cur = cur->next;
-    }
-}
-
 Tile *TiledMapLayer::getTile(const Point &tile)
 {
-    if (tile.x < 0 || tile.x >= width ||
-            tile.y < 0 || tile.y >= height)
+    if (tile.x < 0 || tile.x >= width || tile.y < 0 || tile.y >= height)
     {
         return NULL;
     }
@@ -610,26 +605,38 @@ Tile *TiledMapLayer::getTile(const Point &tile)
     }
 }
 
+void
+TiledMapLayer::setTile(const Point &tile, TileType *type)
+{
+    if (!(tile.x < 0 || tile.x >= width || tile.y < 0 || tile.y >= height)) {
+        tileMap[tile.x + tile.y * width]->setType(type);
+    }
+}
+
 
 // TiledMap class ============================================================
 //  Defines a generic tiled map interface and data model.
 
 TiledMap::TiledMap():
-nrLayers(2), width(0), height(0)
+    width(0), height(0)
 {
-    mapLayers[0] = new TiledMapLayer();
-    mapLayers[1] = new TiledMapLayer();
+    mapLayers.push_back(new TiledMapLayer());
+    mapLayers.push_back(new TiledMapLayer());
 }
 
 TiledMap::~TiledMap()
 {
-    // Delete the layers
-    for (int i = 0; i < nrLayers; i++) {
+    deleteLayers();
+}
+
+void TiledMap::deleteLayers()
+{
+    for (unsigned int i = 0; i < mapLayers.size(); i++) {
         if (mapLayers[i]) {
             delete mapLayers[i];
-            mapLayers[i] = NULL;
         }
     }
+    mapLayers.clear();
 }
 
 void TiledMap::setCamera(Point cam, Rectangle rect, bool center, bool modify)
@@ -650,8 +657,10 @@ void TiledMap::setCamera(Point cam, Rectangle rect, bool center, bool modify)
 
 void TiledMap::resizeTo(int w, int h, int dx, int dy)
 {
-    mapLayers[0]->resizeTo(w, h, dx, dy);
-    mapLayers[1]->resizeTo(w, h, dx, dy);
+    for (unsigned int i = 0; i < mapLayers.size(); i++)
+    {
+        mapLayers[i]->resizeTo(w, h, dx, dy);
+    }
     width = w;
     height = h;
 }
@@ -666,15 +675,15 @@ void TiledMap::saveTo(PACKFILE *file)
     // Version 3: Object list stored at end of tile data.
     pack_iputw(3, file);
     // The map header
-    pack_iputw(nrLayers, file);
+    pack_iputw(mapLayers.size(), file);
 
     // The tile data
-    for (int i = 0; i < nrLayers; i++) {
+    for (unsigned int i = 0; i < mapLayers.size(); i++) {
         mapLayers[i]->saveTo(file);
     }
 
     // Object data
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     pack_iputw(objects.size(), file);
     for (i = objects.begin(); i != objects.end(); i++) {
         pack_iputw(int(TILES_W * (*i)->x), file);
@@ -695,13 +704,14 @@ void TiledMap::saveTo(xmlTextWriterPtr writer)
     xmlTextWriterWriteAttribute(writer, BAD_CAST "version", BAD_CAST "4.0");
 
     // Tile data
-    for (int i = 0; i < nrLayers; i++) {
+    for (unsigned int i = 0; i < mapLayers.size(); i++) {
         mapLayers[i]->saveTo(writer);
     }
 
     // Object data
-    list<Object*>::iterator i;
-    for (i = objects.begin(); i != objects.end(); i++) {
+    std::list<Object*>::iterator i;
+    for (i = objects.begin(); i != objects.end(); i++)
+    {
         xmlTextWriterStartElement(writer, BAD_CAST "object");
 
         snprintf(strbuf, 16, "%d", int(TILES_W * (*i)->x));
@@ -724,57 +734,18 @@ int TiledMap::loadMap(const char* filename)
 {
     console.log(CON_LOG, CON_VDEBUG, "- Attempting to parse XML map data");
 
-    FILE* f = fopen(filename, "rb");
-    char *map_string;
+    console.log(CON_LOG, CON_VDEBUG, "- Attempting to load packfile map");
+    PACKFILE *file = pack_fopen(filename, F_READ_PACKED);
 
-    if (!f) {
-        console.log(CON_QUIT, CON_ALWAYS, "Error: %s failed to open!",
-                filename);
+    if (!file) {
+        console.log(CON_LOG, CON_ALWAYS,
+                "Warning, no such file (%s)!", filename);
+        return 1;
     }
 
-    // Get size of file
-    fseek(f, 0, SEEK_END);
-    long size = ftell(f);
-    rewind(f);
-
-    // Read file into character array
-    map_string = new char[size + 1];
-    fread(map_string, 1, size, f);
-    map_string[size] = '\0';
-
-    fclose(f);
-
-    xmlDocPtr doc = xmlReadMemory(map_string, size, NULL, NULL, 0);
-    delete[] map_string;
-
-    if (doc) {
-        console.log(CON_LOG, CON_VDEBUG, "- Looking for root node");
-        xmlNodePtr cur = xmlDocGetRootElement(doc);
-
-        if (!cur || !xmlStrEqual(cur->name, BAD_CAST "map")) {
-            console.log(CON_LOG, CON_ALWAYS,
-                    "Warning, no map file (%s)!", filename);
-            return 1;
-        }
-
-        console.log(CON_LOG, CON_VDEBUG, "- Loading map from XML tree");
-        loadFrom(cur, tileRepository);
-        xmlFreeDoc(doc);
-    }
-    else {
-        console.log(CON_LOG, CON_VDEBUG, "- Attempting to load packfile map");
-        PACKFILE *file = pack_fopen(filename, F_READ_PACKED);
-
-        if (!file) {
-            console.log(CON_LOG, CON_ALWAYS,
-                    "Warning, no such file (%s)!", filename);
-            return 1;
-        }
-
-        console.log(CON_LOG, CON_VDEBUG, "- Loading map from packfile");
-        this->loadFrom(file, tileRepository);
-        pack_fclose(file);
-    }
+    console.log(CON_LOG, CON_VDEBUG, "- Loading map from packfile");
+    this->loadFrom(file, tileRepository);
+    pack_fclose(file);
 
     return 0;
 }
@@ -820,62 +791,25 @@ void TiledMap::loadFrom(PACKFILE *file, TileRepository *tileRepository)
     height = mapLayers[0]->getHeight();
 }
 
-void TiledMap::loadFrom(xmlNodePtr cur, TileRepository *tileRep)
+TiledMapLayer *TiledMap::getLayer(unsigned int i)
 {
-    int layerNr = 0;
-    xmlChar *prop;
-
-    removeObjects();
-
-    prop = xmlGetProp(cur, BAD_CAST "version");
-    xmlFree(prop);
-
-    cur = cur->xmlChildrenNode;
-
-    while (cur != NULL) {
-        if (xmlStrEqual(cur->name, BAD_CAST "layer")) {
-            if (layerNr < 2) {
-                console.log(CON_LOG, CON_VDEBUG, "- Loading layer %d",
-                        layerNr + 1);
-                mapLayers[layerNr]->loadFrom(cur, tileRepository);
-                layerNr++;
-            }
-        }
-        else if (xmlStrEqual(cur->name, BAD_CAST "object")) {
-            prop = xmlGetProp(cur, BAD_CAST "x");
-            int x = atoi((char*)prop);
-            xmlFree(prop);
-            prop = xmlGetProp(cur, BAD_CAST "y");
-            int y = atoi((char*)prop);
-            xmlFree(prop);
-
-            // Spawn the object
-            prop = xmlGetProp(cur, BAD_CAST "type");
-
-            console.log(CON_LOG, CON_VDEBUG, "- Adding %s at (%d, %d)",
-                    (char*)prop, x, y);
-            addObject(
-                    double(x) / TILES_W,
-                    double(y) / TILES_H,
-                    (char*)prop);
-            xmlFree(prop);
-        }
-
-        cur = cur->next;
-    }
-
-    width = mapLayers[0]->getWidth();
-    height = mapLayers[0]->getHeight();
-}
-
-TiledMapLayer *TiledMap::getLayer(int i)
-{
-    if (i < 0 || i >= nrLayers) {
+    if (i < 0 || i >= mapLayers.size()) {
         return NULL;
     }
     else {
         return mapLayers[i];
     }
+}
+
+TiledMapLayer*
+TiledMap::getLayer(const char *name)
+{
+    for (unsigned int i = 0; i < mapLayers.size(); i++) {
+        if (mapLayers[i] && strcmp(mapLayers[i]->getName(), name) == 0) {
+            return mapLayers[i];
+        }
+    }
+    return NULL;
 }
 
 Object* TiledMap::addObject(double x, double y, const char* type)
@@ -937,7 +871,7 @@ Object* TiledMap::registerObject(int tableRef)
 void TiledMap::removeObjects()
 {
     // Delete the objects
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     while (!objects.empty()) {
         i = objects.begin();
         delete (*i);
@@ -946,11 +880,35 @@ void TiledMap::removeObjects()
 }
 
 
+Tileset* TiledMap::getTileset(const char* name) const
+{
+    std::list<Tileset*>::const_iterator i;
+    for (i = tilesets.begin(); i != tilesets.end(); i++) {
+        if (!strcmp(name, (*i)->getName().c_str())) {
+            return (*i);
+        }
+    }
+    return NULL;
+}
+
+TileType* TiledMap::getTile(int gid) const
+{
+    std::list<Tileset*>::const_reverse_iterator i;
+    for (i = tilesets.rbegin(); i != tilesets.rend(); i++)
+    {
+        if ((*i)->getFirstGid() <= gid)
+        {
+             return (*i)->getTile(gid - (*i)->getFirstGid());
+        }
+    }
+    return NULL;
+}
+
 void TiledMap::drawEntities(BITMAP *dest)
 {
-    list<EntityP> visibleEnts;
-    list<Object*>::iterator i;
-    list<EntityP>::iterator j;
+    std::list<EntityP> visibleEnts;
+    std::list<Object*>::iterator i;
+    std::list<EntityP>::iterator j;
 
     for (i = objects.begin(); i != objects.end(); i++)
     {
@@ -983,9 +941,9 @@ void TiledMap::drawEntities(BITMAP *dest)
 
 void TiledMap::drawAirborneEntities(BITMAP *dest)
 {
-    list<EntityP> visibleEnts;
-    list<Object*>::iterator i;
-    list<EntityP>::iterator j;
+    std::list<EntityP> visibleEnts;
+    std::list<Object*>::iterator i;
+    std::list<EntityP>::iterator j;
 
     for (i = objects.begin(); i != objects.end(); i++)
     {
@@ -1013,7 +971,7 @@ void TiledMap::drawAirborneEntities(BITMAP *dest)
 
 void TiledMap::updateObjects()
 {
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
 
     // Destroy all objects at the beginning of the object map
     // that should be destroyed
@@ -1029,7 +987,7 @@ void TiledMap::updateObjects()
     for (i = objects.begin(); i != objects.end(); i++)
     {
         if ((*i)->_destroy) {
-            list<Object*>::iterator i2 = i;
+            std::list<Object*>::iterator i2 = i;
 
             // We can safely iterate one back because the first object never
             // needs to be destroyed.
@@ -1087,9 +1045,13 @@ void SquareMap::draw(BITMAP *dest, bool drawObstacle)
     oldClip.clipToRect(dest);
     cameraScreenRect.rectToClip(dest);
 
-    if (mapLayers[0]) drawLayer(dest, drawObstacle, mapLayers[0]);
+    if (mapLayers.size() > 0 && mapLayers[0]) {
+        drawLayer(dest, drawObstacle, mapLayers[0]);
+    }
     drawEntities(dest);
-    if (mapLayers[1]) drawLayer(dest, drawObstacle, mapLayers[1]);
+    if (mapLayers.size() > 1 && mapLayers[1]) {
+        drawLayer(dest, drawObstacle, mapLayers[1]);
+    }
     drawAirborneEntities(dest);
 
     oldClip.rectToClip(dest);

@@ -542,7 +542,7 @@ int l_get_objects_at(lua_State *L)
 
     lua_newtable(L);
 
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     for (i = map->objects.begin(); i != map->objects.end(); i++) {
         Object *obj = (*i);
         if (((obj->x  + obj->w > x && obj->x  <= x) &&
@@ -568,7 +568,7 @@ int l_get_objects_on_map(lua_State *L)
 
     lua_newtable(L);
 
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     for (i = map->objects.begin(); i != map->objects.end(); i++) {
         Object *obj = (*i);
         lua_getref(L, obj->tableRef);
@@ -780,7 +780,7 @@ int l_make_noise(lua_State *L)
 {
     double loudness;
     Object* nm;        // The noise maker
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
 
     getLuaArguments(L, "od", &nm, &loudness);
 
@@ -902,7 +902,7 @@ int l_draw_viewport(lua_State *L)
     getLuaArguments(L, "iiiiddm", &x, &y, &w, &h, &tx, &ty, &map);
 
     if (map) {
-        list<Object*>::iterator i;
+        std::list<Object*>::iterator i;
         // Iterate through all objects, calling the preRender function
         for (i = map->objects.begin(); i != map->objects.end(); i++) {
             callMemberFunction((*i)->tableRef, "preRender");
@@ -952,8 +952,12 @@ int l_get_tile_at(lua_State *L)
 
     if (map) {
         Tile* tile = map->mapLayers[0]->getTile(Point(x, y));
-        if (tile && tile->getType()) {
-            char *tileTypeName = tile->getType()->getName();
+        if (tile) {
+            TileType *type = tile->getType();
+            char *tileTypeName = "";
+            if (type && type->getName()) {
+                tileTypeName = type->getName();
+            }
             return putLuaArguments(L, "si", tileTypeName, tile->obstacle);
         } else {
             return 0;

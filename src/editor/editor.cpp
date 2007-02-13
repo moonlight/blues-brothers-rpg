@@ -31,7 +31,7 @@ Module *module = NULL;
 int debug_mode = 0;
 FONT* engine_font = NULL;
 DATAFILE *engine_data = NULL;
-list<Object*> selectedObjects;
+std::list<Object*> selectedObjects;
 int selectedObjectType = 0;
 
 bool selecting = false;
@@ -45,8 +45,8 @@ int selectedTileset = 0;
 int selectedObstacle = 15;
 int selectedLayer = 0;
 
-vector<char*> tileSets;
-vector<TileType*> activeTileset;
+std::vector<char*> tileSets;
+std::vector<TileType*> activeTileset;
 
 char map_filename[1024] = "";
 char status_message[1024] = "";
@@ -365,11 +365,12 @@ int menu_item_load_map()
         char path_buf[1024] = "";
 
         if (file_select_ex(
-                    "Load XML map... (*.tmx)", path_buf, "tmx", sizeof path_buf,
+                    "Load map... (*.map)", path_buf, "map", sizeof path_buf,
                     MAX(OLD_FILESEL_WIDTH,  SCREEN_W / 2),
                     MAX(OLD_FILESEL_HEIGHT, SCREEN_H / 2)
                     ))
         {
+            /*
             xmlDocPtr doc = xmlParseFile(path_buf);
 
             if (doc != NULL) {
@@ -389,7 +390,9 @@ int menu_item_load_map()
                 set_map_changed(false);
                 update_window_title();
             }
-            else {
+            else
+            */
+            {
                 alert(NULL, "No XML map, trying PACKFILE format...",
                         NULL, "OK", NULL, 13, 0);
 
@@ -426,9 +429,9 @@ int menu_item_save_map()
     if (writer) {
         xmlTextWriterSetIndent(writer, 1);
         xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
-        
+
         currentMap->saveTo(writer);
-        
+
         xmlTextWriterEndDocument(writer);
         xmlFreeTextWriter(writer);
         set_map_changed(false);
@@ -529,7 +532,7 @@ int menu_item_export_tileset()
             {
                 BITMAP *tile_bitmap;
                 PALETTE pal;
-                vector<TileType*>::iterator i;
+                std::vector<TileType*>::iterator i;
                 int x = 0;
                 int y = 0;
                 int tile_w = (activeTileset[0]->getBitmap())->w;
@@ -683,7 +686,7 @@ int menu_item_save_map_image()
     int mapWidth = currentMap->getWidth();
     int mapHeight = currentMap->getHeight();
     TileType *tt;
-    
+
     // Create bitmap the size of the map
     BITMAP* temp_bitmap = create_bitmap(mapWidth, mapHeight);
 
@@ -693,7 +696,7 @@ int menu_item_save_map_image()
         // Paint current map to temporary bitmap
         for (x = 0; x < temp_bitmap->w; x++) {
             for (y = 0; y < temp_bitmap->h; y++) {
-                tt = currentMap->getLayer(0)->getTile(Point(x, y))->getType();
+                tt = currentMap->getLayer((unsigned int)0)->getTile(Point(x, y))->getType();
                 putpixel(temp_bitmap, x, y, tt->getColor());
             }
         }
@@ -727,9 +730,9 @@ int menu_item_save_map_as_xml()
         }
         xmlTextWriterSetIndent(writer, 1);
         xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
-        
+
         currentMap->saveTo(writer);
-        
+
         xmlTextWriterEndDocument(writer);
         xmlFreeTextWriter(writer);
         ustrcpy(map_filename, path_buf);
@@ -901,18 +904,18 @@ void select_object(Object* obj)
     selectedObjects.push_front(obj);
 }
 
-void select_objects(list<Object*> objs)
+void select_objects(std::list<Object*> objs)
 {
     deselect_objects();
 
-    list<Object*>::iterator i;
+    std::list<Object*>::iterator i;
     for (i = objs.begin(); i != objs.end(); i++) {
         (*i)->selected = true;
         selectedObjects.push_front((*i));
     }
 }
 
-void delete_objects(list<Object*> objs)
+void delete_objects(std::list<Object*> objs)
 {
     while (objs.size() > 0) {
         Object* obj = objs.front();

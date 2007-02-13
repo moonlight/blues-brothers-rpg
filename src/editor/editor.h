@@ -27,7 +27,7 @@
 extern int debug_mode;
 extern FONT* engine_font;
 extern Console console;
-extern list<Object*> selectedObjects;
+extern std::list<Object*> selectedObjects;
 extern int selectedObjectType;
 extern bool selecting;
 extern int selection_start_x, selection_end_x;
@@ -39,8 +39,8 @@ extern int selectedTileset;
 extern int selectedObstacle;
 extern int selectedLayer;
 
-extern vector<char*> tileSets;
-extern vector<TileType*> activeTileset;
+extern std::vector<char*> tileSets;
+extern std::vector<TileType*> activeTileset;
 
 extern int map_edit_mode;
 
@@ -145,8 +145,8 @@ void update_screen(int x, int y, int w, int h);
 
 void deselect_objects();
 void select_object(Object* obj);
-void select_objects(list<Object*> objs);
-void delete_objects(list<Object*> objs);
+void select_objects(std::list<Object*> objs);
+void delete_objects(std::list<Object*> objs);
 
 void import_tile_bitmap(
         const char* filename,

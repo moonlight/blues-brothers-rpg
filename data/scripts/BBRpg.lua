@@ -19,6 +19,8 @@ BBRpg = Game:subclass
         m_import_tile_bmp("jail_tiles.bmp", 24, 24, 0)
         m_import_tile_bmp("tiles_subcity.bmp", 24, 24, 0)
         m_import_tile_bmp("tiles_sewers.bmp", 24, 24, 0)
+        --m_import_tile_bmp("tiles_forest.bmp", 24, 24, 0)
+        --m_import_tile_bmp("tiles_obstacle.bmp", 24, 24, 0)
 
         -- Load the maps
         cityMap   = City()
@@ -28,6 +30,7 @@ BBRpg = Game:subclass
         jakesMap  = JakesPlace()
         cellsMap  = Cells()
         restMap   = RestPlace()
+        --forestMap = Forest()
 
         -- Links between portals
         cityMap.jakePortal:linkToPortal(jakesMap.doorPortal)
