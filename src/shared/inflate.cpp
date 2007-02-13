@@ -23,6 +23,7 @@
 
 #include "inflate.h"
 
+#include "../common.h"
 #include "console.h"
 
 #include <zlib.h>
@@ -47,9 +48,7 @@ logZlibError(int error)
             errorString = "Unknown error while decompressing data!";
     }
 
-    // TODO: Well, make it actually log the error
-    printf("%s\n", errorString);
-    exit(1);
+    console.log(CON_QUIT, CON_ALWAYS, errorString);
 }
 
 bool

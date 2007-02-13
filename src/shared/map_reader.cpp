@@ -372,9 +372,9 @@ MapReader::readTileset(xmlNodePtr node, const std::string &path)
                     }
                     xmlFree(source);
                 } else {
-                    printf("Warning: Failed to load tileset %s (%s) for map "
-                            "%s\n", nameOnly, (char*)name,
-                            path.c_str());
+                    console.log(CON_QUIT, CON_ALWAYS,
+                                "Failed to load tileset %s (%s) for map %s\n",
+                                nameOnly, (char*)name, path.c_str());
                 }
             }
 

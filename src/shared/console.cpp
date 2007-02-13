@@ -18,23 +18,18 @@
 #include <math.h>
 
 #ifndef M_PI
-#define M_PI   3.14159
+#define M_PI   3.1415926
 #endif
 
 
-Console::Console(const char* filename)
+Console::Console(const char *filename):
+    enableLogfile(true),
+    active(false),
+    progress(0)
 {
-    logFilename = new char[strlen(filename) + 1];
-    strcpy(logFilename, filename);
-    logFilename[strlen(filename)] = '\0';
+    logFile = fopen(filename, "w");
 
-    logFile = fopen(logFilename, "w");
-    fclose(logFile);
     log(CON_LOG, CON_ALWAYS, "----- Start of RPG log file -----");
-
-    progress = 0;
-    active = false;
-    enableLogfile = true;
 }
 
 
@@ -45,13 +40,13 @@ Console::~Console()
     while (!logMessages.empty())
     {
         i = logMessages.begin();
-        delete (*i);
+        free(*i);
         logMessages.erase(i);
     }
 
     log(CON_LOG, CON_ALWAYS, "----- End of RPG log file -----");
 
-    delete logFilename;
+    fclose(logFile);
 }
 
 void Console::update()
@@ -115,7 +110,6 @@ void Console::log(int where, int when, const char *what, ...)
             time(&t);
 
             if (enableLogfile) {
-                logFile = fopen(logFilename, "a");
                 fprintf(
                         logFile,
                         "[%s%d:%s%d:%s%d] ",
@@ -126,16 +120,14 @@ void Console::log(int where, int when, const char *what, ...)
                         (t % 60 < 10) ? "0" : "",
                         (int)(t % 60)
                        );
-                fprintf(logFile, buf);
-                fprintf(logFile, "\n");
-                fclose(logFile);
+                fprintf(logFile, "%s\n", buf);
+                fflush(logFile);
             }
 
             if (where & CON_QUIT)
             {
-                logFile = fopen(logFilename, "a");
                 fprintf(logFile, "FATAL ERROR!\n");
-                fclose(logFile);
+                fflush(logFile);
                 set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
                 allegro_message(buf);
                 printf("\n");
@@ -162,7 +154,7 @@ void Console::log(int where, int when, const char *what, ...)
         else
         {
             // Clean up the allocated string space
-            delete buf;
+            free(buf);
         }
     }
 }
