@@ -9,7 +9,7 @@
 		<Option compiler="0"/>
 		<Build>
 			<Target title="default">
-				<Option output="C:\blindeijer\Projects\BBRpg\rpg.exe"/>
+				<Option output="C:\blindeijer\Projects\BBRpg\rpgedit.exe"/>
 				<Option working_dir="."/>
 				<Option object_output=".objs"/>
 				<Option deps_output=".deps"/>
@@ -18,6 +18,9 @@
 				<Option projectResourceIncludeDirsRelation="0"/>
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-Wall"/>
+		</Compiler>
 		<Linker>
 			<Add library="gdi32"/>
 			<Add library="user32"/>
@@ -27,47 +30,61 @@
 			<Add library="xml2.dll"/>
 			<Add library="z.dll"/>
 		</Linker>
-		<Unit filename="src\canvas.cpp">
+		<Unit filename="src\editor\agup.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\canvas.h">
+		<Unit filename="src\editor\agup.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\common.h">
+		<Unit filename="src\editor\agupitrn.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\engine.cpp">
+		<Unit filename="src\editor\aphoton.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\engine.h">
+		<Unit filename="src\editor\aphoton.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\rpg.cpp">
+		<Unit filename="src\editor\editor.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\rpg.h">
+		<Unit filename="src\editor\editor.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\script.cpp">
+		<Unit filename="src\editor\gui_procs.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\script.h">
+		<Unit filename="src\editor\gui_procs.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\editor\main.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\editor\script.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\editor\script.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -138,16 +155,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\shared\tiled_map.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\sound.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\sound.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
