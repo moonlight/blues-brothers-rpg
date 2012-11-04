@@ -3,6 +3,7 @@
 -- By Georg Muntingh
 
 import("Actor.lua")
+import("AnimationFunctions.lua")
 import("Decoration.lua")
 
 Lever = Actor:subclass

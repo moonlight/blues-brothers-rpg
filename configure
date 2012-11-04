@@ -3,7 +3,7 @@
 # thanks to Smunt for some tips :)
 
 CC=g++
-LIBS="`pkg-config --libs libxml-2.0`"
+LIBS="-lz `pkg-config --libs libxml-2.0`"
 LIBS_ENGINE=
 CPPFLAGS="-Wall `pkg-config --cflags libxml-2.0`"
 # on windows set EXE_EXT to '.exe'

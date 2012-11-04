@@ -16,6 +16,7 @@
 #include "../common.h"
 #include "../shared/object.h"
 #include "../shared/console.h"
+#include <algorithm>
 #include <vector>
 
 using std::vector;

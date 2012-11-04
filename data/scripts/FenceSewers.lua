@@ -2,6 +2,7 @@
 -- The Fences in the Sewers.
 -- By Georg Muntingh
 
+import("AnimationFunctions.lua")
 import("Decoration.lua")
 
 

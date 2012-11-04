@@ -1,5 +1,5 @@
 
-import("Player.lua")
+import("Enemy.lua")
 
 Punk = Enemy:subclass
 {

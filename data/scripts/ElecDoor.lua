@@ -1,6 +1,7 @@
 -- ElecDoor
 
 
+import("AnimationFunctions.lua")
 import("Actor.lua")
 
 ElecDoor = Actor:subclass

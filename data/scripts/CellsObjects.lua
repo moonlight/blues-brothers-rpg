@@ -2,6 +2,7 @@
 -- The objects in the cells map
 -- By Georg Muntingh
 
+import("AnimationFunctions.lua")
 import("Decoration.lua")
 
 Count1 = Decoration:subclass

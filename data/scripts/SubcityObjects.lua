@@ -1,5 +1,6 @@
 -- The objects that occure in the subcity.
 
+import("AnimationFunctions.lua")
 import("Decoration.lua")
 
 
