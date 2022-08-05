@@ -70,7 +70,7 @@ SnowyWeather = Interaction:subclass
 			-- Add snow particles to reach density
 			while (#self.particles < self.density) do
 				local p = self.map:spawn(SnowParticle, 0, 0, self)
-				p.x = math.random(minx * 24, maxx * 24) / 24;
+				p.x = math.random(math.floor(minx * 24), math.floor(maxx * 24)) / 24;
 				p.y = math.random(viewport.h) / 24 + miny;
 				p.fallspeed = (math.random() + 0.5) * 0.75;
 				p.phase = math.random() * math.pi * 2
@@ -85,16 +85,16 @@ SnowyWeather = Interaction:subclass
 				if (p.y > maxy) then
 					-- Warp snow back up
 					p.y = p.y - viewport.h / 24 - 0.5;
-					p.x = math.random(minx * 24, maxx * 24) / 24;
+					p.x = math.random(math.floor(minx * 24), math.floor(maxx * 24)) / 24;
 				end
 
 				-- Put particles that moved out of the screen back into it
 				if (p.x < minx or p.x > maxx) then
-					local newx = math.mod(p.x - minx, maxx - minx)
+					local newx = math.fmod(p.x - minx, maxx - minx)
 					if (newx < 0) then newx = newx + (viewport.w / 24) + 0.5 end
 					p.x = newx + minx
 				elseif (p.y < miny or p.y > maxy) then
-					local newy = math.mod(p.y - miny, maxy - miny)
+					local newy = math.fmod(p.y - miny, maxy - miny)
 					if (newy < 0) then newy = newy + (viewport.h / 24) + 0.5 end
 					p.y = newy + miny
 				end

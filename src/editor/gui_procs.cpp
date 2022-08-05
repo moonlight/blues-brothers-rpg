@@ -474,22 +474,21 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
                     const char* typeName =
                         objectTypes[selectedObjectType].c_str();
 
-                    lua_pushstring(L, typeName);
-                    lua_gettable(L, LUA_GLOBALSINDEX);
+                    lua_getglobal(L, typeName);
                     if (!lua_isnil(L, -1)) {
                         lua_call(L, putLuaArguments(L, "m", currentMap), 1);
                         if (lua_istable(L, -1)) {
-                            objectInstance = lua_ref(L, -1);
+                            objectInstance = luaL_ref(L, LUA_REGISTRYINDEX);
                         }
                         else {
-                            console.log(CON_QUIT, CON_ALWAYS, "Error while instaniating object \"%s\"", typeName);
+                            console.log(CON_QUIT, CON_ALWAYS, "Error while instantiating object \"%s\"", typeName);
                         }
                     }
                     else {
                         console.log(CON_QUIT, CON_ALWAYS, "Error: could not find object class \"%s\"", typeName);
                     }
 
-                    lua_getref(L, objectInstance);
+                    lua_rawgeti(L, LUA_REGISTRYINDEX, objectInstance);
                     lua_pushstring(L, "_pointer");
                     lua_gettable(L, -2);
                     Object* obj = (Object*)lua_touserdata(L, -1);
@@ -537,7 +536,7 @@ int d_bjorn_map_proc(int msg, DIALOG *d, int c)
                     }
 
                     set_map_changed(true);
-                    lua_unref(L, objectInstance);
+                    luaL_unref(L, LUA_REGISTRYINDEX, objectInstance);
                 }
             }
             else if (gui_mouse_b() & 2) {
@@ -1028,8 +1027,8 @@ int d_bjorn_tileset_list(int msg, DIALOG *d, int c)
     if (d->d1 != selected || msg == MSG_START) {
         // Refresh the active tileset according to the new selection.
         char tempTilename[256];
-        vector<TileType*> tileTypes;
-        vector<TileType*>::iterator i;
+        std::vector<TileType*> tileTypes;
+        std::vector<TileType*>::iterator i;
 
         activeTileset.clear();
         tileTypes = tileRepository->generateTileArray();

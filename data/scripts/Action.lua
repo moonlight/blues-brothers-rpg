@@ -153,7 +153,7 @@ ActionCallFunction = Action:subclass
 	end;
 
 	exec = function(self)
-		self.f(unpack(self.arg))
+		self.f(table.unpack(self.arg))
 		return true
 	end;
 }

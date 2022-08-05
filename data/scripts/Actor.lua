@@ -35,7 +35,7 @@ Actor = Object:subclass
 
 		-- Assign default properties
 		for key, value in pairs(self.defaultproperties) do obj[key] = value; end
-		if (obj.init) then obj:init(unpack(arg)); end
+		if (obj.init) then obj:init(...); end
 
 		return obj
 	end;

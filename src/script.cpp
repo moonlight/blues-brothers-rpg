@@ -11,6 +11,7 @@
 
 #include <allegro.h>
 #include <stdarg.h>
+
 #include "rpg.h"
 #include "shared/object.h"
 #include "shared/console.h"
@@ -19,13 +20,12 @@
 #include "script.h"
 #include "canvas.h"
 #include "common.h"
-#include <vector>
 
-using std::vector;
+#include <vector>
 
 
 lua_State* L = NULL;
-vector<char*> objectTypes;
+std::vector<char*> objectTypes;
 
 
 char lua_include[] =
@@ -64,11 +64,11 @@ void initScripting()
     L = luaL_newstate();
 
     // Enable these Lua libraries to the script
-    lua_pushcfunction(L, luaopen_base);   lua_call(L, 0, 0);
-    lua_pushcfunction(L, luaopen_string); lua_call(L, 0, 0);
-    lua_pushcfunction(L, luaopen_math);   lua_call(L, 0, 0);
-    lua_pushcfunction(L, luaopen_table);  lua_call(L, 0, 0);
-    lua_pushcfunction(L, luaopen_io);     lua_call(L, 0, 0);
+    luaL_requiref(L, "base",   luaopen_base,   1); lua_pop(L, 1);
+    luaL_requiref(L, "string", luaopen_string, 1); lua_pop(L, 1);
+    luaL_requiref(L, "math",   luaopen_math,   1); lua_pop(L, 1);
+    luaL_requiref(L, "table",  luaopen_table,  1); lua_pop(L, 1);
+    luaL_requiref(L, "io",     luaopen_io,     1); lua_pop(L, 1);
 
     // Add the Object type to Lua
     //Lunar<Object>::Register(L);
@@ -181,7 +181,7 @@ int pushLuaValues(const char* desc, va_list vals)
                 case 'b': // Bitmap
                     lua_pushlightuserdata(L, va_arg(vals, BITMAP*)); break;
                 case 'o': // Object
-                    lua_getref(L, (va_arg(vals, Object*))->tableRef); break;
+                    lua_rawgeti(L, LUA_REGISTRYINDEX, (va_arg(vals, Object*))->tableRef); break;
                 case 'm': // TiledMap
                     lua_pushlightuserdata(L, va_arg(vals, TiledMap*)); break;
                 default: valc--;
@@ -203,7 +203,7 @@ int callMemberFunction(int tableRef, const char *function, const char* args, ...
     ASSERT(function);
     int ret = 0;
 
-    lua_getref(L, tableRef);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, tableRef);
 
     if (lua_istable(L, -1))
     {
@@ -213,7 +213,7 @@ int callMemberFunction(int tableRef, const char *function, const char* args, ...
 
         if (lua_isfunction(L, -1))
         {
-            lua_getref(L, tableRef);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, tableRef);
             int argc = 0;
 
             if (args) {
@@ -343,7 +343,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         *a = (int)(lua_tonumber(L, -n + argc) + 0.5);
                     } else {
                         const char *type = lua_typename(L, LUA_TNUMBER);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -355,7 +355,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         *a = lua_tonumber(L, -n + argc);
                     } else {
                         const char *type = lua_typename(L, LUA_TNUMBER);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -367,7 +367,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         *a = lua_tostring(L, -n + argc);
                     } else {
                         const char *type = lua_typename(L, LUA_TSTRING);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -382,7 +382,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         lua_pop(L, 1);
                     } else {
                         const char *type = lua_typename(L, LUA_TTABLE);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -392,10 +392,10 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                     int *a = va_arg(ap, int*);
                     if (lua_istable(L, -n + argc)) {
                         lua_pushvalue(L, -n + argc);
-                        *a = lua_ref(L, -1);
+                        *a = luaL_ref(L, LUA_REGISTRYINDEX);
                     } else {
                         const char *type = lua_typename(L, LUA_TTABLE);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -407,7 +407,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         *a = (BITMAP*)lua_touserdata(L, -n + argc);
                     } else {
                         const char *type = lua_typename(L, LUA_TLIGHTUSERDATA);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -419,7 +419,7 @@ void getLuaArguments(lua_State *L, const char *args, ...)
                         *a = (TiledMap*)lua_touserdata(L, -n + argc);
                     } else {
                         const char *type = lua_typename(L, LUA_TLIGHTUSERDATA);
-                        luaL_typerror(L, argc + 1, type);
+                        luaL_typeerror(L, argc + 1, type);
                     }
                 }
                 break;
@@ -516,9 +516,9 @@ int l_register_object(lua_State *L)
 
     map->registerObject(ref);
     // The object may not be garbage collected while in use by the engine
-    //lua_unref(L, ref);
+    //luaL_unref(L, LUA_REGISTRYINDEX, ref);
     lua_settop(L, 0);
-    lua_getref(L, ref);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
     return 1;
 }
 
@@ -550,7 +550,7 @@ int l_get_objects_at(lua_State *L)
                 ((obj->nx + obj->w > x && obj->nx <= x) && obj->walking > 0 &&
                  (obj->ny - obj->h < y && obj->ny >= y)))
         {
-            lua_getref(L, obj->tableRef);
+            lua_rawgeti(L, LUA_REGISTRYINDEX, obj->tableRef);
             lua_rawseti(L, -2, c);
             c++;
         }
@@ -571,7 +571,7 @@ int l_get_objects_on_map(lua_State *L)
     std::list<Object*>::iterator i;
     for (i = map->objects.begin(); i != map->objects.end(); i++) {
         Object *obj = (*i);
-        lua_getref(L, obj->tableRef);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, obj->tableRef);
         lua_rawseti(L, -2, c);
         c++;
     }
@@ -954,7 +954,7 @@ int l_get_tile_at(lua_State *L)
         Tile* tile = map->mapLayers[0]->getTile(Point(x, y));
         if (tile) {
             TileType *type = tile->getType();
-            char *tileTypeName = "";
+            const char *tileTypeName = "";
             if (type && type->getName()) {
                 tileTypeName = type->getName();
             }

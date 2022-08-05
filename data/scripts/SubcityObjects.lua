@@ -43,7 +43,7 @@ Dustbin = Decoration:subclass
                 ActionTweenVariable(
                     self, "offset_x", 20, 1, self.offset_x,
                     function(from, to, perc)
-                        return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+                        return from + math.ceil(math.fmod(perc * 6, 2) - 0.5)
                     end
                 ),
             },
@@ -54,7 +54,7 @@ Dustbin = Decoration:subclass
                 ActionTweenVariable(
                     self.snowTop, "offset_x", 20, 1, self.snowTop.offset_x,
                     function(from, to, perc)
-                        return from + math.ceil(math.mod(perc * 6, 2) - 0.5)
+                        return from + math.ceil(math.fmod(perc * 6, 2) - 0.5)
                     end
                 ),
                 ActionSetVariable(self.snowTop, "offset_x", -7),
@@ -105,7 +105,7 @@ Keyboard = Decoration:subclass
     name = "Keyboard";
 
     tick = function(self)
-        self.counter = math.mod(self.counter + 1, 8)
+        self.counter = math.fmod(self.counter + 1, 8)
         self:updateBitmap()
     end;
 

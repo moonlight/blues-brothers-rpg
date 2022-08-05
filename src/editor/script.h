@@ -20,12 +20,10 @@ extern "C" {
 
 #include <vector>
 
-using std::vector;
-
 #define DAT_LUA  DAT_ID('L','U','A',' ')
 
 extern lua_State* L;
-extern vector<std::string> objectTypes;
+extern std::vector<std::string> objectTypes;
 
 
 //============   The engine to script interface   ============================/

@@ -819,22 +819,21 @@ Object* TiledMap::addObject(double x, double y, const char* type)
     strcpy(className, type);
     console.log(CON_LOG, CON_VDEBUG, "Adding object of type \"%s\"...", type);
 
-    lua_pushstring(L, type);
-    lua_gettable(L, LUA_GLOBALSINDEX);
+    lua_getglobal(L, type);
     if (!lua_isnil(L, -1)) {
         lua_call(L, putLuaArguments(L, "m", this), 1);
         if (lua_istable(L, -1)) {
-            objectInstance = lua_ref(L, -1);
+            objectInstance = luaL_ref(L, LUA_REGISTRYINDEX);
         } else {
             console.log(CON_QUIT, CON_ALWAYS,
-                    "Error while instaniating \"%s\"", className);
+                    "Error while instantiating \"%s\"", className);
         }
     } else {
         console.log(CON_QUIT, CON_ALWAYS,
                 "Error: could not find class \"%s\"", className);
     }
 
-    lua_getref(L, objectInstance);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, objectInstance);
     lua_pushstring(L, "_pointer");
     lua_gettable(L, -2);
     Object* obj = (Object*)lua_touserdata(L, -1);

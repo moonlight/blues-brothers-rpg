@@ -24,7 +24,7 @@ Object =
 
 		-- Assign default properties
 		for key, value in pairs(self.defaultproperties) do obj[key] = value; end
-		if (obj.init) then obj:init(unpack(arg)); end
+		if (obj.init) then obj:init(...); end
 
 		return obj
 	end;
@@ -41,7 +41,7 @@ Object =
 
 			-- Allow object instaniation by calling the class like a function
 			__call = function(func, ...)
-				obj = func:new(unpack(arg))
+				obj = func:new(...)
 				return obj
 			end;
 		})

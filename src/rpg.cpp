@@ -225,16 +225,15 @@ void init_engine()
     console.log(CON_LOG, CON_ALWAYS, "All finished, initializing game...");
 
     const char* gameClass = get_config_string("Engine", "GameClass", "Game");
-    lua_pushstring(L, gameClass);
-    lua_gettable(L, LUA_GLOBALSINDEX);
+    lua_getglobal(L, gameClass);
     if (!lua_isnil(L, -1)) {
         lua_call(L, 0, 1);
         if (lua_istable(L, -1)) {
-            gameClassInstance = lua_ref(L, -1);
+            gameClassInstance = luaL_ref(L, LUA_REGISTRYINDEX);
         }
         else {
             console.log(CON_QUIT, CON_ALWAYS,
-                    "Error while instaniating game class \"%s\"", gameClass);
+                    "Error while instantiating game class \"%s\"", gameClass);
         }
     }
     else {
@@ -258,7 +257,7 @@ void handle_input()
 
     if (inkey > 0)
     {
-        char *key_name = "anykey";
+        const char *key_name = "anykey";
 
         if (inkey == KEY_ESC)   key_name = "esc";
         if (inkey == KEY_TAB)   key_name = "tab";

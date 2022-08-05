@@ -39,7 +39,7 @@ map(myMap)
 
     // Set the metatable and _pointer value of my table in Lua
     if (tableRef) {
-        lua_getref(L, tableRef);
+        lua_rawgeti(L, LUA_REGISTRYINDEX, tableRef);
         lua_getglobal(L, "ObjectMetatable");
         lua_setmetatable(L, -2);
         lua_pushstring(L, "_pointer" );
@@ -60,14 +60,14 @@ Object::~Object()
         callMemberFunction(tableRef, "destroyed");
 
         // Set the reference to the C++ object to NULL in the Lua table
-        lua_getref(L, tableRef);         // 1
+        lua_rawgeti(L, LUA_REGISTRYINDEX, tableRef); // 1
         lua_pushstring(L, "_pointer");   // 2
         lua_pushlightuserdata(L, NULL);  // 3
         lua_rawset(L, -3);               // 1
         lua_pop(L, 1);                   // 0
 
         // Allow Lua to garbage collect the object.
-        lua_unref(L, tableRef);
+        luaL_unref(L, LUA_REGISTRYINDEX, tableRef);
     }
 }
 

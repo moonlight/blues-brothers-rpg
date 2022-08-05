@@ -162,7 +162,7 @@ extern "C" {
 
 int main(int argc, char **argv) {
     lua_State *L = NULL;
-    L = lua_open();
+    L = luaL_newstate();
 
     return 0;
 }

@@ -21,7 +21,7 @@ SnowFeet = Actor:subclass
 	setDirection = function(self, dir)
 		if (dir == DIR_UP or dir == DIR_DOWN or dir == DIR_RIGHT or dir == DIR_LEFT) then
 			self.dir = dir
-			self.bitmap = m_get_bitmap("snow_feet" .. self.dir .. ".bmp")
+			self.bitmap = m_get_bitmap("snow_feet" .. math.floor(dir) .. ".bmp")
 
 			if (dir == DIR_LEFT) then self.offset_x = -7
 			elseif (dir == DIR_RIGHT) then self.offset_x = -12
